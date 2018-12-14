@@ -3,7 +3,7 @@
 An immortal self-hosted microblogging network built using 100% free services to replace tumblr.
 
 ## Instance handshake requirements
-All secretblogr instances must implement the following endpoints:
+To play in the secretblogr network, your instance must implement the following endpoints:
   - `/feed`
     - feed JSON schema:
       ```
@@ -43,4 +43,5 @@ All secretblogr instances must implement the following endpoints:
   - secretblogr MVC: Node.js + Express + MongoDB
   - secretblogr hosting: Heroku
   - media hosting: ImageBam / YouTube
-  - *all architecture ingredients above are optional --- but your instance must meet the 'handshake requirements' above to play in the secretblogr network*
+
+The architecture ingredients above are recommendations. You are free to use any technology you prefer to meet the 'handshake requirements' above.
