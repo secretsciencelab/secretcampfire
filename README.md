@@ -43,3 +43,4 @@ All secretblogr instances must implement the following endpoints:
   - secretblogr MVC: Node.js + Express + MongoDB
   - secretblogr hosting: Heroku
   - media hosting: ImageBam / YouTube
+  - *all architecture ingredients above are optional --- but your instance must meet the 'handshake requirements' above to play in the secretblogr network*
