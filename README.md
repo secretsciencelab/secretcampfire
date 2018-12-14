@@ -1,6 +1,6 @@
 # secretblogr
 
-An open-source, immortal, self-hosted microblogging network built using 100% free services to replace tumblr.
+An immortal self-hosted microblogging network built using 100% free services to replace tumblr.
 
 ## Instance handshake requirements
 All secretblogr instances must implement the following endpoints:
