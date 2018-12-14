@@ -44,4 +44,4 @@ To play in the secretblogr network, your instance must implement the following e
   - secretblogr hosting: Heroku
   - media hosting: ImageBam / YouTube
 
-The architecture ingredients above are recommendations. You are free to use any technology you prefer to meet the 'handshake requirements' above.
+The architecture ingredients above are recommendations. You are free to use your favorite technology to meet the 'handshake requirements' above.
