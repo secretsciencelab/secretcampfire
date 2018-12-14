@@ -32,13 +32,14 @@ All secretblogr instances must implement the following endpoints:
     - pulls `feed` JSON and renders infinite-scroll viewer
     - pulls `post` JSON and renders single-post page
   - `/dashboard` (private)
-    - for owner to view followed feeds
+    - for owner to add feeds to follow
+    - for owner to view stream of followed feeds
     - for owner to add/reblog posts to personal feed
 
 ## UX guidelines
   - When reblogging, 'media' and 'text' fields are initialized with the source post's media/text
 
 ## Architecture
-  - Node.js + Express 
-  - Heroku
-  - MongoDB
+  - secretblogr MVC: Node.js + Express + MongoDB
+  - secretblogr hosting: Heroku
+  - media hosting: ImageBam / YouTube
