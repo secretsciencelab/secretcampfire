@@ -10,6 +10,7 @@ app
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
 
+
 app.get('/feed/:index?', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify({ 
