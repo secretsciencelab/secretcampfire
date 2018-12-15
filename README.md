@@ -40,7 +40,7 @@ To play in the secretblogr network, your instance must implement the following e
   - When reblogging, 'media' and 'text' fields are initialized with the source post's media/text
 
 ## Architecture
-  - secretblogr MVC: Node.js + Express + MongoDB
+  - secretblogr MVC: Node.js + Express + Bootstrap + MongoDB
   - secretblogr hosting: Heroku
   - media hosting: ImageBam / YouTube
 

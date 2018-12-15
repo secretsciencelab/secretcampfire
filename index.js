@@ -27,6 +27,12 @@ app.get('/post/:id', function (req, res) {
   }));
 })
 
+app.get('/render/:uri', function (req, res) {
+  res.render('pages/render', {
+    'uri': req.params['uri']
+  });
+})
+
 app.get('/dashboard/:index?', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify({ 
