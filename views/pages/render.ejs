@@ -5,6 +5,40 @@
 </head>
 
 <body>
-render <%= uri %>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4"></div>
+
+      <div class="col-md-4">
+        render <%= uri %>
+        <div id="canvas"></div>
+      </div>
+
+      <div class="col-md-4"></div>
+    </div><!--row-->
+  </div><!--container-fluid-->
+
+  <script>
+    <% include ../partials/render_feed.ejs %>
+    <% include ../partials/render_post.ejs %>
+  
+    var feedRenderer = null;
+    var postRenderer = null;
+  
+    $.getJSON("<%= uri %>", function(data) {
+      var cfg = {
+        "uri": "<%= uri %>",
+        "selector": "canvas"
+      };
+      if (data.posts)
+      {
+        feedRenderer = new FeedRenderer(cfg);
+      }
+      else
+      {
+        postRenderer = new PostRenderer(cfg);
+      }
+    });  
+  </script>
 </body>
 </html>

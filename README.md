@@ -13,6 +13,7 @@ To play in the secretblogr network, your instance must implement the following e
             {
               "title": "Title",
               "date": "2012-04-23T18:25:43.511Z",
+              "thumb": "",
               "media": [],
               "text": "markdown",
               "tags": [],
