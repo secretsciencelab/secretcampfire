@@ -13,11 +13,11 @@ To play in the secretblogr network, your instance must implement the following e
             {
               "title": "Title",
               "date": "2012-04-23T18:25:43.511Z",
-              "thumb": "",
-              "media": [],
+              "thumbs": [],
+              "urls": [],
               "text": "markdown",
               "tags": [],
-              "url": "http://instance/post/id",
+              "post_url": "http://instance/post/id",
               "re_url": "http://reblogged_from_instance/post/id"
             }
           ],

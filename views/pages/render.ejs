@@ -2,21 +2,14 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
+  <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.js"></script>
 </head>
 
 <body>
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-4"></div>
-
-      <div class="col-md-4">
-        render <%= uri %>
-        <div id="canvas"></div>
-      </div>
-
-      <div class="col-md-4"></div>
-    </div><!--row-->
-  </div><!--container-fluid-->
+    <div id="feed-grid" class="grid"></div>
+    <div id="feed-grid-button">more</div>
+  </div><!--container-->
 
   <script>
     <% include ../partials/render_feed.ejs %>
@@ -28,8 +21,10 @@
     $.getJSON("<%= uri %>", function(data) {
       var cfg = {
         "uri": "<%= uri %>",
-        "selector": "canvas"
+        "selector": "#feed-grid",
+        "data": data
       };
+      addCss(data.style);
       if (data.posts)
       {
         feedRenderer = new FeedRenderer(cfg);
@@ -39,6 +34,15 @@
         postRenderer = new PostRenderer(cfg);
       }
     });  
+
+    function addCss(cssPath) {
+      var stylesheet = document.createElement("link");
+      stylesheet.href=cssPath;
+      stylesheet.rel="stylesheet";
+      stylesheet.type = 'text/css';
+      document.getElementsByTagName("head")[0].appendChild(stylesheet);
+      window.___gcfg={parsetags:'onload'};
+    }
   </script>
 </body>
 </html>
