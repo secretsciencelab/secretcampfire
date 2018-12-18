@@ -38,7 +38,7 @@ To play in the secretblogr network, your instance must implement the following e
     - for owner to add/reblog posts to personal feed
 
 ## UX guidelines
-  - When reblogging, 'media' and 'text' fields are initialized with the source post's media/text
+  - When reblogging, 'urls' and 'text' fields are initialized with the source post's urls/text
 
 ## Architecture
   - secretblogr MVC: Node.js + Express + Bootstrap + MongoDB
