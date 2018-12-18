@@ -20,7 +20,7 @@ function FeedRenderer(cfg) {
 
   // https://infinite-scroll.com/extras.html#loading-json
   this.infScrollContainer.on('load.infiniteScroll', function(ev, response) {
-		console.log(response);
+		//console.log(response);
     var data = JSON.parse(response);
 
     if (!data.posts || !data.posts.length)
