@@ -2,7 +2,7 @@
 
 An immortal self-hosted microblogging network built using 100% free services to replace tumblr.
 
-## Instance handshake requirements
+## Secret handshake requirements
 To play in the secretblogr network, your instance must implement the following endpoints:
   - `/feed`
     - feed JSON schema:
