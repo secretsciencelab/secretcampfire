@@ -1,4 +1,5 @@
 const express = require('express')
+const basicAuth = require('express-basic-auth')
 const http = require('http')
 const path = require('path')
 const PORT = process.env.PORT || 5000
@@ -46,6 +47,13 @@ app.get('/render/:uri', function (req, res) {
     'uri': req.params['uri']
   });
 })
+
+// protected routes below
+
+app.use(basicAuth({ 
+  users: { 'admin': 'password' }, // FIXME
+  challenge: true
+}))
 
 app.get('/dashboard/:index?', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
