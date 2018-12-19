@@ -2,6 +2,8 @@
 
 An immortal self-hosted microblogging network built using 100% free services to replace tumblr.
 
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 ## Secret handshake requirements
 To play in the secretblogr network, your instance must implement the following endpoints:
   - `/feed`
