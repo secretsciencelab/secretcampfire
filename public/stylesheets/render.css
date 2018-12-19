@@ -1,3 +1,6 @@
+#feed-grid .grid-item {
+  margin-bottom: 15px;
+}
 #feed-grid .grid-item img {
   width: 100%;
 }
