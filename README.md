@@ -1,6 +1,6 @@
 # secretblogr
 
-An immortal self-hosted microblogging network built using 100% free services to replace tumblr.
+An immortal community-hosted microblogging system built with 100% free services to replace tumblr.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
