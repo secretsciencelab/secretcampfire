@@ -1,0 +1,13 @@
+#feed-grid .grid-item img {
+  width: 100%;
+}
+
+#feed-grid-button {
+  text-align: center;
+}
+#feed-grid-button .button {
+  display: inline-block;
+  border: 1px solid #888;
+  padding: 5px 10px;
+  color: #888;
+}

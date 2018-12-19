@@ -2,14 +2,37 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
-  <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/3.0.5/infinite-scroll.pkgd.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/render.css" />
 </head>
 
 <body>
   <div class="container-fluid">
-    <div id="feed-grid" class="grid"></div>
-    <div id="feed-grid-button">more</div>
+    <div id="feed-grid" class="grid">
+      <div class="grid-sizer col-md-3"></div>
+    </div><!--feed-grid-->
   </div><!--container-->
+
+
+  <div id="feed-grid-button"><div class="button">more</div></div>
+
+  <div id="feed-grid-template">
+    <div class="card">
+      <a class="card-img-top-link" href="#"><img class="card-img-top" src=""/></a>
+			<div class="card-body">
+				<h6 class="card-title">&nbsp;</h6>
+				<p class="card-text">&nbsp;</p>
+			</div>
+    </div><!--card-->
+  </div><!--feed-grid-template-->
+
+  <div id="feed-grid-template-2">
+    <div class="grid-item col-md-3">
+      <div class="grid-item-content"><img src=""/></div>
+    </div>
+  </div><!--feed-grid-template-->
 
   <script>
     <% include ../partials/render_feed.ejs %>

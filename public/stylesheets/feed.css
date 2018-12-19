@@ -1,0 +1,14 @@
+#feed-grid-template,
+#feed-grid-template-2
+{
+  display: none;
+}
+
+/*
+#feed-grid .card {
+  display: inline-block;
+  vertical-align: middle;
+  width: 18rem;
+  margin: 0px 2px;
+}
+*/
