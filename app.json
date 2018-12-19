@@ -1,6 +1,6 @@
 {
   "name": "secretblogr",
-  "description": "An immortal self-hosted microblogging system built using 100% free services to replace tumblr.",
+  "description": "An immortal community-hosted microblogging system built with 100% free services to replace tumblr.",
   "repository": "https://github.com/secretsciencelab/secretblogr",
   "logo": "",
   "keywords": ["node", "express", "heroku", "tumblr", "blog"],
