@@ -42,9 +42,13 @@ app.get('/post/:id', function (req, res) {
   }));
 })
 
-app.get('/render/:uri', function (req, res) {
+app.get('/render/:uri?', function (req, res) {
+  uri = '/feed'; //default to own feed
+  if (req.params['uri'])
+    uri = req.params['uri'];
+
   res.render('pages/render', {
-    'uri': req.params['uri']
+    'uri': uri
   });
 })
 
