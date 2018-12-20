@@ -51,8 +51,8 @@ To participate and play in the secretblogr network, your instance must implement
   - When reblogging, 'urls' and 'text' fields are initialized with the source post's urls/text
 
 ## Technologies used
-  - secretblogr MVC: Node.js + Express + Bootstrap + MongoDB
-  - secretblogr hosting: Heroku
+  - MVC: Node.js + Express + Bootstrap + MongoDB
+  - hosting: Heroku
   - media hosting: ImageBam / YouTube
 
 The architecture ingredients above are recommendations. You are free to use your favorite technology to meet the 'handshake requirements' above.
