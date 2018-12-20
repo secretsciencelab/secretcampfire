@@ -2,7 +2,7 @@
 
 An immortal, lightweight, community-hosted microblogging system that...
 - supports tumblr features like `reblog`, `follow` and an infinite-scroll `dashboard` feed
-- is built with 100% free (but industry-grade) services, so it costs you nothing to run your blog forever
+- is built with 100% free (but industry-grade) services, so it costs you nothing to run your blog 24/7 forever
 - can never be killed, because you own and control:
   - your blog
   - your blog's content 
