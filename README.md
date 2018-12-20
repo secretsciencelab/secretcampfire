@@ -1,6 +1,13 @@
 # secretblogr
 
-An immortal community-hosted microblogging system built with 100% free services to replace tumblr.
+An immortal, lightweight microblogging system that...
+- supports tumblr features like `reblog`, `follow` and an infinite-scroll `dashboard` feed
+- is built with 100% free (but industry-grade) services, so it costs you nothing to run your blog forever
+- can never be killed, because you own and control:
+  - your blog
+  - your blog's content 
+  - your blogs connections to other blogs
+- is open-source, so you may customize it to your heart's content
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
@@ -42,7 +49,7 @@ To play in the secretblogr network, your instance must implement the following e
 ## UX guidelines
   - When reblogging, 'urls' and 'text' fields are initialized with the source post's urls/text
 
-## Architecture
+## Technologies used
   - secretblogr MVC: Node.js + Express + Bootstrap + MongoDB
   - secretblogr hosting: Heroku
   - media hosting: ImageBam / YouTube
