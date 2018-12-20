@@ -1,7 +1,7 @@
 {
-  "name": "secretblogr",
+  "name": "secretcampfire",
   "version": "0.1.0",
-  "description": "secretblogr",
+  "description": "secretcampfire",
   "engines": {
     "node": "10.x"
   },
@@ -23,9 +23,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/secretsciencelab/secretblogr"
+    "url": "https://github.com/secretsciencelab/secretcampfire"
   },
   "keywords": [
+    "blog",
+    "tumblr",
     "node",
     "heroku",
     "express"

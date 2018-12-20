@@ -1,7 +1,7 @@
 {
-  "name": "secretblogr",
-  "description": "An immortal community-hosted microblogging system built with 100% free services to replace tumblr.",
-  "repository": "https://github.com/secretsciencelab/secretblogr",
+  "name": "secretcampfire",
+  "description": "An immortal, lightweight, community-hosted microblogging system built with 100% free services to replace tumblr.",
+  "repository": "https://github.com/secretsciencelab/secretcampfire",
   "logo": "",
   "keywords": ["node", "express", "heroku", "tumblr", "blog"],
   "image": "heroku/nodejs"
