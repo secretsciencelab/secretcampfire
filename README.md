@@ -6,8 +6,9 @@ An immortal, lightweight microblogging system that...
 - can never be killed, because you own and control:
   - your blog
   - your blog's content 
-  - your blogs connections to other blogs
+  - your blogs social network with other blogs
 - is open-source, so you may customize it to your heart's content
+- can run on almost any platform, so you are never locked into one service
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
