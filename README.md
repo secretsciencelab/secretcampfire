@@ -1,4 +1,4 @@
-# secretblogr
+# secretcampfire
 
 An immortal, lightweight, community-hosted microblogging system that...
 - supports tumblr features like `reblog`, `follow` and an infinite-scroll `dashboard` feed
