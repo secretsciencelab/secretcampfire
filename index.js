@@ -50,8 +50,9 @@ app.get('/render/:uri', function (req, res) {
 
 // protected routes below
 
+var adminPassword = process.env.ADMIN_PASSWORD || "password";
 app.use(basicAuth({ 
-  users: { 'admin': 'password' }, // FIXME
+  users: { 'admin': adminPassword }, 
   challenge: true
 }))
 

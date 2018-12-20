@@ -51,16 +51,23 @@ function FeedRenderer(cfg) {
     {
       var post = data.posts[i];
 
-      var newCard = $(fr.templateSelector + "-2 > div").clone();
+      var newCard = $(fr.templateSelector + " > div").clone();
       newCard.attr('id', "card-"+(fr.infCardIdCounter++));
       newCard.find("img")
         .attr('src', post.thumbs[0])
         .data('iscroll-id', newCard.attr('id'));
       if (post.urls.length)
+      {
         newCard.find(".card-img-top-link").attr("href", post.urls[0]);
-      newCard.find("img").attr('src', post.thumbs[0]);
-      if (post.title)
-        newCard.find(".card-title").html(post.title);
+        newCard.find(".card-title-link").attr("href", post.urls[0]);
+      }
+      if (post.thumbs.length)
+        newCard.find("img").attr('src', post.thumbs[0]);
+      else
+        newCard.find("img").hide();
+      newCard.find(".card-title").html(post.title);
+      // TODO: convert text to markdown: https://github.com/markedjs/marked
+      newCard.find(".card-text").html(post.text);
       newCards = newCards.add(newCard);
       $grid.append(newCard);
     }

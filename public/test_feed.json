@@ -6,7 +6,7 @@
       "date": "2018-13-14T18:25:43.511Z",
       "thumbs": ["https://preview.redd.it/k56qjus0u1521.jpg?width=640&crop=smart&auto=webp&s=1fd2e175e73b5bd2dc19d58ad5f7d7528284b01a"],
       "urls": ["https://www.reddit.com/r/aww/comments/a7bnlt/baby_dragon/"],
-      "text": "",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque placerat id urna nec hendrerit. Etiam lectus arcu, interdum eget pellentesque ut, rhoncus at ipsum. Donec et est cursus, convallis tellus et, mollis elit. Vivamus vitae turpis vehicula, varius eros at, fermentum dui. Donec a viverra ligula. Mauris molestie ante vel sagittis eleifend. Phasellus semper vitae massa sit amet cursus. Aenean mollis, nibh eu laoreet volutpat, quam arcu condimentum justo, id ultricies metus magna quis odio.",
       "tags": ["dragon"],
       "post_url": "/post/id",
       "re_url": "http://reblogged_from_instance/post/id"
@@ -116,7 +116,7 @@
       "date": "2018-12-14T18:25:43.511Z",
       "thumbs": ["https://preview.redd.it/vqd13r1op6521.jpg?width=640&crop=smart&auto=webp&s=e8eb28b62ee0375346cfad1b519fea0e51850d41"],
       "urls": ["https://www.reddit.com/r/aww/comments/a7k568/henlo/"],
-      "text": "",
+      "text": "Ut id purus vitae turpis convallis rutrum. Aenean dictum est neque, sed dictum erat aliquam ac. Aenean convallis, mi non dictum luctus, tellus metus interdum odio, sed aliquam sapien lorem in nisl. Sed feugiat iaculis augue eu interdum. Etiam viverra leo a accumsan dignissim. Donec venenatis, est ut volutpat ultrices, felis lacus maximus dui, at lacinia mauris odio nec enim. Morbi a turpis malesuada eros viverra lobortis.",
       "tags": ["cheetah"],
       "post_url": "/post/id",
       "re_url": "http://reblogged_from_instance/post/id"
@@ -138,6 +138,16 @@
       "urls": ["https://www.reddit.com/r/aww/comments/a5yjp0/kiwi_and_his_goth_gf/"],
       "text": "",
       "tags": ["kiwi"],
+      "post_url": "/post/id",
+      "re_url": "http://reblogged_from_instance/post/id"
+    },
+    {
+      "title": "Darth Plagueis",
+      "date": "2018-12-14T18:25:43.511Z",
+      "thumbs": [],
+      "urls": [],
+      "text": "Did you ever hear the tragedy of Darth Plagueis The Wise? I thought not.\r\n\r\nIt\u2019s not a story the Jedi would tell you. It\u2019s a Sith legend. Darth Plagueis was a Dark Lord of the Sith, so powerful and so wise he could use the Force to influence the midichlorians to create life\u2026\r\n\r\nHe had such a knowledge of the dark side that he could even keep the ones he cared about from dying. The dark side of the Force is a pathway to many abilities some consider to be unnatural. He became so powerful\u2026 the only thing he was afraid of was losing his power, which eventually, of course, he did.\r\n\r\nUnfortunately, he taught his apprentice everything he knew, then his apprentice killed him in his sleep. Ironic. He could save others from death, but not himself.",
+      "tags": ["copypasta"],
       "post_url": "/post/id",
       "re_url": "http://reblogged_from_instance/post/id"
     }

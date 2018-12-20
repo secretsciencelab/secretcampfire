@@ -4,6 +4,16 @@
 #feed-grid .grid-item img {
   width: 100%;
 }
+#feed-grid .card-body {
+  color: #444;
+}
+#feed-grid .card-title {
+  font-weight: bold;
+}
+#feed-grid a.card-title-link {
+  text-decoration: none;
+  color: #444;
+}
 
 #feed-grid-button {
   text-align: center;
@@ -14,3 +24,8 @@
   padding: 5px 10px;
   color: #888;
 }
+
+#feed-grid-template {
+  display: none;
+}
+
