@@ -13,7 +13,7 @@ An immortal, lightweight microblogging system that...
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 ## Secret handshake requirements
-To play in the secretblogr network, your instance must implement the following endpoints:
+To participate and play in the secretblogr network, your instance must implement the following endpoints:
   - `/feed`
     - feed JSON schema:
       ```
