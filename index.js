@@ -1,5 +1,6 @@
 const express = require('express')
 const basicAuth = require('express-basic-auth')
+const db = require('./db')
 const http = require('http')
 const path = require('path')
 const PORT = process.env.PORT || 5000

@@ -4,6 +4,8 @@ function FeedRenderer(cfg) {
   this.selectorButton = cfg.selector+"-button";
   this.templateSelector = this.selector + "-template";
 
+  this.mdConverter = new showdown.Converter();
+
   var fr = this;
 
   /* 
@@ -66,8 +68,8 @@ function FeedRenderer(cfg) {
       else
         newCard.find("img").hide();
       newCard.find(".card-title").html(post.title);
-      // TODO: convert text to markdown: https://github.com/markedjs/marked
-      newCard.find(".card-text").html(post.text);
+      var markdown = fr.mdConverter.makeHtml(post.text);
+      newCard.find(".card-text").html(markdown);
       newCards = newCards.add(newCard);
       $grid.append(newCard);
     }
