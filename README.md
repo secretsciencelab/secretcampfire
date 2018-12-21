@@ -1,3 +1,5 @@
+![secretcampfire](http://assets.innbetweenworlds.com/media/campfire/glowingForest.jpg)
+
 # secretcampfire
 
 An immortal, lightweight, community-hosted microblogging system that...
