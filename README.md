@@ -19,6 +19,9 @@ To participate and play in the secretcampfire network, your instance must implem
       ```
         {
           "name": "Feed Name",
+          "description": "",
+          "avatar_url": "",
+          "header_url": "",
           "posts": [
             {
               "title": "Title",
