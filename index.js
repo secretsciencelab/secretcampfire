@@ -63,11 +63,8 @@ app.use(basicAuth({
 }))
 
 app.get('/dashboard/:index?', function (req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({ 
-    'path': 'dashboard',
-    'params': req.params
-  }));
+  res.render('pages/dashboard', {
+  });
 })
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))

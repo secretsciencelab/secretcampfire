@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/dashboard.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div id="create-post-form">
+      <div class="input title" contenteditable="true" 
+        data-text="Title"></div>
+      <div class="input thumb" contenteditable="true"
+        data-text="Thumbnail"></div>
+      <div class="input url" contenteditable="true"
+        data-text="URL"></div>
+      <div class="input text" contenteditable="true"
+        data-text="Text"></div>
+      <div class="input tags" contenteditable="true"
+        data-text="Tags"></div>
+      <div class="button">Save</div>
+    </div><!--new-post-form-->
+
+
+  </div><!--container-->
+
+  <script>
+    <% include ../partials/dashboard.ejs %>
+    var dash = new Dashboard({
+      "postFormSelector": "#create-post-form"
+    });
+  </script>
+</body>
+</html>

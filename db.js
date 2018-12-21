@@ -45,6 +45,9 @@
     /* 
      * post
      */
+    module.exports.getPostSchema = function() {
+      return PostSchema;
+    }
 
     module.exports.post = function(post) {
     }
@@ -53,6 +56,9 @@
     }
 
     module.exports.getPost = function(id) {
+    }
+
+    module.exports.update = function(id, keyVals) {
     }
 
     /* 

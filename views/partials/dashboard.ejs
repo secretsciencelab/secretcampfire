@@ -1,0 +1,20 @@
+function Dashboard(cfg) {
+  this.postFormSelector = cfg.postFormSelector;
+
+  this.bindEvents();
+}
+
+Dashboard.prototype.bindEvents = function() {
+  var dash = this;
+  $(dash.postFormSelector + " .button").click(function(e) {
+    e.preventDefault();
+
+    var mode = "new";
+    if ($(dash.postFormSelector).data("mode"))
+      mode = $(dash.postFormSelector).data("mode");
+
+    // TODO send data to backend
+
+    return false;
+  });
+}
