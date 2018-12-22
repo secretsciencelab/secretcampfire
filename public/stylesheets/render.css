@@ -16,6 +16,7 @@
 }
 
 #feed-grid-button {
+  display: none; /* hide by default */
   text-align: center;
 }
 #feed-grid-button .button {

@@ -47,6 +47,8 @@ function FeedRenderer(cfg) {
       $(fr.selectorButton).hide();
       return;
     }
+    else
+      $(fr.selectorButton).fadeIn();
 
     var newCards = $();
     for (var i=0; i < data.posts.length; i++)
