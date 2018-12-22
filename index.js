@@ -6,13 +6,15 @@ const path = require('path')
 const PORT = process.env.PORT || 5000
 
 var app = express()
+var bodyParser = require('body-parser');
 
 app
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
-
+  .use(bodyParser.json())
+  .use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/feed/:index?', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -62,9 +64,20 @@ app.use(basicAuth({
   challenge: true
 }))
 
+app.post('/post', function(request, response) {
+  db.post(request.body, response);
+
+  // TODO: allow post to user's other blog on a diff server using auth headers
+  //console.log(request.auth);
+});
+
 app.get('/dashboard/:index?', function (req, res) {
   res.render('pages/dashboard', {
   });
 })
+
+app.get('/logout', function (req, res) {
+    return res.status(401).end();
+});
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))

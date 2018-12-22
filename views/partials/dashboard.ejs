@@ -1,19 +1,46 @@
 function Dashboard(cfg) {
   this.postFormSelector = cfg.postFormSelector;
+  this.postSubmitSelector = cfg.postSubmitSelector;
+  this.postSuccessAlertSelector = cfg.postSuccessAlertSelector;
 
   this.bindEvents();
 }
 
 Dashboard.prototype.bindEvents = function() {
   var dash = this;
-  $(dash.postFormSelector + " .button").click(function(e) {
+  $(dash.postSubmitSelector).click(function(e) {
     e.preventDefault();
 
+    var $form = $(dash.postFormSelector);
+
     var mode = "new";
-    if ($(dash.postFormSelector).data("mode"))
-      mode = $(dash.postFormSelector).data("mode");
+    if ($form.data("mode"))
+      mode = $form.data("mode");
+
+    var title = $form.find('.form-post-title').val();
+    var thumb = $form.find('.form-post-thumb').val();
+    var url = $form.find('.form-post-url').val();
+    var text = $form.find('.form-post-text').val();
+    var tags = $form.find('.form-post-tags').val();
 
     // TODO send data to backend
+    $.post('/post', { 
+        title: title,
+        thumbs: thumb,
+        urls: url,
+        text: text,
+        tags: tags
+      },
+      function(data, status, xhr) {
+        // success
+        $(dash.postSuccessAlertSelector).fadeIn().delay(2000).fadeOut();
+        console.log(data);
+      },
+      'json')
+      .done(function() {
+      })
+      .fail(function(jqxhr, settines, ex) {
+      });
 
     return false;
   });

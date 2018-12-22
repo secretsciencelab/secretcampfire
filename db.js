@@ -24,6 +24,7 @@
       post_url: String,
       re_url: String
     });
+    Post = mongoose.model('Post', PostSchema);
 
     // collections:
     // - following
@@ -49,7 +50,22 @@
       return PostSchema;
     }
 
-    module.exports.post = function(post) {
+    function _makeArray(x) {
+      return Array.isArray(x)? x : [x];
+    }
+    module.exports.post = function(postData, res) {
+      // sanitize postData
+      postData.thumb = _makeArray(postData.thumb);
+      postData.url = _makeArray(postData.url);
+      postData.tags = postData.tags.split(/(?:,| )+/);
+      
+      var newPost = new Post(postData);
+      newPost.id = newPost._id;
+      newPost.post_url = "/post/" + newPost.id
+
+      newPost.save(function (err) {
+        res.status(200).json(newPost);
+      });
     }
 
     module.exports.reblog = function(post) {

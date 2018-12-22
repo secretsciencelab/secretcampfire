@@ -7,27 +7,48 @@
 
 <body>
   <div class="container">
-    <div id="create-post-form">
-      <div class="input title" contenteditable="true" 
-        data-text="Title"></div>
-      <div class="input thumb" contenteditable="true"
-        data-text="Thumbnail"></div>
-      <div class="input url" contenteditable="true"
-        data-text="URL"></div>
-      <div class="input text" contenteditable="true"
-        data-text="Text"></div>
-      <div class="input tags" contenteditable="true"
-        data-text="Tags"></div>
-      <div class="button">Save</div>
-    </div><!--new-post-form-->
-
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-post-modal">
+      New post
+    </button>
+    <div class="modal fade" tabindex="-1" role="dialog" id="create-post-modal">
+        <div class="modal-dialog" role="document"><div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">New post</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div><!--header-->
+          <div class="modal-body"><form id="create-post-form">
+            <div class="form-group">
+              <input type="text" class="form-control form-post-title" 
+                value="" placeholder="Title">
+              <input type="text" class="form-control form-post-thumb" 
+                value="" placeholder="Thumbnail">
+              <input type="text" class="form-control form-post-url" 
+                value="" placeholder="URL">
+              <textarea class="form-control form-post-text" rows="5" placeholder="Text"></textarea>
+              <input type="text" class="form-control form-post-tags" 
+                value="" placeholder="Tags">
+            </div>
+          </form></div><!--body-->
+          <div id="create-post-success-alert" 
+            class="alert alert-success" role="alert">Post saved!</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" 
+              id="create-post-save-button">Save</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div><!--footer-->
+        </div></div><!--document->
+    </div><!--modal-->
 
   </div><!--container-->
 
   <script>
     <% include ../partials/dashboard.ejs %>
     var dash = new Dashboard({
-      "postFormSelector": "#create-post-form"
+      "postFormSelector": "#create-post-form",
+      "postSubmitSelector": "#create-post-save-button",
+      "postSuccessAlertSelector": "#create-post-success-alert"
     });
   </script>
 </body>
