@@ -24,6 +24,7 @@ To participate and play in the secretcampfire network, your instance must implem
           "description": "",
           "avatar_url": "",
           "header_url": "",
+          "style_url": "http://instance/stylesheets/feed.css"
           "posts": [
             {
               "title": "Title",
@@ -35,8 +36,7 @@ To participate and play in the secretcampfire network, your instance must implem
               "post_url": "http://instance/post/id",
               "re_url": "http://reblogged_from_instance/post/id"
             }
-          ],
-          "style_url": "http://instance/public/feed.css"
+          ]
         }
       ```
     - the `style_url` field in the feed provides CSS to render:

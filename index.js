@@ -20,11 +20,11 @@ app.get('/feed/:index?', function (req, res) {
 	var index = req.params['index'];
 
   var feed = {
-    'name': '', 
+    'name': req.headers.host, 
     'description': '',
     'avatar_url': '',
     'header_url': '',
-    'style_url': '',
+    'style_url': '//' + req.headers.host + '/stylesheets/feed.css',
     'posts': []
   };
 
