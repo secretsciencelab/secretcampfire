@@ -24,7 +24,7 @@ To participate and play in the secretcampfire network, your instance must implem
           "description": "",
           "avatar_url": "",
           "header_url": "",
-          "style_url": "http://instance/stylesheets/feed.css"
+          "style_url": "http://instance/stylesheets/feed.css",
           "posts": [
             {
               "title": "Title",
