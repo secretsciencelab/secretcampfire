@@ -39,7 +39,7 @@ To participate and play in the secretcampfire network, your instance must implem
           "style_url": "http://instance/public/feed.css"
         }
       ```
-    - the `style` field in the feed provides CSS to render:
+    - the `style_url` field in the feed provides CSS to render:
       - infinite-scroll viewer for entire feed
       - single-post page
   - `/post/<id>`
