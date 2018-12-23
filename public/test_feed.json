@@ -155,5 +155,5 @@
       "re_url": "http://reblogged_from_instance/post/id"
     }
   ],
-  "style": "/stylesheets/feed.css"
+  "style_url": "/stylesheets/feed.css"
 }

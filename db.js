@@ -10,7 +10,8 @@
       name: String,
       description: String,
       avatar_url: String,
-      header_url: String
+      header_url: String,
+      style_url: String
     });
 
     const PostSchema = new mongoose.Schema({
@@ -81,7 +82,14 @@
      * feed
      */
 
-    module.exports.fetchFeed = function(index) {
+    module.exports.fetchPosts = function(index, cb) {
+      if (index == 0)
+        index = undefined;
+      Post.find()
+        .skip(index)
+        .limit(50)
+        .sort({'date': -1})
+        .exec(cb);
     }
 
     /*

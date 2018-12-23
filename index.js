@@ -17,17 +17,36 @@ app
   .use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/feed/:index?', function (req, res) {
-  res.setHeader('Content-Type', 'application/json');
+	var index = req.params['index'];
 
-  var testUrl = "http://" + req.headers.host + "/test_feed.json";
-  http.get(testUrl, function(_res) {
-    var body = '';
-    _res.on('data', function(chunk) {
-      body += chunk;
-    });
-    _res.on('end', function() {
-      res.send(body);
-    });
+  var feed = {
+    'name': '', 
+    'description': '',
+    'avatar_url': '',
+    'header_url': '',
+    'style_url': '',
+    'posts': []
+  };
+
+  db.fetchPosts(index, function(err, docs) {
+    feed.posts = docs;
+  
+    res.setHeader('Content-Type', 'application/json');
+    if (index == 0 && (!docs || docs.length == 0))
+    {
+      var testUrl = "http://" + req.headers.host + "/test_feed.json";
+      http.get(testUrl, function(_res) {
+        var body = '';
+        _res.on('data', function(chunk) {
+          body += chunk;
+        });
+        _res.on('end', function() {
+          res.send(body);
+        });
+      });
+    }
+    else
+      res.send(JSON.stringify(feed));
   });
 
 	//if (req.params['index'] > 1)

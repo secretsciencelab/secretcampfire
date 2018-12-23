@@ -33,6 +33,7 @@ Dashboard.prototype.bindEvents = function() {
       },
       function(data, status, xhr) {
         // success
+        $form.get(0).reset(); // clear form
         $(dash.postSuccessAlertSelector).fadeIn().delay(2000).fadeOut();
         console.log(data);
       },

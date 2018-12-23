@@ -36,7 +36,7 @@ To participate and play in the secretcampfire network, your instance must implem
               "re_url": "http://reblogged_from_instance/post/id"
             }
           ],
-          "style": "http://instance/public/feed.css"
+          "style_url": "http://instance/public/feed.css"
         }
       ```
     - the `style` field in the feed provides CSS to render:
