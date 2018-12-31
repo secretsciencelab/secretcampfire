@@ -32,7 +32,7 @@ app.get('/feed/:index?', function (req, res) {
     feed.posts = docs;
   
     res.setHeader('Content-Type', 'application/json');
-    if (index == 0 && (!docs || docs.length == 0))
+    if (!index && (!docs || docs.length == 0))
     {
       var testUrl = "http://" + req.headers.host + "/test_feed.json";
       http.get(testUrl, function(_res) {
@@ -91,7 +91,12 @@ app.post('/post', function(request, response) {
 });
 
 app.get('/dashboard/:index?', function (req, res) {
+	var index = req.params['index'];
+  if (!index)
+    index = 0;
+
   res.render('pages/dashboard', {
+    'uri': "http://" + req.headers.host + "/feed/" + index
   });
 })
 

@@ -2,6 +2,9 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/3.0.5/infinite-scroll.pkgd.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/stylesheets/dashboard.css" />
 </head>
 
@@ -10,6 +13,31 @@
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-post-modal">
       New post
     </button>
+
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-5">
+        <div id="posts" class="grid">
+          <div class="grid-sizer"></div>
+        </div>
+      </div><!--col-->
+      <div class="col"></div>
+    </div><!--row-->
+
+    <div id="posts-button"><div class="button">more</div></div>
+
+    <div id="posts-template">
+      <div class="grid-item">
+      <div class="card">
+        <a class="card-img-top-link" href="#"><img class="card-img-top" src=""/></a>
+        <div class="card-body">
+          <a class="card-title-link" href="#"><h5 class="card-title"></h5></a>
+          <p class="card-text"></p>
+        </div>
+      </div><!--card-->
+      </div><!--grid-item-->
+    </div><!--feed-grid-template-->
+
     <div class="modal fade" tabindex="-1" role="dialog" id="create-post-modal">
         <div class="modal-dialog" role="document"><div class="modal-content">
           <div class="modal-header">
@@ -45,11 +73,37 @@
 
   <script>
     <% include ../partials/dashboard.ejs %>
+    <% include ../partials/render_feed.ejs %>
+
     var dash = new Dashboard({
       "postFormSelector": "#create-post-form",
       "postSubmitSelector": "#create-post-save-button",
       "postSuccessAlertSelector": "#create-post-success-alert"
     });
+
+    var postsRenderer = null;
+    $.getJSON("<%= uri %>", function(data) {
+      var cfg = {
+        "uri": "<%= uri %>",
+        "selector": "#posts",
+        "data": data
+      };
+
+      if (data.style_url)
+        addCss(data.style_url);
+
+      if (data.posts)
+        postsRenderer = new FeedRenderer(cfg);
+    });  
+
+    function addCss(cssPath) {
+      var stylesheet = document.createElement("link");
+      stylesheet.href=cssPath;
+      stylesheet.rel="stylesheet";
+      stylesheet.type = 'text/css';
+      document.getElementsByTagName("head")[0].appendChild(stylesheet);
+      window.___gcfg={parsetags:'onload'};
+    }
   </script>
 </body>
 </html>
