@@ -76,7 +76,7 @@ app.get('/render/:uri?', function (req, res) {
 
 // protected routes below
 
-var adminPassword = process.env.ADMIN_PASSWORD 
+var adminPassword = process.env.ADMIN_PASSWORD
   || Math.random().toString(36).substr(2);
 app.use(basicAuth({ 
   users: { 'admin': adminPassword }, 
