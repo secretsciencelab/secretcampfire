@@ -130,7 +130,7 @@ FeedRenderer.prototype.getFeedRootAndPageIdx = function(uri) {
   var root = uri;
   var idx = 0;
 
-  var arr = uri.match(/(.+)\/([^/]+)/);
+  var arr = uri.match(/(.+)\/(\d+)$/);
   if (arr != null)
   {
     root = arr[1];
