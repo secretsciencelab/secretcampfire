@@ -36,9 +36,9 @@
     var feedRenderer = null;
     var postRenderer = null;
   
-    $.getJSON("<%= uri %>", function(data) {
+    $.getJSON("<%= uri[0] %>", function(data) {
       var cfg = {
-        "uri": "<%= uri %>",
+        "uris": <%- JSON.stringify(uri) %>,
         "selector": "#feed-grid",
         "data": data
       };

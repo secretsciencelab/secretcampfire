@@ -1,5 +1,8 @@
 function FeedRenderer(cfg) {
-  this.uri = cfg.uri;
+  this.uris = cfg.uris;
+  if (!this.uris || this.uris.length == 0)
+    return;
+
   this.selector = cfg.selector;
   this.selectorButton = cfg.selector+"-button";
   this.templateSelector = this.selector + "-template";
@@ -22,29 +25,53 @@ function FeedRenderer(cfg) {
   /* 
    * init Infinite Scroll 
    */
-  var infPath = this.getCurrPageIdx(this.uri)[0];
-  this.startOffset = this.getCurrPageIdx(this.uri)[1];
+  this.feedPathOffsets = []; // (feedRPath, offset)
+  this.feedHasMore = [];
+  for (var i=0; i < this.uris.length; i++)
+  {
+    var uri = this.uris[i];
+    this.feedPathOffsets.push([
+      this.getCurrPageIdx(uri)[0], // root path
+      this.getCurrPageIdx(uri)[1]  // start offset
+    ]);
+    this.feedHasMore.push(true);
+  }
+
   this.infCardIdCounter = 0;
   this.infScrollContainer = $grid.infiniteScroll({
     path: function() {
-      return infPath + "/" 
-        + (fr.startOffset + this.pageIndex - 1) // -1 because we're 0-indexed
+      if (!fr.feedsHaveMore())
+        return; // returning nothing disables further loads
+
+      var feedIdx = fr.getCurrFeedIdx();
+      var root = fr.feedPathOffsets[feedIdx][0];
+      var offset = fr.feedPathOffsets[feedIdx][1]
+        + ((this.pageIndex-1) / fr.uris.length);
+
+      return root + "/" + offset;
     },
     responseType: 'text',
 		button: this.selectorButton,
     outlayer: this.msnry,
     history: false
   });
+  this.infscroll = this.infScrollContainer.data('infiniteScroll');
 
-   https://infinite-scroll.com/extras.html#loading-json
+  // https://infinite-scroll.com/extras.html#loading-json
   this.infScrollContainer.on('load.infiniteScroll', function(ev, response) {
 		//console.log(response);
     var data = JSON.parse(response);
 
     if (!data.posts || !data.posts.length)
     {
-      // nothing more
-      $(fr.selectorButton).hide();
+      // nothing more for this feed
+      var feedIdx = fr.getCurrFeedIdx();
+      fr.feedHasMore[feedIdx] = false;
+
+      // hide 'more' button if all feeds are done
+      if (!fr.feedsHaveMore())
+        $(fr.selectorButton).hide();
+
       return;
     }
     else
@@ -86,6 +113,18 @@ function FeedRenderer(cfg) {
   this.infScrollContainer.infiniteScroll('loadNextPage');
 }
 
+FeedRenderer.prototype.getCurrFeedIdx = function() {
+  if (!this.infscroll)
+  {
+    // not initialized yet, default to feed 0
+    return 0;
+  }
+
+  var pageIndex = this.infscroll.pageIndex - 1; 
+    // -1 because infscroll is 0-indexed
+  return pageIndex % this.uris.length;
+}
+
 FeedRenderer.prototype.getCurrPageIdx = function(uri) {
   var root = uri;
   var idx = 0;
@@ -98,4 +137,16 @@ FeedRenderer.prototype.getCurrPageIdx = function(uri) {
   }
 
   return [root, idx];
+}
+
+FeedRenderer.prototype.feedsHaveMore = function() {
+  var hasMore = false;
+  for (var fi=0; fi < this.uris.length; fi++)
+    if (this.feedHasMore[fi])
+    {
+      hasMore = true;
+      break;
+    }
+
+  return hasMore;
 }

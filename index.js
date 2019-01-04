@@ -70,7 +70,7 @@ app.get('/render/:uri?', function (req, res) {
     uri = req.params['uri'];
 
   res.render('pages/render', {
-    'uri': uri
+    'uri': [uri]
   });
 })
 
@@ -90,13 +90,23 @@ app.post('/post', function(request, response) {
   //console.log(request.auth);
 });
 
+app.get('/posts/:index?', function (req, res) {
+	var index = req.params['index'];
+  if (!index)
+    index = 0;
+
+  res.render('pages/posts', {
+    'uri': ["http://" + req.headers.host + "/feed/" + index]
+  });
+})
+
 app.get('/dashboard/:index?', function (req, res) {
 	var index = req.params['index'];
   if (!index)
     index = 0;
 
-  res.render('pages/dashboard', {
-    'uri': "http://" + req.headers.host + "/feed/" + index
+  res.render('pages/posts', {
+    'uri': [] // TODO - fill with 'following' feeds
   });
 })
 

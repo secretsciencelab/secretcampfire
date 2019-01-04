@@ -88,18 +88,18 @@
     });
 
     var postsRenderer = null;
-    $.getJSON("<%= uri %>", function(data) {
+    $.getJSON("<%= uri[0] %>", function(data) {
       var cfg = {
-        "uri": "<%= uri %>",
+        "uris": <%- JSON.stringify(uri) %>,
         "selector": "#posts",
-        "data": data
       };
 
+      <%if (uri.length == 1) {%>
       if (data.style_url)
         addCss(data.style_url);
+      <% } %>
 
-      if (data.posts)
-        postsRenderer = new FeedRenderer(cfg);
+      postsRenderer = new FeedRenderer(cfg);
     });  
 
     function addCss(cssPath) {
