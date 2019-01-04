@@ -1,6 +1,5 @@
 function FeedRenderer(cfg) {
-  this.uris = cfg.uris;
-  if (!this.uris || this.uris.length == 0)
+  if (!cfg.uris || cfg.uris.length == 0)
     return;
 
   this.selector = cfg.selector;
@@ -9,44 +8,58 @@ function FeedRenderer(cfg) {
 
   this.mdConverter = new showdown.Converter();
 
-  var fr = this;
+  this.initFeeds(cfg.uris);
+  this.initMasonry();  
+  this.initInfiniteScroll();
+}
 
-  /* 
-   * init Masonry
-   */
-  var $grid = $(this.selector).masonry({
+FeedRenderer.prototype.initFeeds = function(uris) {
+  // uniquify
+  uris = [...new Set(uris)];
+
+  // make 'feed' objects to store book-keeping
+  this.feeds = [];
+  this.uriRoot2FeedIdx = {}; 
+  for (var i=0; i < uris.length; i++)
+  {
+    var rootAndIdx = this.getFeedRootAndPageIdx(uris[i]);
+
+    this.feeds.push({
+      'uri': uris[i],
+      'root': rootAndIdx[0],
+      'start_offset': rootAndIdx[1],
+      'has_more': true
+    });
+
+    this.uriRoot2FeedIdx[rootAndIdx[0]] = i;
+  }
+}
+
+FeedRenderer.prototype.initMasonry = function() {
+  this.msnryContainer = $(this.selector).masonry({
     itemSelector: '.grid-item',
     columnWidth: '.grid-sizer',
     percentPosition: true
   });
-  // get Masonry instance
-  this.msnry = $grid.data('masonry');
 
-  /* 
-   * init Infinite Scroll 
-   */
-  this.feedPathOffsets = []; // (feedRPath, offset)
-  this.feedHasMore = [];
-  for (var i=0; i < this.uris.length; i++)
-  {
-    var uri = this.uris[i];
-    this.feedPathOffsets.push([
-      this.getCurrPageIdx(uri)[0], // root path
-      this.getCurrPageIdx(uri)[1]  // start offset
-    ]);
-    this.feedHasMore.push(true);
-  }
+  // get Masonry instance
+  this.msnry = this.msnryContainer.data('masonry');
+}
+
+FeedRenderer.prototype.initInfiniteScroll = function() {
+  var fr = this;
 
   this.infCardIdCounter = 0;
-  this.infScrollContainer = $grid.infiniteScroll({
+  this.infScrollContainer = this.msnryContainer.infiniteScroll({
     path: function() {
       if (!fr.feedsHaveMore())
         return; // returning nothing disables further loads
 
-      var feedIdx = fr.getCurrFeedIdx();
-      var root = fr.feedPathOffsets[feedIdx][0];
-      var offset = fr.feedPathOffsets[feedIdx][1]
-        + ((this.pageIndex-1) / fr.uris.length);
+      var pageIndex = this.pageIndex - 1; // -1 to make it 0-indexed
+      var feedIdx = pageIndex % fr.feeds.length;
+      var root = fr.feeds[feedIdx].root;
+      var offset = fr.feeds[feedIdx].start_offset
+        + parseInt(pageIndex / fr.feeds.length);
 
       return root + "/" + offset;
     },
@@ -58,15 +71,15 @@ function FeedRenderer(cfg) {
   this.infscroll = this.infScrollContainer.data('infiniteScroll');
 
   // https://infinite-scroll.com/extras.html#loading-json
-  this.infScrollContainer.on('load.infiniteScroll', function(ev, response) {
-		//console.log(response);
+  this.infScrollContainer.on('load.infiniteScroll', function(ev, response, path) {
+    var rootPath = fr.getFeedRootAndPageIdx(path)[0];
+    var feedIdx = fr.uriRoot2FeedIdx[rootPath];
     var data = JSON.parse(response);
 
     if (!data.posts || !data.posts.length)
     {
       // nothing more for this feed
-      var feedIdx = fr.getCurrFeedIdx();
-      fr.feedHasMore[feedIdx] = false;
+      fr.feeds[feedIdx].has_more = false;
 
       // hide 'more' button if all feeds are done
       if (!fr.feedsHaveMore())
@@ -100,12 +113,12 @@ function FeedRenderer(cfg) {
       var markdown = fr.mdConverter.makeHtml(post.text);
       newCard.find(".card-text").html(markdown);
       newCards = newCards.add(newCard);
-      $grid.append(newCard);
+      fr.msnryContainer.append(newCard);
     }
 
     newCards.imagesLoaded().progress(function(instance, image) {
       var id = $(image.img).data('iscroll-id');
-      $grid.masonry('appended', $("#"+id));
+      fr.msnryContainer.masonry('appended', $("#"+id));
     });
   });
 
@@ -113,23 +126,11 @@ function FeedRenderer(cfg) {
   this.infScrollContainer.infiniteScroll('loadNextPage');
 }
 
-FeedRenderer.prototype.getCurrFeedIdx = function() {
-  if (!this.infscroll)
-  {
-    // not initialized yet, default to feed 0
-    return 0;
-  }
-
-  var pageIndex = this.infscroll.pageIndex - 1; 
-    // -1 because infscroll is 0-indexed
-  return pageIndex % this.uris.length;
-}
-
-FeedRenderer.prototype.getCurrPageIdx = function(uri) {
+FeedRenderer.prototype.getFeedRootAndPageIdx = function(uri) {
   var root = uri;
   var idx = 0;
 
-  var arr = uri.match(/(.+feed)\/(.+)/);
+  var arr = uri.match(/(.+)\/([^/]+)/);
   if (arr != null)
   {
     root = arr[1];
@@ -141,8 +142,8 @@ FeedRenderer.prototype.getCurrPageIdx = function(uri) {
 
 FeedRenderer.prototype.feedsHaveMore = function() {
   var hasMore = false;
-  for (var fi=0; fi < this.uris.length; fi++)
-    if (this.feedHasMore[fi])
+  for (var fi=0; fi < this.feeds.length; fi++)
+    if (this.feeds[fi].has_more)
     {
       hasMore = true;
       break;

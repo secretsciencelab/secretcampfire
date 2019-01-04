@@ -87,7 +87,7 @@
         index = undefined;
       Post.find()
         .skip(index)
-        .limit(50)
+        .limit(10)
         .sort({'date': -1})
         .exec(cb);
     }
