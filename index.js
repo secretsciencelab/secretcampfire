@@ -112,6 +112,10 @@ app.get('/dashboard/:index?', function (req, res) {
 
 app.get('/follow/:uri?', function (req, res) {
 	var url = req.params['index'];
+
+  // TODO/FIXME: replace below with page 
+  // to complete Follow action & autoclose
+
   db.follow(url, res);
 });
 
