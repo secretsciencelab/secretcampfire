@@ -1,5 +1,7 @@
 (function() {
-    const mongoose = require('mongoose')
+    const mongoose = require('mongoose');
+    const normalizeUrl = require('normalize-url');
+
     mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser:true }, function (error) {
       if (error) console.error(error);
       else console.log('DB connected');
@@ -30,13 +32,15 @@
     // collections:
     // - following
     // - reblogged_from
-    const FollowingSchema = new mongoose.Schema({
+    const FollowSchema = new mongoose.Schema({
       id: String,
       date: { type: Date, default: Date.now },
-      url: String,
+      url_key: { type: String, unique: true },
+      url: { type: String },
       name: String,
       notes: String
     });
+    Follow = mongoose.model('Follow', FollowSchema);
 
     /*
      * blog
@@ -96,7 +100,22 @@
      * networking
      */
 
-    module.exports.follow = function(blog) {
+    module.exports.follow = function(url, res) {
+      // normalize url to make url_key
+      var urlKey = normalizeUrl(url, {
+        stripHash: true,
+        stripProtocol: true
+      });
+      
+      var newFollow = new Follow({
+        url_key: urlKey,
+        url: url
+      });
+      newFollow.id = newFollow._id;
+
+      newFollow.save(function (err) {
+        res.status(200).json(newFollow);
+      });
     }
 
     module.exports.getFollowing = function(blog) {

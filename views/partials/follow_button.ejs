@@ -1,0 +1,49 @@
+function FollowButton(cfg) {
+  this.uri = cfg.uri;
+  this.selector = cfg.selector;
+  this.targetName = cfg.targetName;
+
+  this.buttonId = "follow-button";
+
+  this.init();
+}
+
+FollowButton.prototype.init = function() {
+  var html="<form class='form-inline my-2 my-lg-0'>"
+    + "<input class='form-control mr-sm-2' type='text' "
+    + " id='" + this.buttonId + "-target' "
+    + " placeholder='Your " + this.targetName + " URL' "
+    + " aria-label='Your " + this.targetName + " URL'> "
+    + "<button class='btn btn-dark btn-sm my-2 my-sm-0'"
+    + " id='" + this.buttonId + "'>Follow</button></form>";
+
+  $(this.selector).append(html);
+
+  var fb = this;
+
+  $("#"+this.buttonId+"-target").keypress(function(e) {
+      var keycode = (e.keyCode ? e.keyCode : e.which);
+      if (keycode != '13')
+        return;
+      fb.handleFollow();
+  }).hide();
+
+  $("#"+fb.buttonId).click(function(e) {
+    e.preventDefault();
+
+    $("#"+fb.buttonId+"-target").show().focus();
+    
+    return false;
+  });
+}
+
+FollowButton.prototype.handleFollow = function() {
+  var textField = $("#"+this.buttonId+"-target");
+  var userUrl = textField.val();
+  var followUrl = this.uri;
+
+  console.log(url);
+  // TODO redirect to userUrl/follow/followUrl
+
+  textField.fadeOut();
+}

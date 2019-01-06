@@ -17,7 +17,8 @@
     "express-basic-auth": "^1.1.6",
     "http": "0.0.0",
     "mongoose": "^5.4.0",
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.9",
+    "normalize-url": "^4.1.0"
   },
   "devDependencies": {
     "request": "^2.81.0",

@@ -70,7 +70,7 @@ app.get('/render/:uri?', function (req, res) {
     uri = req.params['uri'];
 
   res.render('pages/render', {
-    'uri': [uri]
+    'uri': uri
   });
 })
 
@@ -109,6 +109,11 @@ app.get('/dashboard/:index?', function (req, res) {
     'uri': [] // TODO - fill with 'following' feeds
   });
 })
+
+app.get('/follow/:uri?', function (req, res) {
+	var url = req.params['index'];
+  db.follow(url, res);
+});
 
 app.get('/logout', function (req, res) {
     return res.status(401).end();
