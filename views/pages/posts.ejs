@@ -5,7 +5,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/3.0.5/infinite-scroll.pkgd.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="/stylesheets/dashboard.css" />
+  <link rel="stylesheet" type="text/css" href="/stylesheets/posts.css" />
 </head>
 
 <body>
@@ -30,9 +30,11 @@
       <div class="col"></div>
     </div><!--row-->
 
-    <div id="posts-button"><div class="button">more</div></div>
+    <div id="posts-button" class="d-none text-center">
+      <div class="button">more</div>
+    </div>
 
-    <div id="posts-template">
+    <div id="posts-template" class="d-none">
       <div class="grid-item">
       <div class="card mb-4">
         <a class="card-img-top-link" href="#"><img class="card-img-top" src=""/></a>
@@ -43,39 +45,38 @@
       </div><!--card-->
       </div><!--grid-item-->
     </div><!--feed-grid-template-->
-
-    <div class="modal fade" tabindex="-1" role="dialog" id="create-post-modal">
-        <div class="modal-dialog" role="document"><div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">New post</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div><!--header-->
-          <div class="modal-body"><form id="create-post-form">
-            <div class="form-group">
-              <input type="text" class="form-control form-post-title" 
-                value="" placeholder="Title">
-              <input type="text" class="form-control form-post-thumb" 
-                value="" placeholder="Thumbnail">
-              <input type="text" class="form-control form-post-url" 
-                value="" placeholder="URL">
-              <textarea class="form-control form-post-text" rows="5" placeholder="Text"></textarea>
-              <input type="text" class="form-control form-post-tags" 
-                value="" placeholder="Tags">
-            </div>
-          </form></div><!--body-->
-          <div id="create-post-success-alert" 
-            class="alert alert-success" role="alert">Post saved!</div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" 
-              id="create-post-save-button">Save</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div><!--footer-->
-        </div></div><!--document->
-    </div><!--modal-->
-
   </div><!--container-->
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="create-post-modal">
+    <div class="modal-dialog" role="document"><div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New post</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div><!--header-->
+      <div class="modal-body"><form id="create-post-form">
+        <div class="form-group">
+          <input type="text" class="form-control form-post-title" 
+            value="" placeholder="Title">
+          <input type="text" class="form-control form-post-thumb" 
+            value="" placeholder="Thumbnail">
+          <input type="text" class="form-control form-post-url" 
+            value="" placeholder="URL">
+          <textarea class="form-control form-post-text" rows="5" placeholder="Text"></textarea>
+          <input type="text" class="form-control form-post-tags" 
+            value="" placeholder="Tags">
+        </div>
+      </form></div><!--body-->
+      <div id="create-post-success-alert" 
+        class="alert alert-success d-none" role="alert">Post saved!</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" 
+          id="create-post-save-button">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div><!--footer-->
+    </div></div><!--document->
+  </div><!--modal-->
 
   <script>
     <% include ../partials/dashboard.ejs %>

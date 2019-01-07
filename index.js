@@ -46,18 +46,13 @@ app.get('/feed/:index?', function (req, res) {
       });
     }
     else
-      res.send(JSON.stringify(feed));
+      res.send(JSON.stringify(feed, null, 2));
   });
-
-	//if (req.params['index'] > 1)
-	//{
-  //	res.send(JSON.stringify({}));
-  //  return;
-  //}
 })
 
 app.get('/post/:id', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
+  // TODO
   res.send(JSON.stringify({ 
     'path': 'post',
     'params': req.params
@@ -65,7 +60,7 @@ app.get('/post/:id', function (req, res) {
 })
 
 app.get('/render/:uri?', function (req, res) {
-  uri = '/feed'; //default to own feed
+  uri = 'http://' + req.headers.host + '/feed'; //default to own feed
   if (req.params['uri'])
     uri = req.params['uri'];
 
@@ -110,13 +105,19 @@ app.get('/dashboard/:index?', function (req, res) {
   });
 })
 
-app.get('/follow/:uri?', function (req, res) {
-	var url = req.params['index'];
+app.get('/follow/:index?', function (req, res) {
+	var index = req.params['index'];
 
-  // TODO/FIXME: replace below with page 
-  // to complete Follow action & autoclose
+  res.render('pages/follow', {
+    'following': [] // todo
+  });
+});
 
-  db.follow(url, res);
+app.post('/follow', function(req, res) {
+  var url = req.body.url;
+  // TODO verify that 'url' points to valid feed
+  
+  db.follow(req.body.url, res);
 });
 
 app.get('/logout', function (req, res) {

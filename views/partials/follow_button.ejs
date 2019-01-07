@@ -12,9 +12,9 @@ FollowButton.prototype.init = function() {
   var html="<form class='form-inline my-2 my-lg-0'>"
     + "<input class='form-control mr-sm-2' type='text' "
     + " id='" + this.buttonId + "-target' "
-    + " placeholder='Your " + this.targetName + " URL' "
-    + " aria-label='Your " + this.targetName + " URL'> "
-    + "<button class='btn btn-dark btn-sm my-2 my-sm-0'"
+    + " placeholder=\"" + this.targetName + " URL\" "
+    + " aria-label=\"" + this.targetName + " URL\"> "
+    + "<button class='btn btn-primary my-2 my-sm-0'"
     + " id='" + this.buttonId + "'>Follow</button></form>";
 
   $(this.selector).append(html);
@@ -31,7 +31,11 @@ FollowButton.prototype.init = function() {
   $("#"+fb.buttonId).click(function(e) {
     e.preventDefault();
 
-    $("#"+fb.buttonId+"-target").show().focus();
+    var sel = "#"+fb.buttonId+"-target";
+    if ($(sel).is(':visible') && $(sel).val()) 
+      fb.handleFollow();
+    else
+      $("#"+fb.buttonId+"-target").show().focus();
     
     return false;
   });
@@ -42,8 +46,9 @@ FollowButton.prototype.handleFollow = function() {
   var userUrl = textField.val();
   var followUrl = this.uri;
 
-  console.log(url);
-  // TODO open new page @ userUrl/follow/followUrl
+  var url = userUrl + "/follow?blog=" + encodeURIComponent(followUrl);
+  var tab = window.open(url, '_blank');
+  tab.focus();
 
   textField.fadeOut();
 }

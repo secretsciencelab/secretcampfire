@@ -23,7 +23,7 @@ Dashboard.prototype.bindEvents = function() {
     var text = $form.find('.form-post-text').val();
     var tags = $form.find('.form-post-tags').val();
 
-    // TODO send data to backend
+    // post data to backend to save in DB
     $.post('/post', { 
         title: title,
         thumbs: thumb,

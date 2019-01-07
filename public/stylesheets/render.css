@@ -15,18 +15,9 @@
   color: #444;
 }
 
-#feed-grid-button {
-  display: none; /* hide by default */
-  text-align: center;
-}
 #feed-grid-button .button {
   display: inline-block;
   border: 1px solid #888;
   padding: 5px 10px;
   color: #888;
 }
-
-#feed-grid-template {
-  display: none;
-}
-

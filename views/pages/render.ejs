@@ -9,21 +9,7 @@
 </head>
 
 <body>
-  <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#"></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-supported-content" aria-controls="navbar-supported-content" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbar-supported-content">
-      <!--
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-        </li>
-      </ul>
-      -->
-    </div>
-  </nav>
+   <% include ../partials/navbar.ejs %>
 
   <div class="container-fluid">
     <div id="feed-grid" class="grid">
@@ -31,9 +17,11 @@
     </div><!--feed-grid-->
   </div><!--container-->
 
-  <div id="feed-grid-button"><div class="button">more</div></div>
+  <div id="feed-grid-button" class="d-none text-center">
+    <div class="button">more</div>
+  </div>
 
-  <div id="feed-grid-template">
+  <div id="feed-grid-template" class="d-none">
     <div class="grid-item col-md-3">
     <div class="card grid-item-content">
       <a class="card-img-top-link" href="#"><img class="card-img-top" src=""/></a>
@@ -85,7 +73,7 @@
     var followButton = new FollowButton({
       "uri": "<%= uri %>",
       "selector": "#navbar-supported-content",
-      "targetName": "Secret Campfire"
+      "targetName": "Your blog's"
     });
   </script>
 </body>

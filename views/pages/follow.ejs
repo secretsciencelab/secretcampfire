@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/follow.css" />
+</head>
+
+<body>
+  <div class="container"><div class="row mt-4">
+    <div class="col"></div>
+    <div class="col-5">
+      <button class='btn btn-primary' id='follow-button' data-toggle="modal" data-target="#follow-modal">
+        Follow new blog
+      </button>
+    </div>
+    <div class="col"></div>
+  </div></div>
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="follow-modal">
+    <div class="modal-dialog" role="document"><div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Follow new blog</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div><!--header-->
+      <div class="modal-body"><form id="follow-form">
+        <div class="form-group">
+          <input type="text" class="form-control form-follow-url" 
+            value="" placeholder="Blog URL">
+        </div>
+      </form></div><!--body-->
+      <div id="follow-success-alert" 
+        class="alert alert-success d-none" role="alert">Follow success!</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" 
+          id="follow-form-button">Follow</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div><!--footer-->
+    </div></div><!--document->
+  </div><!--modal-->
+
+  <script>
+    var urlstr = window.location.href;
+    var url = new URL(urlstr);
+    var blog = url.searchParams.get("blog");
+    var $form = $("#follow-form");
+
+    if (blog)
+    {
+      // we have a new blog to follow
+      //console.log(blog);
+      $form.find(".form-follow-url").val(blog);
+      $("#follow-modal").modal('show');
+    }
+
+    $("#follow-form-button").click(function() {
+      var url = $form.find(".form-follow-url").val();
+      console.log(url);
+
+      // post URL to backend to save in DB
+      $.post('/follow', { 
+          url: url
+        },
+        function(data, status, xhr) {
+          // success
+          $form.get(0).reset(); // clear form
+          $("#follow-success-alert").fadeIn().delay(2000).fadeOut();
+          $("#follow-modal").modal('hide');
+          console.log(data);
+        },
+        'json')
+        .done(function() {
+        })
+        .fail(function(jqxhr, settines, ex) {
+        });
+      });
+  </script>
+</body>
+</html>
