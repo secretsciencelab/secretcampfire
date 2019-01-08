@@ -32,10 +32,6 @@ function getReqProtocol(req) {
   return req.headers['x-forwarded-proto'] || req.protocol;
 }
 
-function sendSampleFeed(req, res) {
-  res.sendfile("test_feed.json", {root: 'public'});
-}
-
 app.get('/feed/:index?', function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
@@ -43,7 +39,10 @@ app.get('/feed/:index?', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   db.fetchPosts(index, function(err, docs) {
     if (!index && (!docs || docs.length == 0))
-      sendSampleFeed(req, res);
+    {
+      // send sample feed
+      res.sendfile("test_feed.json", {root: 'public'});
+    }
     else
     {
       // send page from DB
