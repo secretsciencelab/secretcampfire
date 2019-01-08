@@ -72,11 +72,17 @@ FeedRenderer.prototype.initInfiniteScroll = function() {
 
   // https://infinite-scroll.com/extras.html#loading-json
   this.infScrollContainer.on('load.infiniteScroll', function(ev, response, path) {
-    var rootPath = fr.getFeedRootAndPageIdx(path)[0];
-    var feedIdx = fr.uriRoot2FeedIdx[rootPath];
-    var data = JSON.parse(response);
+    var data = null;
+    var feedIdx = 0;
 
-    if (!data.posts || !data.posts.length)
+    if (path)
+    {
+      var rootPath = fr.getFeedRootAndPageIdx(path)[0];
+      feedIdx = fr.uriRoot2FeedIdx[rootPath];
+      data = JSON.parse(response);
+    }
+
+    if (!data || !data.posts || !data.posts.length)
     {
       // nothing more for this feed
       fr.feeds[feedIdx].has_more = false;
