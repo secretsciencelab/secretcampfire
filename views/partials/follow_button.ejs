@@ -1,7 +1,7 @@
 function FollowButton(cfg) {
   this.uri = cfg.uri;
   this.selector = cfg.selector;
-  this.targetName = cfg.targetName;
+  this.text = cfg.text;
 
   this.buttonId = "follow-button";
 
@@ -10,12 +10,19 @@ function FollowButton(cfg) {
 
 FollowButton.prototype.init = function() {
   var html="<form class='form-inline my-2 my-lg-0'>"
-    + "<input class='form-control mr-sm-2' type='text' "
-    + " id='" + this.buttonId + "-target' "
-    + " placeholder=\"" + this.targetName + " URL\" "
-    + " aria-label=\"" + this.targetName + " URL\"> "
     + "<button class='btn btn-primary my-2 my-sm-0'"
-    + " id='" + this.buttonId + "'>Follow</button></form>";
+    + " id='" + this.buttonId + "'>Follow</button>"
+    + "<input class='form-control ml-sm-2 " + this.buttonId + "-target' "
+    + " id='" + this.buttonId + "-target' "
+    + " type='text' "
+    + " placeholder=\"" + this.text + "\" "
+    + " aria-label=\"" + this.text + "\"></input> "
+    + "<small class='ml-sm-2 " + this.buttonId + "-target'>"
+    + "<a href='<%= MASTER_URL %>'>Don't have a "
+    + "<span class='font-weight-bold'><%= SITE_NAME %></span> blog? "
+    + "Get yours here</a>"
+    + "</small>"
+    + "</form>";
 
   $(this.selector).append(html);
 
@@ -26,7 +33,8 @@ FollowButton.prototype.init = function() {
       if (keycode != '13')
         return;
       fb.handleFollow();
-  }).hide();
+  });
+  $("."+this.buttonId+"-target").hide();
 
   $("#"+fb.buttonId).click(function(e) {
     e.preventDefault();
@@ -35,7 +43,10 @@ FollowButton.prototype.init = function() {
     if ($(sel).is(':visible') && $(sel).val()) 
       fb.handleFollow();
     else
-      $("#"+fb.buttonId+"-target").show().focus();
+    {
+      $("."+fb.buttonId+"-target").show();
+      $(sel).focus();
+    }
     
     return false;
   });
@@ -46,7 +57,7 @@ FollowButton.prototype.handleFollow = function() {
   var userUrl = textField.val();
   var followUrl = this.uri;
 
-  var url = userUrl + "/follow?blog=" + encodeURIComponent(followUrl);
+  var url = userUrl + "/follow?add=" + encodeURIComponent(followUrl);
   var tab = window.open(url, '_blank');
   tab.focus();
 

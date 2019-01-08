@@ -9,6 +9,9 @@ const PORT = process.env.PORT || 5000
 
 var app = express();
 
+app.locals.SITE_NAME = "secret campfire";
+app.locals.MASTER_URL = "http://secretcampfire.com";
+
 app
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
