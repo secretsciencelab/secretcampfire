@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 5000
 var app = express();
 
 function getReqProtocol(req) {
+  console.log(req.headers);
   return req.headers['x-forwarded-proto'] || req.protocol;
 }
 
