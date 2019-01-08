@@ -52,7 +52,7 @@ app.get('/feed/:index?', function (req, res) {
     else
       res.send(JSON.stringify(feed, null, 2));
   });
-})
+});
 
 app.get('/post/:id', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -61,7 +61,7 @@ app.get('/post/:id', function (req, res) {
     'path': 'post',
     'params': req.params
   }));
-})
+});
 
 app.get('/render/:uri?', function (req, res) {
   uri = 'http://' + req.headers.host + '/feed'; //default to own feed
@@ -71,16 +71,29 @@ app.get('/render/:uri?', function (req, res) {
   res.render('pages/render', {
     'uri': uri
   });
-})
+});
 
-// protected routes below
+// catch-all route
+app.get('*', function (req, res, next) {
+  if (req.url.indexOf("/posts") != -1
+     || req.url.indexOf("/dashboard") != -1
+     || req.url.indexOf("/follow") != -1
+     || req.url.indexOf("/logout") != -1)
+    return next();
+
+  res.send("");
+});
+
+/*
+ * protected routes below
+ */
 
 var adminPassword = process.env.ADMIN_PASSWORD
   || Math.random().toString(36).substr(2);
 app.use(basicAuth({ 
   users: { 'admin': adminPassword }, 
   challenge: true
-}))
+}));
 
 app.post('/post', function(request, response) {
   db.post(request.body, response);
@@ -96,7 +109,7 @@ app.get('/posts/:index?', function (req, res) {
   res.render('pages/posts', {
     'uri': ["http://" + req.headers.host + "/feed/" + index]
   });
-})
+});
 
 app.get('/dashboard/:index?', function (req, res) {
 	var index = req.params['index'];
@@ -105,7 +118,7 @@ app.get('/dashboard/:index?', function (req, res) {
   res.render('pages/posts', {
     'uri': [] // TODO - fill with 'following' feeds
   });
-})
+});
 
 app.get('/follow/:index?', function (req, res) {
 	var index = req.params['index'];
@@ -127,4 +140,4 @@ app.get('/logout', function (req, res) {
     return res.status(401).end();
 });
 
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
