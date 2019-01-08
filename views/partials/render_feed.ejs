@@ -53,7 +53,10 @@ FeedRenderer.prototype.initInfiniteScroll = function() {
   this.infScrollContainer = this.msnryContainer.infiniteScroll({
     path: function() {
       if (!fr.feedsHaveMore())
+      {
+        console.log("path: return nothing");
         return; // returning nothing disables further loads
+      }
 
       var pageIndex = this.pageIndex - 1; // -1 to make it 0-indexed
       var feedIdx = pageIndex % fr.feeds.length;
@@ -61,6 +64,11 @@ FeedRenderer.prototype.initInfiniteScroll = function() {
       var offset = fr.feeds[feedIdx].start_offset
         + parseInt(pageIndex / fr.feeds.length);
 
+      console.log("path: return " + root + "/" + offset);
+      console.log(pageIndex);
+      console.log(feedIdx);
+      console.log(fr.feeds[feedIdx].start_offset);
+      console.log(fr.feeds.length);
       return root + "/" + offset;
     },
     responseType: 'text',
