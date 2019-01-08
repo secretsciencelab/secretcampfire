@@ -10,7 +10,6 @@ const PORT = process.env.PORT || 5000
 var app = express();
 
 function getReqProtocol(req) {
-  console.log(req.headers);
   return req.headers['x-forwarded-proto'] || req.protocol;
 }
 
@@ -33,7 +32,7 @@ app.get('/feed/:index?', function (req, res) {
     'description': '',
     'avatar_url': '',
     'header_url': '',
-    'style_url': '//' + req.headers.host + '/stylesheets/feed.css',
+    'style_url': getReqProtocol(req) + '://' + req.headers.host + '/stylesheets/feed.css',
     'posts': []
   };
 
