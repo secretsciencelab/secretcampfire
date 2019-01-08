@@ -91,15 +91,23 @@
      * feed
      */
 
-    module.exports.fetchPosts = function(index, cb) {
+    const _fetchPosts = function(index) {
+      try {  
+        return Post.find()
+          .skip(index)
+          .limit(10)
+          .sort({'date': -1});
+      } catch(err) { 
+        console.log(err);
+      }
+    }
+    module.exports.fetchPosts = async function(index, cb) {
       try {
         if (index == 0)
           index = undefined;
-        Post.find()
-          .skip(index)
-          .limit(10)
-          .sort({'date': -1})
-          .exec(cb);
+        const result = await Promise.all([_fetchPosts(index)]);
+        console.log(result[0]);
+        cb(null, result[0]);
       }
       catch(err) {
         cb(err, []);
