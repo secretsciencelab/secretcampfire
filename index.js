@@ -29,7 +29,8 @@ app.use((err, req, res, next) => {
 });
 
 function getReqProtocol(req) {
-  return req.headers['x-forwarded-proto'] || req.protocol;
+  return "http";
+  //return req.headers['x-forwarded-proto'] || req.protocol;
 }
 
 function sendSampleFeed(req, res) {
