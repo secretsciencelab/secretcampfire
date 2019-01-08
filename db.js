@@ -91,26 +91,15 @@
      * feed
      */
 
-    // https://stackoverflow.com/questions/48601249/how-to-return-mongoose-query-results-without-callback/48601314
-    const _fetchPosts = function(index) {
-      try {  
-        return Post.find()
-          .skip(index)
-          .limit(10)
-          .sort({'date': -1});
-      } catch(err) { 
-        console.log(err);
-      }
-    }
-    module.exports.fetchPosts = async function(index, cb) {
-      cb(null, []); // ANDBG XXX
-      return;
-
+    module.exports.fetchPosts = function(index, cb) {
       try {
         if (index == 0)
           index = undefined;
-        const result = await Promise.all([_fetchPosts(index)]);
-        cb(null, result[0]);
+        Post.find()
+          .skip(index)
+          .limit(10)
+          .sort({'date': -1})
+          .exec(cb);
       }
       catch(err) {
         cb(err, []);
