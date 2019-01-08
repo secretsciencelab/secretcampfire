@@ -33,17 +33,7 @@ function getReqProtocol(req) {
 }
 
 function sendSampleFeed(req, res) {
-  // send sample feed.json
-  var testUrl = "http://" + req.headers.host + "/test_feed.json";
-  http.get(testUrl, function(_res) {
-    var body = '';
-    _res.on('data', function(chunk) {
-      body += chunk;
-    });
-    _res.on('end', function() {
-      res.send(body);
-    });
-  });
+  res.sendfile("test_feed.json", {root: 'public'});
 }
 
 app.get('/feed/:index?', function (req, res) {
