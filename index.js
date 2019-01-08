@@ -27,7 +27,10 @@ app.get('/feed/:index?', function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
+  console.log("ANDBG feed start");
+
   db.fetchPosts(index, function(err, docs) {
+  console.log("ANDBG feed end");
     res.setHeader('Content-Type', 'application/json');
     if (!index && (!docs || docs.length == 0))
     {
