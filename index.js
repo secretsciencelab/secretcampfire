@@ -19,6 +19,15 @@ app
   .use(cors())
   .options('*', cors());
 
+// handle errors
+app.use((err, req, res, next) => {
+    if (!err)
+      return next();
+
+    res.status(500);
+    res.send('500: Internal server error');
+});
+
 function getReqProtocol(req) {
   return req.headers['x-forwarded-proto'] || req.protocol;
 }
@@ -43,28 +52,23 @@ app.get('/feed/:index?', function (req, res) {
   index = (index)? parseInt(index) : 0;
 
   res.setHeader('Content-Type', 'application/json');
-  try {
-    db.fetchPosts(index, function(err, docs) {
-      if (!index && (!docs || docs.length == 0))
-        sendSampleFeed(req, res);
-      else
-      {
-        // send page from DB
-        var feed = {
-          'name': req.headers.host, 
-          'description': '',
-          'avatar_url': '',
-          'header_url': '',
-          'style_url': getReqProtocol(req) + '://' + req.headers.host + '/stylesheets/feed.css',
-          'posts': docs
-        };
-        res.send(JSON.stringify(feed, null, 2));
-      }
-    });
-  }
-  catch(err) {
-    sendSampleFeed(req, res);
-  }
+  db.fetchPosts(index, function(err, docs) {
+    if (!index && (!docs || docs.length == 0))
+      sendSampleFeed(req, res);
+    else
+    {
+      // send page from DB
+      var feed = {
+        'name': req.headers.host, 
+        'description': '',
+        'avatar_url': '',
+        'header_url': '',
+        'style_url': getReqProtocol(req) + '://' + req.headers.host + '/stylesheets/feed.css',
+        'posts': docs
+      };
+      res.send(JSON.stringify(feed, null, 2));
+    }
+  });
 });
 
 app.get('/post/:id', function (req, res) {
