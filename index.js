@@ -9,10 +9,6 @@ const PORT = process.env.PORT || 5000
 
 var app = express();
 
-function getReqProtocol(req) {
-  return req.headers['x-forwarded-proto'] || req.protocol;
-}
-
 app
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
@@ -23,44 +19,52 @@ app
   .use(cors())
   .options('*', cors());
 
+function getReqProtocol(req) {
+  return req.headers['x-forwarded-proto'] || req.protocol;
+}
+
+function sendSampleFeed(req, res) {
+  // send sample feed.json
+  var testUrl = getReqProtocol(req)
+    + "://" + req.headers.host + "/test_feed.json";
+  http.get(testUrl, function(_res) {
+    var body = '';
+    _res.on('data', function(chunk) {
+      body += chunk;
+    });
+    _res.on('end', function() {
+      res.send(body);
+    });
+  });
+}
+
 app.get('/feed/:index?', function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
-  console.log("ANDBG feed start");
-
-  db.fetchPosts(index, function(err, docs) {
-  console.log("ANDBG feed end");
-    res.setHeader('Content-Type', 'application/json');
-    if (!index && (!docs || docs.length == 0))
-    {
-      // send sample feed.json
-      var testUrl = getReqProtocol(req)
-        + "://" + req.headers.host + "/test_feed.json";
-      http.get(testUrl, function(_res) {
-        var body = '';
-        _res.on('data', function(chunk) {
-          body += chunk;
-        });
-        _res.on('end', function() {
-          res.send(body);
-        });
-      });
-    }
-    else
-    {
-      // send page from DB
-      var feed = {
-        'name': req.headers.host, 
-        'description': '',
-        'avatar_url': '',
-        'header_url': '',
-        'style_url': getReqProtocol(req) + '://' + req.headers.host + '/stylesheets/feed.css',
-        'posts': docs
-      };
-      res.send(JSON.stringify(feed, null, 2));
-    }
-  });
+  res.setHeader('Content-Type', 'application/json');
+  try {
+    db.fetchPosts(index, function(err, docs) {
+      if (!index && (!docs || docs.length == 0))
+        sendSampleFeed(req, res);
+      else
+      {
+        // send page from DB
+        var feed = {
+          'name': req.headers.host, 
+          'description': '',
+          'avatar_url': '',
+          'header_url': '',
+          'style_url': getReqProtocol(req) + '://' + req.headers.host + '/stylesheets/feed.css',
+          'posts': docs
+        };
+        res.send(JSON.stringify(feed, null, 2));
+      }
+    });
+  }
+  catch(err) {
+    sendSampleFeed(req, res);
+  }
 });
 
 app.get('/post/:id', function (req, res) {

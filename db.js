@@ -92,21 +92,16 @@
      */
 
     module.exports.fetchPosts = function(index, cb) {
-  console.log("ANDBG fetchPosts 1");
       try {
-  console.log("ANDBG fetchPosts 2");
         if (index == 0)
           index = undefined;
-  console.log("ANDBG fetchPosts 3");
         Post.find()
           .skip(index)
           .limit(10)
           .sort({'date': -1})
           .exec(cb);
-  console.log("ANDBG fetchPosts 4");
       }
       catch(err) {
-  console.log("ANDBG fetchPosts 5");
         cb(err, []);
       }
     }
