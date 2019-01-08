@@ -58,19 +58,24 @@
     function _makeArray(x) {
       return Array.isArray(x)? x : [x];
     }
-    module.exports.post = function(postData, res) {
-      // sanitize postData
-      postData.thumb = _makeArray(postData.thumb);
-      postData.url = _makeArray(postData.url);
-      postData.tags = postData.tags.split(/(?:,| )+/);
-      
-      var newPost = new Post(postData);
-      newPost.id = newPost._id;
-      newPost.post_url = "/post/" + newPost.id
+    module.exports.post = function(postData, cb) {
+      try {
+        // sanitize postData
+        postData.thumb = _makeArray(postData.thumb);
+        postData.url = _makeArray(postData.url);
+        postData.tags = postData.tags.split(/(?:,| )+/);
+        
+        var newPost = new Post(postData);
+        newPost.id = newPost._id;
+        newPost.post_url = "/post/" + newPost.id
 
-      newPost.save(function (err) {
-        res.status(200).json(newPost);
-      });
+        newPost.save(function (err) {
+          cb(err, newPost);
+        });
+      }
+      catch(err) {
+        cb(err, {});
+      }
     }
 
     module.exports.reblog = function(post) {
@@ -87,35 +92,45 @@
      */
 
     module.exports.fetchPosts = function(index, cb) {
-      if (index == 0)
-        index = undefined;
-      Post.find()
-        .skip(index)
-        .limit(10)
-        .sort({'date': -1})
-        .exec(cb);
+      try {
+        if (index == 0)
+          index = undefined;
+        Post.find()
+          .skip(index)
+          .limit(10)
+          .sort({'date': -1})
+          .exec(cb);
+      }
+      catch(err) {
+        cb(err, []);
+      }
     }
 
     /*
      * networking
      */
 
-    module.exports.follow = function(url, res) {
-      // normalize url to make url_key
-      var urlKey = normalizeUrl(url, {
-        stripHash: true,
-        stripProtocol: true
-      });
-      
-      var newFollow = new Follow({
-        url_key: urlKey,
-        url: url
-      });
-      newFollow.id = newFollow._id;
+    module.exports.follow = function(url, cb) {
+      try {
+        // normalize url to make url_key
+        var urlKey = normalizeUrl(url, {
+          stripHash: true,
+          stripProtocol: true
+        });
+        
+        var newFollow = new Follow({
+          url_key: urlKey,
+          url: url
+        });
+        newFollow.id = newFollow._id;
 
-      newFollow.save(function (err) {
-        res.status(200).json(newFollow);
-      });
+        newFollow.save(function (err) {
+          cb(err, newFollow);
+        });
+      }
+      catch(err) {
+        cb(err, {});
+      }
     }
 
     module.exports.getFollowing = function(blog) {

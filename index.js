@@ -37,8 +37,6 @@ app.get('/feed/:index?', function (req, res) {
   };
 
   db.fetchPosts(index, function(err, docs) {
-    feed.posts = docs;
-  
     res.setHeader('Content-Type', 'application/json');
     if (!index && (!docs || docs.length == 0))
     {
@@ -55,7 +53,10 @@ app.get('/feed/:index?', function (req, res) {
       });
     }
     else
+    {
+      feed.posts = docs;
       res.send(JSON.stringify(feed, null, 2));
+    }
   });
 });
 
@@ -101,8 +102,10 @@ app.use(basicAuth({
   challenge: true
 }));
 
-app.post('/post', function(request, response) {
-  db.post(request.body, response);
+app.post('/post', function(req, res) {
+  db.post(request.body, function(err, newPost) {
+    res.status(200).json(newPost);
+  });
 
   // TODO: allow post to user's other blog on a diff server using auth headers
   //console.log(request.auth);
@@ -141,7 +144,9 @@ app.post('/follow', function(req, res) {
   var url = req.body.url;
   // TODO verify that 'url' points to valid feed
   
-  db.follow(req.body.url, res);
+  db.follow(req.body.url, function(err, newFollow) {
+    res.status(200).json(newFollow);
+  });
 });
 
 app.get('/logout', function (req, res) {
