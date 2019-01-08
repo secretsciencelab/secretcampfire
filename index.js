@@ -38,7 +38,7 @@ app.get('/feed/:index?', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     if (!index && (!docs || docs.length == 0))
     {
-      var testUrl = "http://" + req.headers.host + "/test_feed.json";
+      var testUrl = "//" + req.headers.host + "/test_feed.json";
       http.get(testUrl, function(_res) {
         var body = '';
         _res.on('data', function(chunk) {
@@ -64,7 +64,7 @@ app.get('/post/:id', function (req, res) {
 });
 
 app.get('/render/:uri?', function (req, res) {
-  uri = 'http://' + req.headers.host + '/feed'; //default to own feed
+  uri = '//' + req.headers.host + '/feed'; //default to own feed
   if (req.params['uri'])
     uri = req.params['uri'];
 
@@ -107,7 +107,7 @@ app.get('/posts/:index?', function (req, res) {
   index = (index)? parseInt(index) : 0;
 
   res.render('pages/posts', {
-    'uri': ["http://" + req.headers.host + "/feed/" + index]
+    'uri': ["//" + req.headers.host + "/feed/" + index]
   });
 });
 
