@@ -1,13 +1,17 @@
 const cors = require('cors');
 const express = require('express')
 const basicAuth = require('express-basic-auth')
+const bodyParser = require('body-parser')
 const db = require('./db')
 const http = require('http')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 
 var app = express();
-var bodyParser = require('body-parser');
+
+function getReqProtocol(req) {
+  return req.headers['x-forwarded-proto'] || req.protocol;
+}
 
 app
   .use(express.static(path.join(__dirname, 'public')))
@@ -38,7 +42,8 @@ app.get('/feed/:index?', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     if (!index && (!docs || docs.length == 0))
     {
-      var testUrl = req.protocol + "://" + req.headers.host + "/test_feed.json";
+      var testUrl = getReqProtocol(req)
+        + "://" + req.headers.host + "/test_feed.json";
       http.get(testUrl, function(_res) {
         var body = '';
         _res.on('data', function(chunk) {
@@ -64,7 +69,8 @@ app.get('/post/:id', function (req, res) {
 });
 
 app.get('/render/:uri?', function (req, res) {
-  uri = req.protocol + '://' + req.headers.host + '/feed'; //default to own feed
+  var uri = getReqProtocol(req)
+    + '://' + req.headers.host + '/feed'; //default to own feed
   if (req.params['uri'])
     uri = req.params['uri'];
 
@@ -107,7 +113,9 @@ app.get('/posts/:index?', function (req, res) {
   index = (index)? parseInt(index) : 0;
 
   res.render('pages/posts', {
-    'uri': [req.protocol + "://" + req.headers.host + "/feed/" + index]
+    'uri': [
+      getReqProtocol(req) + "://" + req.headers.host + "/feed/" + index
+    ]
   });
 });
 
