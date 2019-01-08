@@ -1,3 +1,4 @@
+const cors = require('cors');
 const express = require('express')
 const basicAuth = require('express-basic-auth')
 const db = require('./db')
@@ -5,7 +6,7 @@ const http = require('http')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 
-var app = express()
+var app = express();
 var bodyParser = require('body-parser');
 
 app
@@ -14,7 +15,9 @@ app
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .use(bodyParser.json())
-  .use(bodyParser.urlencoded({ extended: true }));
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(cors())
+  .options('*', cors());
 
 app.get('/feed/:index?', function (req, res) {
 	var index = req.params['index'];
@@ -109,7 +112,7 @@ app.get('/follow/:index?', function (req, res) {
 	var index = req.params['index'];
 
   res.render('pages/follow', {
-    'following': [] // todo
+    'following': [] // TODO
   });
 });
 
