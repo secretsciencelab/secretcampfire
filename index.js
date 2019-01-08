@@ -27,19 +27,11 @@ app.get('/feed/:index?', function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
-  var feed = {
-    'name': req.headers.host, 
-    'description': '',
-    'avatar_url': '',
-    'header_url': '',
-    'style_url': getReqProtocol(req) + '://' + req.headers.host + '/stylesheets/feed.css',
-    'posts': []
-  };
-
   db.fetchPosts(index, function(err, docs) {
     res.setHeader('Content-Type', 'application/json');
     if (!index && (!docs || docs.length == 0))
     {
+      // send sample feed.json
       var testUrl = getReqProtocol(req)
         + "://" + req.headers.host + "/test_feed.json";
       http.get(testUrl, function(_res) {
@@ -54,7 +46,15 @@ app.get('/feed/:index?', function (req, res) {
     }
     else
     {
-      feed.posts = docs;
+      // send page from DB
+      var feed = {
+        'name': req.headers.host, 
+        'description': '',
+        'avatar_url': '',
+        'header_url': '',
+        'style_url': getReqProtocol(req) + '://' + req.headers.host + '/stylesheets/feed.css',
+        'posts': docs
+      };
       res.send(JSON.stringify(feed, null, 2));
     }
   });
