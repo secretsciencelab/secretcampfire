@@ -29,14 +29,12 @@ app.use((err, req, res, next) => {
 });
 
 function getReqProtocol(req) {
-  return "http";
-  //return req.headers['x-forwarded-proto'] || req.protocol;
+  return req.headers['x-forwarded-proto'] || req.protocol;
 }
 
 function sendSampleFeed(req, res) {
   // send sample feed.json
-  var testUrl = getReqProtocol(req)
-    + "://" + req.headers.host + "/test_feed.json";
+  var testUrl = "http://" + req.headers.host + "/test_feed.json";
   http.get(testUrl, function(_res) {
     var body = '';
     _res.on('data', function(chunk) {
@@ -64,7 +62,8 @@ app.get('/feed/:index?', function (req, res) {
         'description': '',
         'avatar_url': '',
         'header_url': '',
-        'style_url': getReqProtocol(req) + '://' + req.headers.host + '/stylesheets/feed.css',
+        'style_url': getReqProtocol(req) 
+          + '://' + req.headers.host + '/stylesheets/feed.css',
         'posts': docs
       };
       res.send(JSON.stringify(feed, null, 2));
