@@ -21,6 +21,7 @@ app
 
 app.get('/feed/:index?', function (req, res) {
 	var index = req.params['index'];
+  index = (index)? parseInt(index) : 0;
 
   var feed = {
     'name': req.headers.host, 
@@ -90,8 +91,7 @@ app.post('/post', function(request, response) {
 
 app.get('/posts/:index?', function (req, res) {
 	var index = req.params['index'];
-  if (!index)
-    index = 0;
+  index = (index)? parseInt(index) : 0;
 
   res.render('pages/posts', {
     'uri': ["http://" + req.headers.host + "/feed/" + index]
@@ -100,8 +100,7 @@ app.get('/posts/:index?', function (req, res) {
 
 app.get('/dashboard/:index?', function (req, res) {
 	var index = req.params['index'];
-  if (!index)
-    index = 0;
+  index = (index)? parseInt(index) : 0;
 
   res.render('pages/posts', {
     'uri': [] // TODO - fill with 'following' feeds
@@ -110,6 +109,7 @@ app.get('/dashboard/:index?', function (req, res) {
 
 app.get('/follow/:index?', function (req, res) {
 	var index = req.params['index'];
+  index = (index)? parseInt(index) : 0;
 
   res.render('pages/follow', {
     'following': [] // TODO
