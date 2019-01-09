@@ -1,21 +1,48 @@
-#feed-grid .grid-item {
+.grid-item {
   margin-bottom: 15px;
 }
-#feed-grid .grid-item img {
+.grid-item img {
   width: 100%;
 }
-#feed-grid .card-body {
+
+.card {
+  position: relative;
+  box-sizing: border-box;
+}
+.card:hover .fold {
+  /* https://codepen.io/cseeds/pen/niAJc */
+  border-width: 0px 30px 30px 0px;
+}
+.card .fold {
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  border-width: 0;
+  border-style: solid;
+  background: #8af;
+  display: block;
+  border-color: transparent #ddd transparent #ddd;
+
+  -webkit-transition: border-width 0.2s ease-out;
+  -moz-transition: border-width 0.2s ease-out;
+  -ms-transition: border-width 0.2s ease-out;
+  -o-transition: border-width 0.2s ease-out;
+  transition: border-width 0.2s ease-out;
+}
+.card-body {
   color: #444;
 }
-#feed-grid .card-title {
+.card-title {
   font-weight: bold;
 }
-#feed-grid a.card-title-link {
+a.card-title-link {
   text-decoration: none;
   color: #444;
 }
 
-#feed-grid-button .button {
+.more-button {
   display: inline-block;
   border: 1px solid #888;
   padding: 5px 10px;

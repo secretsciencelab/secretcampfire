@@ -96,6 +96,9 @@ FeedRenderer.prototype.initInfiniteScroll = function() {
     else
       $(fr.selectorButton).fadeIn();
 
+    var urlObj = new URL(rootPath);
+    var postUrlBase = urlObj.protocol + "://" + urlObj.hostname;
+
     var newCards = $();
     for (var i=0; i < data.posts.length; i++)
     {
@@ -106,6 +109,7 @@ FeedRenderer.prototype.initInfiniteScroll = function() {
       newCard.find("img")
         .attr('src', post.thumbs[0])
         .data('iscroll-id', newCard.attr('id'));
+      newCard.find(".card-img-fold-link").attr("href", post.post_url);
       if (post.urls.length)
       {
         newCard.find(".card-img-top-link").attr("href", post.urls[0]);

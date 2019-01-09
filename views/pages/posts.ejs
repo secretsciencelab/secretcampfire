@@ -5,6 +5,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/3.0.5/infinite-scroll.pkgd.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/render.css" />
   <link rel="stylesheet" type="text/css" href="/stylesheets/posts.css" />
 </head>
 
@@ -31,12 +32,13 @@
     </div><!--row-->
 
     <div id="posts-button" class="d-none text-center">
-      <div class="button">more</div>
+      <div class="button more-button">more</div>
     </div>
 
     <div id="posts-template" class="d-none">
       <div class="grid-item">
       <div class="card mb-4">
+        <a class="card-img-fold-link" href="#"><span class="fold"></span></a>
         <a class="card-img-top-link" href="#"><img class="card-img-top" src=""/></a>
         <div class="card-body">
           <a class="card-title-link" href="#"><h5 class="card-title"></h5></a>
@@ -44,7 +46,7 @@
         </div>
       </div><!--card-->
       </div><!--grid-item-->
-    </div><!--feed-grid-template-->
+    </div><!--posts-template-->
   </div><!--container-->
 
   <div class="modal fade" tabindex="-1" role="dialog" id="create-post-modal">
