@@ -64,12 +64,18 @@ app.get('/feed/:index?', function (req, res) {
 });
 
 app.get('/post/:id', function (req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  // TODO
-  res.send(JSON.stringify({ 
-    'path': 'post',
-    'params': req.params
-  }));
+  db.getPost(req.params['id'], function(err, post) {
+    if (!post)
+    {
+      res.status(404).send('Not found');
+      return;
+    }
+
+    res.render('pages/post', {
+      'base_url': getReqProtocol(req) + "://" + req.headers.host,
+      'post': post
+    });
+  });
 });
 
 app.get('/render/:uri?', function (req, res) {
