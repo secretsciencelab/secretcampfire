@@ -93,6 +93,7 @@ app.get('/render/:uri?', function (req, res) {
 app.get('*', function (req, res, next) {
   if (req.url.indexOf("/posts") != -1
      || req.url.indexOf("/dashboard") != -1
+     || req.url.indexOf("/settings") != -1
      || req.url.indexOf("/follow") != -1
      || req.url.indexOf("/logout") != -1)
     return next();
@@ -112,12 +113,12 @@ app.use(basicAuth({
 }));
 
 app.post('/post', function(req, res) {
-  db.post(request.body, function(err, newPost) {
+  db.post(req.body, function(err, newPost) {
     res.status(200).json(newPost);
   });
 
   // TODO: allow post to user's other blog on a diff server using auth headers
-  //console.log(request.auth);
+  //console.log(req.auth);
 });
 
 app.get('/posts/:index?', function (req, res) {
@@ -137,6 +138,20 @@ app.get('/dashboard/:index?', function (req, res) {
 
   res.render('pages/posts', {
     'uri': [] // TODO - fill with 'following' feeds
+  });
+});
+
+app.get('/settings', function (req, res) {
+  db.getSettings(function(err, settings) {
+    res.render('pages/settings', {
+      'settings': settings
+    });
+  });
+});
+
+app.post('/settings', function(req, res) {
+  db.saveSettings(req.body, function(err, settings) {
+    res.status(200).json(settings);
   });
 });
 

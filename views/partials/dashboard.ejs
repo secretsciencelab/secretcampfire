@@ -25,23 +25,23 @@ Dashboard.prototype.bindEvents = function() {
 
     // post data to backend to save in DB
     $.post('/post', { 
-        title: title,
-        thumbs: thumb,
-        urls: url,
-        text: text,
-        tags: tags
-      },
-      function(data, status, xhr) {
-        // success
-        $form.get(0).reset(); // clear form
-        $(dash.postSuccessAlertSelector).fadeIn().delay(2000).fadeOut();
-        console.log(data);
-      },
-      'json')
-      .done(function() {
-      })
-      .fail(function(jqxhr, settines, ex) {
-      });
+      title: title,
+      thumbs: thumb,
+      urls: url,
+      text: text,
+      tags: tags
+    },
+    function(data, status, xhr) {
+      // success
+      $form.get(0).reset(); // clear form
+      $(dash.postSuccessAlertSelector).fadeIn().delay(2000).fadeOut();
+      console.log(data);
+    },
+    'json')
+    .done(function() {
+    })
+    .fail(function(jqxhr, settines, ex) {
+    });
 
     return false;
   });

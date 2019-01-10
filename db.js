@@ -7,7 +7,7 @@
       else console.log('DB connected');
     });
 
-    const BlogSchema = new mongoose.Schema({
+    const BlogSettingsSchema = new mongoose.Schema({
       id: String,
       name: String,
       description: String,
@@ -15,6 +15,7 @@
       header_url: String,
       style_url: String
     });
+    BlogSettings = mongoose.model('BlogSettings', BlogSettingsSchema);
 
     const PostSchema = new mongoose.Schema({
       id: String,
@@ -45,7 +46,37 @@
     /*
      * blog
      */
-    module.exports.updateInfo = function(info) {
+    module.exports.getSettings = function(cb) {
+      BlogSettings.findOne().sort({created_at: -1})
+        .exec(function(err, settings) {
+          if (settings)
+          {
+            // return existing
+            cb(err, settings);
+            return;
+          }
+
+          // make new entry and return it
+          settings = new BlogSettings();
+          settings.id = settings._id;
+
+          settings.save(function(err) {
+            cb(err, settings)
+          });
+        });
+    }
+
+    module.exports.saveSettings = function(newSettings, cb) {
+      module.exports.getSettings(function(err, settings) {
+        settings.name = newSettings.name;  
+        settings.description = newSettings.description;  
+        settings.avatar_url = newSettings.avatar_url;  
+        settings.header_url = newSettings.header_url;  
+        
+        settings.save(function(err) {
+          cb(err, settings);
+        });
+      });
     }
 
     /* 

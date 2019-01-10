@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+  <div class="container mt-4">
+    <div class="row mb-4">
+      <div class="col"></div>
+      <div class="col-6">
+        <h4 class="mb-2">Settings</h4>
+        <form id="settings-form"><div class="form-group">
+          <input type="text" class="form-control form-name" 
+            value="<%= settings.name %>" placeholder="Blog name" />
+          <input type="text" class="form-control form-description" 
+            value="<%= settings.description %>" placeholder="Blog description" />
+          <input type="text" class="form-control form-avatar" 
+            value="<%= settings.avatar_url %>" placeholder="Avatar image URL" />
+          <input type="text" class="form-control form-header" 
+            value="<%= settings.header_url %>" placeholder="Header image URL" />
+        </div></form>
+        <div id="success-alert" 
+          class="alert alert-success collapse" role="alert">Settings saved!</div>
+        <button type="button" class="btn btn-primary" 
+          id="settings-save-button">Save</button>
+      </div>
+      <div class="col"></div>
+    </div><!--row-->
+  </div><!--container-->
+
+  <script>
+    $("#settings-save-button").click(function(e) {
+      e.preventDefault();
+
+      var form = $("#settings-form");
+      var name = form.find('.form-name').val();
+      var description = form.find('.form-description').val();
+      var avatar = form.find('.form-avatar').val();
+      var header = form.find('.form-header').val();
+
+      $.post('/settings', { 
+        name: name,
+        description: description,
+        avatar_url: avatar,
+        header_url: header
+      },
+      function(data, status, xhr) {
+        // success
+        $("#success-alert").fadeIn().delay(2000).fadeOut();
+        console.log(data);
+      },
+      'json')
+      .done(function() {
+      })
+      .fail(function(jqxhr, settines, ex) {
+      });
+
+      return false;
+    });
+  </script>
+</body>
+</html>
+

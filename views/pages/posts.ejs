@@ -10,6 +10,8 @@
 </head>
 
 <body>
+  <% include ../partials/navbar.ejs %>
+
   <div class="container">
     <div class="row mb-4">
       <div class="col"></div>
@@ -31,7 +33,7 @@
       <div class="col"></div>
     </div><!--row-->
 
-    <div id="posts-button" class="d-none text-center">
+    <div id="posts-button" class="collapse text-center">
       <div class="button more-button">more</div>
     </div>
 
@@ -71,7 +73,7 @@
         </div>
       </form></div><!--body-->
       <div id="create-post-success-alert" 
-        class="alert alert-success d-none" role="alert">Post saved!</div>
+        class="alert alert-success collapse" role="alert">Post saved!</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" 
           id="create-post-save-button">Save</button>
