@@ -7,15 +7,16 @@
       else console.log('DB connected');
     });
 
-    const BlogSettingsSchema = new mongoose.Schema({
+    const SettingsSchema = new mongoose.Schema({
       id: String,
       name: String,
       description: String,
       avatar_url: String,
       header_url: String,
-      style_url: String
+      style_url: String,
+      password: String
     });
-    BlogSettings = mongoose.model('BlogSettings', BlogSettingsSchema);
+    Settings = mongoose.model('Settings', SettingsSchema);
 
     const PostSchema = new mongoose.Schema({
       id: String,
@@ -47,7 +48,7 @@
      * blog
      */
     module.exports.getSettings = function(cb) {
-      BlogSettings.findOne().sort({created_at: -1})
+      Settings.findOne().sort({created_at: -1})
         .exec(function(err, settings) {
           if (settings)
           {
@@ -57,7 +58,7 @@
           }
 
           // make new entry and return it
-          settings = new BlogSettings();
+          settings = new Settings();
           settings.id = settings._id;
 
           settings.save(function(err) {
@@ -72,6 +73,8 @@
         settings.description = newSettings.description;  
         settings.avatar_url = newSettings.avatar_url;  
         settings.header_url = newSettings.header_url;  
+        if (newSettings.password)
+          settings.password = newSettings.password;
         
         settings.save(function(err) {
           cb(err, settings);
