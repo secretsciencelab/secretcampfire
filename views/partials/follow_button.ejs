@@ -1,9 +1,9 @@
 function FollowButton(cfg) {
   this.uri = cfg.uri;
   this.selector = cfg.selector;
-  this.text = cfg.text;
+  this.setBlogWidget = cfg.setBlogWidget
 
-  this.buttonId = "follow-button";
+  this._buttonId = "follow-button";
 
   this.init();
 }
@@ -11,54 +11,28 @@ function FollowButton(cfg) {
 FollowButton.prototype.init = function() {
   var html="<form class='form-inline my-2 my-lg-0'>"
     + "<button class='btn btn-primary my-2 my-sm-0'"
-    + " id='" + this.buttonId + "'>Follow</button>"
-    + "<input class='form-control ml-sm-2 " + this.buttonId + "-target' "
-    + " id='" + this.buttonId + "-target' "
-    + " type='text' "
-    + " placeholder=\"" + this.text + "\" "
-    + " aria-label=\"" + this.text + "\"></input> "
-    + "<small class='ml-sm-2 " + this.buttonId + "-target'>"
-    + "or... <a href='<%= MASTER_URL %>'>get your "
-    + "<span class='font-weight-bold'><%= SITE_NAME %></span> blog here</a>"
-    + "</small>"
+    + " id='" + this._buttonId + "'>Follow</button>"
     + "</form>";
 
   $(this.selector).append(html);
 
   var fb = this;
 
-  $("#"+this.buttonId+"-target").keypress(function(e) {
-      var keycode = (e.keyCode ? e.keyCode : e.which);
-      if (keycode != '13')
-        return;
-      fb.handleFollow();
-  });
-  $("."+this.buttonId+"-target").hide();
-
-  $("#"+fb.buttonId).click(function(e) {
+  $("#"+fb._buttonId).click(function(e) {
     e.preventDefault();
 
-    var sel = "#"+fb.buttonId+"-target";
-    if ($(sel).is(':visible') && $(sel).val()) 
-      fb.handleFollow();
-    else
-    {
-      $("."+fb.buttonId+"-target").show();
-      $(sel).focus();
-    }
+    fb.setBlogWidget.getBlog(function(url) {
+      fb.handleFollow(url);
+    });
     
     return false;
   });
 }
 
-FollowButton.prototype.handleFollow = function() {
-  var textField = $("#"+this.buttonId+"-target");
-  var userUrl = textField.val();
+FollowButton.prototype.handleFollow = function(userUrl) {
   var followUrl = this.uri;
 
   var url = userUrl + "/follow?add=" + encodeURIComponent(followUrl);
   var tab = window.open(url, '_blank');
   tab.focus();
-
-  textField.fadeOut();
 }

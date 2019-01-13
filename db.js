@@ -123,13 +123,13 @@
      * feed
      */
 
-    module.exports.fetchPosts = function(index, cb) {
+    module.exports.fetchPosts = function(index, limit, cb) {
       try {
         if (index == 0)
           index = undefined;
         Post.find()
           .skip(index)
-          .limit(10)
+          .limit(limit)
           .sort({'date': -1})
           .exec(cb);
       }

@@ -11,6 +11,7 @@ var app = express();
 
 app.locals.SITE_NAME = "secret campfire";
 app.locals.MASTER_URL = "http://secretcampfire.com";
+app.locals.NUM_POSTS_PER_FETCH = 10;
 
 app
   .use(express.static(path.join(__dirname, 'public')))
@@ -40,7 +41,7 @@ app.get('/feed/:index?', function (req, res) {
   index = (index)? parseInt(index) : 0;
 
   res.setHeader('Content-Type', 'application/json');
-  db.fetchPosts(index, function(err, docs) {
+  db.fetchPosts(index, app.locals.NUM_POSTS_PER_FETCH, function(err, docs) {
     if (!index && (!docs || docs.length == 0))
     {
       // send sample feed

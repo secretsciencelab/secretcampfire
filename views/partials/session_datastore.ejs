@@ -1,0 +1,76 @@
+<div id="session-datastore-container"></div>
+
+<script>
+function SessionDatastore(cfg) {
+  this.selector = cfg.selector;
+
+  this._isReady = false;
+  this._masterKey = 'session-datastore';
+
+  this.init();
+}
+SessionDatastore.prototype.init = function() {
+  $(this.selector).html("<iframe style='height:0; visibility:0; border:0' id='datastore-frame' name='datastore-frame' src='https://secretsciencelab.github.io/iframe-datastore'></iframe>");
+
+  window.addEventListener("message", this.receiveMessage.bind(this), false);
+}
+SessionDatastore.prototype.receiveMessage = function(event)
+{
+  if (event.origin != "https://secretsciencelab.github.io")
+    return;
+
+  var message = JSON.parse(event.data);
+  if (message.topic == "ready")
+  {
+    this._isReady = true;
+    $(this.selector).data(this._masterKey, message.data);
+    console.log("[SessionDatastore] init: " + message.data);
+  }
+  else if (message.topic == "saved")
+  {
+    console.log("[SessionDatastore] save success: " + message.data);
+  }
+}
+SessionDatastore.prototype.setData = function(key, data) 
+{
+  var sd = this;
+  if (!this._isReady)
+  {
+    setTimeout(function() { sd.setData(key, data); }, 500);
+    return;
+  }
+
+  var currDataStr = $(this.selector).data(this._masterKey);
+  var dataToSave = {};
+  if (currDataStr)
+    dataToSave = JSON.parse(currDataStr);
+  dataToSave[key] = data;
+    
+  console.log("[SessionDatastore] saving... " + key + " + " + data);
+  
+  var messageStr = JSON.stringify(dataToSave);
+
+  $(this.selector).data(this._masterKey, messageStr);
+  $("#datastore-frame").get(0).contentWindow.postMessage(messageStr, "*");
+}
+SessionDatastore.prototype.getData = function(key, cb) 
+{
+  var sd = this;
+  if (!this._isReady)
+  {
+    setTimeout(function() { sd.getData(key, cb); }, 500);
+    return;
+  }
+
+  var data = $(this.selector).data(this._masterKey);
+  if (!data)
+    cb(null);
+
+  data = JSON.parse(data);
+  cb(data[key]);
+}
+
+var g_sessionDatastore = new SessionDatastore({
+  selector: "#session-datastore-container"
+});
+</script>

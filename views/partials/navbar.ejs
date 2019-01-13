@@ -5,11 +5,31 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbar-supported-content">
-    <!--
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
+      <li class="nav-item collapse" id="active-blog-url">
       </li>
     </ul>
-    -->
   </div>
 </nav>
+
+<% include ../partials/session_datastore.ejs %>
+<% include ../partials/set_blog_widget.ejs %>
+
+<script>
+  setInterval(function() {
+    g_sessionDatastore.getData("blog_url", function(url) {
+      if (!url)
+        return;
+
+      $("#active-blog-url").show();
+      $("#active-blog-url").html("Viewing as <b>"
+        + url + "</b>"
+        + " <span id='deactivate-blog' style='cursor: pointer'>[x]</span>"
+      );
+      $("#deactivate-blog").click(function() {
+        g_sessionDatastore.setData("blog_url", null);
+        $("#active-blog-url").html("").hide();
+      });
+    });
+  }, 2000);
+</script>

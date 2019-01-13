@@ -60,6 +60,7 @@ FeedRenderer.prototype.initInfiniteScroll = function() {
       var root = fr.feeds[feedIdx].root;
       var offset = fr.feeds[feedIdx].start_offset
         + parseInt(pageIndex / fr.feeds.length);
+      offset *= <%= NUM_POSTS_PER_FETCH %>;
 
       return root + "/" + offset;
     },
