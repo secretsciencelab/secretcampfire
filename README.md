@@ -2,15 +2,15 @@
 
 # secretcampfire
 
-An immortal, lightweight, community-hosted microblogging system that...
+An immortal, lightweight, self-hosted microblogging system that...
 - supports tumblr features like `reblog`, `follow` and an infinite-scroll `dashboard` feed
 - is built with 100% free (but industry-grade) services, so it costs you nothing to run your blog 24/7 forever
 - can never be killed, because you own and control:
   - your blog
   - your blog's content 
-  - your blogs social network with other blogs
+  - your blogs social network
 - is open-source, so you may customize it to your heart's content
-- can run on almost any platform, so you are never locked into one service
+- can run on any platform you like, so you are never locked into one service
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
