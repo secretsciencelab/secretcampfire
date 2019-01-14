@@ -14,6 +14,11 @@ SessionDatastore.prototype.init = function() {
 
   window.addEventListener("message", this.receiveMessage.bind(this), false);
 }
+SessionDatastore.prototype.makeDatastoreKey = function(key) {
+  var base = window.location.host;
+  base = base.replace(/[^a-z0-9]/gmi, "_");
+  return base + "_" + key;
+}
 SessionDatastore.prototype.receiveMessage = function(event)
 {
   if (event.origin != "https://secretsciencelab.github.io")
@@ -26,7 +31,8 @@ SessionDatastore.prototype.receiveMessage = function(event)
     $(this.selector).data(this._masterKey, message.data);
     console.log("[SessionDatastore] init: " + message.data);
 
-    // reset $("#datastore-frame").get(0).contentWindow.postMessage("", "*");
+    // reset 
+    //$("#datastore-frame").get(0).contentWindow.postMessage("", "*");
   }
   else if (message.topic == "saved")
   {
@@ -46,10 +52,11 @@ SessionDatastore.prototype.setData = function(key, data)
   var dataToSave = {};
   if (currDataStr)
     dataToSave = JSON.parse(currDataStr);
-  dataToSave[key] = data;
+  dataToSave[this.makeDatastoreKey(key)] = data;
   dataToSave["_date"] = new Date();
     
-  console.log("[SessionDatastore] saving... " + key + " + " + data);
+  console.log("[SessionDatastore] saving... ");
+  console.log(dataToSave);
   
   var messageStr = JSON.stringify(dataToSave);
 
@@ -73,7 +80,7 @@ SessionDatastore.prototype.getData = function(key, cb)
   }
 
   data = JSON.parse(data);
-  cb(data[key]);
+  cb(data[this.makeDatastoreKey(key)]);
 }
 
 var g_sessionDatastore = new SessionDatastore({
