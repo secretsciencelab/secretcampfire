@@ -25,6 +25,8 @@ SessionDatastore.prototype.receiveMessage = function(event)
     this._isReady = true;
     $(this.selector).data(this._masterKey, message.data);
     console.log("[SessionDatastore] init: " + message.data);
+
+    // reset $("#datastore-frame").get(0).contentWindow.postMessage("", "*");
   }
   else if (message.topic == "saved")
   {
@@ -45,6 +47,7 @@ SessionDatastore.prototype.setData = function(key, data)
   if (currDataStr)
     dataToSave = JSON.parse(currDataStr);
   dataToSave[key] = data;
+  dataToSave["_date"] = new Date();
     
   console.log("[SessionDatastore] saving... " + key + " + " + data);
   
