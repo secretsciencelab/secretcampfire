@@ -41,40 +41,71 @@ app.get('/feed/:index?', function (req, res) {
   index = (index)? parseInt(index) : 0;
 
   res.setHeader('Content-Type', 'application/json');
-  db.fetchPosts(index, app.locals.NUM_POSTS_PER_FETCH, function(err, docs) {
-    if (!index && (!docs || docs.length == 0))
-    {
-      // send sample feed
-      res.sendfile("test_feed.json", {root: 'public'});
-    }
-    else
-    {
-      // send page from DB
-      var feed = {
+  db.getSettings(function(err, settings) {
+    db.fetchPosts(index, app.locals.NUM_POSTS_PER_FETCH, function(err, docs) {
+      if (!index && (!docs || docs.length == 0))
+      {
+        // send sample feed
+        res.sendfile("test_feed.json", {root: 'public'});
+      }
+      else
+      {
+        // send page from DB
+        var feed = {
+          'name': req.headers.host, 
+          'description': '',
+          'avatar_url': '',
+          'header_url': '',
+          'style_url': getReqProtocol(req) 
+            + '://' + req.headers.host + '/stylesheets/feed.css',
+          'posts': docs,
+          'blog_url': getReqProtocol(req) + "://" + req.headers.host
+        };
+
+        if (settings)
+        {
+          feed.name = settings.name;
+          feed.description = settings.description;
+          feed.avatar_url = settings.avatar_url;
+          feed.header_url = settings.header_url;
+        }
+
+        res.send(JSON.stringify(feed, null, 2));
+      }
+    });
+  });
+});
+
+app.get('/post/:id', function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  db.getSettings(function(err, settings) {
+    db.getPost(req.params['id'], function(err, post) {
+      if (!post)
+      {
+        res.status(404).send("{}");
+        return;
+      }
+
+      var ret = {
         'name': req.headers.host, 
         'description': '',
         'avatar_url': '',
         'header_url': '',
         'style_url': getReqProtocol(req) 
           + '://' + req.headers.host + '/stylesheets/feed.css',
-        'posts': docs
+        'post': post,
+        'blog_url': getReqProtocol(req) + "://" + req.headers.host
       };
-      res.send(JSON.stringify(feed, null, 2));
-    }
-  });
-});
 
-app.get('/post/:id', function (req, res) {
-  db.getPost(req.params['id'], function(err, post) {
-    if (!post)
-    {
-      res.status(404).send('Not found');
-      return;
-    }
+      if (settings)
+      {
+        ret.name = settings.name;
+        ret.description = settings.description;
+        ret.avatar_url = settings.avatar_url;
+        ret.header_url = settings.header_url;
+      }
 
-    res.render('pages/post', {
-      'base_url': getReqProtocol(req) + "://" + req.headers.host,
-      'post': post
+      res.send(JSON.stringify(ret, null, 2));
     });
   });
 });

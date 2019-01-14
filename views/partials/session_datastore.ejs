@@ -64,7 +64,10 @@ SessionDatastore.prototype.getData = function(key, cb)
 
   var data = $(this.selector).data(this._masterKey);
   if (!data)
+  {
     cb(null);
+    return;
+  }
 
   data = JSON.parse(data);
   cb(data[key]);

@@ -1,3 +1,7 @@
+/*
+ * feed view
+ */
+
 .grid-item {
   margin-bottom: 15px;
 }
@@ -47,4 +51,22 @@ a.card-title-link {
   border: 1px solid #888;
   padding: 5px 10px;
   color: #888;
+}
+
+/* 
+ * single post view
+ */
+
+#post-container img.img-top {
+  width: 100%;
+}
+#post-container .title {
+  font-weight: bold;
+}
+#post-container a.title-link {
+  text-decoration: none;
+  color: #444;
+}
+#post-container .text {
+  color: #444;
 }

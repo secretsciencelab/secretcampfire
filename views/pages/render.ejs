@@ -11,6 +11,13 @@
 <body>
   <% include ../partials/navbar.ejs %>
 
+  <!-- blog header/info section -->
+  <!-- TODO -->
+  <!-- TODO -->
+  <!-- TODO -->
+
+  <!-- feed view -->
+
   <div class="container-fluid">
     <div id="feed-grid" class="grid">
       <div class="grid-sizer col-md-3"></div>
@@ -34,32 +41,60 @@
     </div><!--grid-item-->
   </div><!--feed-grid-template-->
 
+  <!-- single post view -->
+
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col"></div>
+      <div class="col-6" id="post-container">
+        <div class="date"></div>
+        <a class="img-top-link" href="#"><img class="img-top mb-3" src=""/></a>
+        <a class="title-link" href="#"><h5 class="title"></h5></a>
+        <div class="text"></div>
+      </div>
+      <div class="col"></div>
+    </div><!--row-->
+  </div><!--container-->
+
   <script>
     <% include ../partials/render_feed.ejs %>
     <% include ../partials/render_post.ejs %>
     <% include ../partials/follow_button.ejs %>
   
-    var feedRenderer = null;
-    var postRenderer = null;
+    var renderer = null;
   
     $.getJSON("<%= uri %>", function(data) {
-      var cfg = {
-        "uris": ["<%= uri %>"],
-        "selector": "#feed-grid",
-        "data": data
-      };
-
       if (data.style_url)
         addCss(data.style_url);
 
       if (data.posts)
       {
-        feedRenderer = new FeedRenderer(cfg);
+        var cfg = {
+          "uris": ["<%= uri %>"],
+          "selector": "#feed-grid"
+        };
+        renderer = new FeedRenderer(cfg);
       }
       else
       {
-        postRenderer = new PostRenderer(cfg);
+        var cfg = {
+          "uri": "<%= uri %>",
+          "selector": "#post-container"
+        };
+        renderer = new PostRenderer(cfg);
       }
+
+      var urlObj = new URL("<%= uri %>");
+      var urlBase = urlObj.protocol + "//" + urlObj.host;
+      var followButtonConfig = {
+        "uri": urlBase + "/feed",
+        "selector": "#navbar-supported-content",
+        "setBlogWidget": g_setBlogWidget
+      }
+      if (data.blog_url)
+        followButtonConfig.uri = data.blog_url + "/feed";
+      var followButton = new FollowButton(followButtonConfig);
+
     });  
 
     function addCss(cssPath) {
@@ -70,12 +105,6 @@
       document.getElementsByTagName("head")[0].appendChild(stylesheet);
       window.___gcfg={parsetags:'onload'};
     }
-
-    var followButton = new FollowButton({
-      "uri": "<%= uri %>",
-      "selector": "#navbar-supported-content",
-      "setBlogWidget": g_setBlogWidget
-    });
   </script>
 </body>
 </html>
