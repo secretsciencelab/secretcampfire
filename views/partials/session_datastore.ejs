@@ -10,7 +10,7 @@ function SessionDatastore(cfg) {
   this.init();
 }
 SessionDatastore.prototype.init = function() {
-  $(this.selector).html("<iframe style='height:0; visibility:0; border:0' id='datastore-frame' name='datastore-frame' src='https://secretsciencelab.github.io/iframe-datastore'></iframe>");
+  $(this.selector).html("<iframe style='height:0; visibility:0; border:0' id='datastore-frame' name='datastore-frame' src='https://secretsciencelab.github.io/iframe-datastore/'></iframe>");
 
   window.addEventListener("message", this.receiveMessage.bind(this), false);
 }
