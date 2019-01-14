@@ -11,7 +11,9 @@ function FollowButton(cfg) {
 FollowButton.prototype.init = function() {
   var html="<form class='form-inline my-2 my-lg-0'>"
     + "<button class='btn btn-primary my-2 my-sm-0'"
-    + " id='" + this._buttonId + "'>Follow</button>"
+    + " id='" + this._buttonId + "'>"
+    + "<span class='oi oi-plus' title='follow' aria-hidden='true'></span>"
+    + " Follow</button>"
     + "</form>";
 
   $(this.selector).append(html);

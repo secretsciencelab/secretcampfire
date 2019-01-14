@@ -25,3 +25,14 @@ border: 2px solid white; }
 .jumbotron .lang-logo img {
 max-width: 100%; }
 
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+  background-color: #111 !important;
+}
+.btn-primary:hover {
+  background-color: #16c !important;
+}
+
+.navbar-brand .logo {
+  height: 35px;
+}

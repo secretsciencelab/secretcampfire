@@ -1,5 +1,5 @@
 <nav class="navbar static-top navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#"></a>
+  <a class="navbar-brand" href="http://secretcampfire.com"><img class="logo" src="/media/logoLight.png"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-supported-content" aria-controls="navbar-supported-content" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -18,17 +18,19 @@
 <script>
   setInterval(function() {
     g_sessionDatastore.getData("blog_url", function(url) {
-      if (!url)
+      if (!url || url.replace(/^\s+|\s+$/g, '').length == 0)
+      {
+        $("#active-blog-url").html("").hide();
         return;
+      }
 
       $("#active-blog-url").show();
-      $("#active-blog-url").html("Viewing as <b>"
-        + url + "</b>"
-        + " <span id='deactivate-blog' style='cursor: pointer'>[x]</span>"
+      $("#active-blog-url").html("Viewing as <span id='active-blog' "
+        + "style='cursor:pointer;font-weight-bold;text-decoration:underline'>"
+        + url + "</span>"
       );
-      $("#deactivate-blog").click(function() {
-        g_sessionDatastore.setData("blog_url", null);
-        $("#active-blog-url").html("").hide();
+      $("#active-blog").click(function() {
+        g_setBlogWidget.open();  
       });
     });
   }, 2000);

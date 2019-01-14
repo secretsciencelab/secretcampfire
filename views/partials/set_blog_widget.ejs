@@ -10,7 +10,7 @@
       <div class="form-group">
         <input type="text" class="form-control form-blog-url" 
           value="" placeholder="Your blog URL">
-        <p class='text-right small mt-2'><a href="<%= MASTER_URL %>">Don't have a <b><%= SITE_NAME %></b> blog yet? Get yours here</a></p>
+        <p class='text-right small mt-2'><a href="<%= MASTER_URL %>">Don't have a <b><%= SITE_NAME %></b> blog yet? Get your free blog here</a></p>
       </div>
     </form></div><!--body-->
     <div id="set-blog-success-alert" 
@@ -58,19 +58,18 @@ SetBlogWidget.prototype.handleSave = function() {
     return false;
 
   this.sessionDatastore.setData(this._datastoreKey, val);
+  $(this.selector+"-modal").modal("hide");
   if (this._callAfterBlogSet)
   {
     var cb = this._callAfterBlogSet;
     this._callAfterBlogSet = null;
-    $("#set-blog-modal").modal("hide");
     cb(val);
   }
 }
 SetBlogWidget.prototype.getBlog = function(cb) {
-  var sb = this;
+  var sbw = this;
   this.sessionDatastore.getData(this._datastoreKey, function(url) {
-    console.log("getBlog: " + url);
-    if (url)
+    if (url && url.replace(/^\s+|\s+$/g, '').length != 0)
     {
       // blog URL already set
       console.log("[SetBlogWidget] blog set: " + url);
@@ -78,8 +77,15 @@ SetBlogWidget.prototype.getBlog = function(cb) {
       return;
     }
 
-    sb._callAfterBlogSet = cb;
-    $("#set-blog-modal").modal("show");
+    sbw._callAfterBlogSet = cb;
+    $(sbw.selector+"-modal").modal("show");
+  });
+}
+SetBlogWidget.prototype.open = function() {
+  var sbw = this;
+  sbw.sessionDatastore.getData(sbw._datastoreKey, function(url) {
+    $(sbw.selector+"-form .form-blog-url").val(url);
+    $(sbw.selector+"-modal").modal("show");
   });
 }
 
