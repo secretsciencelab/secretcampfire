@@ -11,16 +11,19 @@
 <body>
   <% include ../partials/navbar.ejs %>
 
-  <!-- blog header/info section -->
-  <!-- TODO -->
-  <!-- TODO -->
-  <!-- TODO -->
+  <!-- jumbotron -->
+  <div class="jumbotron jumbotron-fluid" id="jumbotron"></div>
+  <div id="masthead" class="collapse">
+    <div class="avatar collapse"></div>
+    <h1 class="collapse"></h1>
+    <p class="lead collapse"></p>
+  </div>
 
   <!-- feed view -->
 
-  <div class="container-fluid">
+  <div class="container">
     <div id="feed-grid" class="grid">
-      <div class="grid-sizer col-md-3"></div>
+      <div class="grid-sizer col-md-4"></div>
     </div><!--feed-grid-->
   </div><!--container-->
 
@@ -29,7 +32,7 @@
   </div>
 
   <div id="feed-grid-template" class="d-none">
-    <div class="grid-item col-md-3">
+    <div class="grid-item col-md-4">
     <div class="card grid-item-content">
       <a class="card-img-fold-link" href="#"><span class="fold"></span></a>
       <a class="card-img-top-link" href="#"><img class="card-img-top" src=""/></a>
@@ -46,7 +49,7 @@
   <div class="container">
     <div class="row mb-4">
       <div class="col"></div>
-      <div class="col-6" id="post-container">
+      <div class="col-8" id="post-container">
         <div class="date"></div>
         <a class="img-top-link" href="#"><img class="img-top mb-3" src=""/></a>
         <a class="title-link" href="#"><h5 class="title"></h5></a>
@@ -66,6 +69,29 @@
     $.getJSON("<%= uri %>", function(data) {
       if (data.style_url)
         addCss(data.style_url);
+
+      // set jumbotron
+      if (data.header_url)
+        $("#jumbotron").css('background-image', 
+          'url(' + data.header_url + ')').addClass('active');
+      else
+        $("#jumbotron").addClass('inactive');
+
+      // set masthead
+      if (data.name || data.description || data.avatar_url)
+      {
+        $("#masthead").show();
+
+        if (data.avatar_url)
+          $("#masthead .avatar").css('background-image', 
+              'url(' + data.avatar_url + ')').show();
+
+        if (data.name)
+          $("#masthead h1").html(data.name).show();
+
+        if (data.description)
+          $("#masthead .lead").html(data.description).show();
+      }
 
       if (data.posts)
       {
