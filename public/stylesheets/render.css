@@ -1,3 +1,7 @@
+.reblog-button {
+  cursor: pointer;
+}
+
 /*
  * feed view
  */
@@ -72,4 +76,11 @@ a.card-title-link {
 }
 #post-container .date {
   color: #888;
+}
+#post-container .oi {
+  font-size: 20px;
+  color: #aaa;
+}
+#post-container .oi:hover {
+  color: #333;
 }

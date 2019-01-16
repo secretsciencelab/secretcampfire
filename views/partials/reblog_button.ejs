@@ -1,0 +1,24 @@
+function ReblogButton(cfg) {
+  this.setBlogWidget = cfg.setBlogWidget
+}
+ReblogButton.prototype.activate = function(selector) {
+  $(selector).each(function() {
+    if ($(this).data('reblog-action-bound'))
+      return;
+
+    $(this).click(function(e) {
+      console.log('reblog clicked!');
+      // TODO STOPPED HERE FIXME XXX
+      // TODO STOPPED HERE FIXME XXX
+      // TODO STOPPED HERE FIXME XXX
+      // TODO STOPPED HERE FIXME XXX
+      // TODO STOPPED HERE FIXME XXX
+      // TODO STOPPED HERE FIXME XXX
+    })
+    .data('reblog-action-bound', true);
+  });
+}
+
+g_reblogButton = new ReblogButton({
+  "setBlogWidget": g_setBlogWidget
+});

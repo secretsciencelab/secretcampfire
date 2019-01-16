@@ -35,43 +35,48 @@ app.use((err, req, res, next) => {
 function getReqProtocol(req) {
   return req.headers['x-forwarded-proto'] || req.protocol;
 }
+function getFeedUrl(req) {
+  // default to own feed
+  return getReqProtocol(req) + '://' + req.headers.host + '/feed';
+}
 
 app.get('/feed/:index?', function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
+  var test = req.query['test'];
 
-  res.setHeader('Content-Type', 'application/json');
+  if (test)
+  {
+    // send sample feed
+    res.setHeader('Content-Type', 'application/json');
+    res.sendFile("test_feed.json", {root: 'public'});
+    return;
+  }
+
   db.getSettings(function(err, settings) {
     db.fetchPosts(index, app.locals.NUM_POSTS_PER_FETCH, function(err, docs) {
-      if (!index && (!docs || docs.length == 0))
-      {
-        // send sample feed
-        res.sendfile("test_feed.json", {root: 'public'});
-      }
-      else
-      {
-        // send page from DB
-        var feed = {
-          'name': req.headers.host, 
-          'description': '',
-          'avatar_url': '',
-          'header_url': '',
-          'style_url': getReqProtocol(req) 
-            + '://' + req.headers.host + '/stylesheets/feed.css',
-          'posts': docs,
-          'blog_url': getReqProtocol(req) + "://" + req.headers.host
-        };
+      // send page from DB
+      var feed = {
+        'name': req.headers.host, 
+        'description': '',
+        'avatar_url': '',
+        'header_url': '',
+        'style_url': getReqProtocol(req) 
+          + '://' + req.headers.host + '/stylesheets/feed.css',
+        'posts': docs,
+        'blog_url': getReqProtocol(req) + "://" + req.headers.host
+      };
 
-        if (settings)
-        {
-          feed.name = settings.name;
-          feed.description = settings.description;
-          feed.avatar_url = settings.avatar_url;
-          feed.header_url = settings.header_url;
-        }
-
-        res.send(JSON.stringify(feed, null, 2));
+      if (settings)
+      {
+        feed.name = settings.name;
+        feed.description = settings.description;
+        feed.avatar_url = settings.avatar_url;
+        feed.header_url = settings.header_url;
       }
+
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify(feed, null, 2));
     });
   });
 });
@@ -111,8 +116,7 @@ app.get('/post/:id', function (req, res) {
 });
 
 app.get('/render/:uri?', function (req, res) {
-  var uri = getReqProtocol(req)
-    + '://' + req.headers.host + '/feed'; //default to own feed
+  var uri = getFeedUrl(req); // default to own feed
   if (req.params['uri'])
     uri = req.params['uri'];
 
@@ -157,9 +161,10 @@ app.get('/posts/:index?', function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
-  res.render('pages/posts', {
-    'uri': [
-      getReqProtocol(req) + "://" + req.headers.host + "/feed/" + index
+  res.render('pages/dashboard', {
+    'uri': getFeedUrl(req),
+    'uris': [
+      getFeedUrl(req) + "/" + index
     ]
   });
 });
@@ -168,8 +173,9 @@ app.get('/dashboard/:index?', function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
-  res.render('pages/posts', {
-    'uri': [] // TODO - fill with 'following' feeds
+  res.render('pages/dashboard', {
+    'uri': getFeedUrl(req),
+    'uris': [] // TODO - fill with 'following' feeds
   });
 });
 
@@ -192,6 +198,7 @@ app.get('/follow/:index?', function (req, res) {
   index = (index)? parseInt(index) : 0;
 
   res.render('pages/follow', {
+    'uri': getFeedUrl(req),
     'following': [] // TODO
   });
 });

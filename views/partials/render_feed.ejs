@@ -1,10 +1,11 @@
-function FeedRenderer(cfg) {
+function RenderFeed(cfg) {
   if (!cfg.uris || cfg.uris.length == 0)
     return;
 
   this.selector = cfg.selector;
   this.selectorButton = cfg.selector+"-button";
   this.templateSelector = this.selector + "-template";
+  this.reblogButton = cfg.reblogButton;
 
   this._mdConverter = new showdown.Converter();
 
@@ -13,7 +14,7 @@ function FeedRenderer(cfg) {
   this.initInfiniteScroll();
 }
 
-FeedRenderer.prototype.initFeeds = function(uris) {
+RenderFeed.prototype.initFeeds = function(uris) {
   // uniquify
   uris = [...new Set(uris)];
 
@@ -35,7 +36,7 @@ FeedRenderer.prototype.initFeeds = function(uris) {
   }
 }
 
-FeedRenderer.prototype.initMasonry = function() {
+RenderFeed.prototype.initMasonry = function() {
   this.msnryContainer = $(this.selector).masonry({
     itemSelector: '.grid-item',
     columnWidth: '.grid-sizer',
@@ -46,7 +47,7 @@ FeedRenderer.prototype.initMasonry = function() {
   this.msnry = this.msnryContainer.data('masonry');
 }
 
-FeedRenderer.prototype.initInfiniteScroll = function() {
+RenderFeed.prototype.initInfiniteScroll = function() {
   var fr = this;
 
   this.infCardIdCounter = 0;
@@ -139,7 +140,7 @@ FeedRenderer.prototype.initInfiniteScroll = function() {
   this.infScrollContainer.infiniteScroll('loadNextPage');
 }
 
-FeedRenderer.prototype.getFeedRootAndPageIdx = function(uri) {
+RenderFeed.prototype.getFeedRootAndPageIdx = function(uri) {
   var root = uri;
   var idx = 0;
 
@@ -153,7 +154,7 @@ FeedRenderer.prototype.getFeedRootAndPageIdx = function(uri) {
   return [root, idx];
 }
 
-FeedRenderer.prototype.feedsHaveMore = function() {
+RenderFeed.prototype.feedsHaveMore = function() {
   var hasMore = false;
   for (var fi=0; fi < this.feeds.length; fi++)
     if (this.feeds[fi].has_more)

@@ -1,27 +1,25 @@
 function Dashboard(cfg) {
-  this.postFormSelector = cfg.postFormSelector;
-  this.postSubmitSelector = cfg.postSubmitSelector;
-  this.postSuccessAlertSelector = cfg.postSuccessAlertSelector;
+  this.postSelector = cfg.postSelector;
+  this.followSelector = cfg.followSelector;
 
   this.bindEvents();
+  this.handleUrlParamActions();
 }
 
 Dashboard.prototype.bindEvents = function() {
   var dash = this;
-  $(dash.postSubmitSelector).click(function(e) {
+
+  var $pform = $(dash.postSelector+"-form");
+  $(dash.postSelector+"-save-button").click(function(e) {
     e.preventDefault();
 
-    var $form = $(dash.postFormSelector);
+    var mode = $pform.data("mode"); // "new", "reblog"
 
-    var mode = "new";
-    if ($form.data("mode"))
-      mode = $form.data("mode");
-
-    var title = $form.find('.form-post-title').val();
-    var thumb = $form.find('.form-post-thumb').val();
-    var url = $form.find('.form-post-url').val();
-    var text = $form.find('.form-post-text').val();
-    var tags = $form.find('.form-post-tags').val();
+    var title = $pform.find('.form-post-title').val();
+    var thumb = $pform.find('.form-post-thumb').val();
+    var url = $pform.find('.form-post-url').val();
+    var text = $pform.find('.form-post-text').val();
+    var tags = $pform.find('.form-post-tags').val();
 
     // post data to backend to save in DB
     $.post('/post', { 
@@ -33,16 +31,77 @@ Dashboard.prototype.bindEvents = function() {
     },
     function(data, status, xhr) {
       // success
-      $form.get(0).reset(); // clear form
-      $(dash.postSuccessAlertSelector).fadeIn().delay(2000).fadeOut();
+      $pform.get(0).reset(); // clear form
+      $(dash.postSelector+"-success-alert").fadeIn().delay(2000).fadeOut();
       console.log(data);
     },
     'json')
     .done(function() {
+      
     })
     .fail(function(jqxhr, settines, ex) {
     });
 
     return false;
   });
+
+  var $fform = $(dash.postSelector+"-form");
+  $(dash.followSelector+"-save-button").click(function(e) {
+    e.preventDefault();
+
+    var url = $fform.find(".form-follow-url").val();
+    console.log(url);
+
+    // post URL to backend to save in DB
+    $.post('/follow', { 
+        url: url
+      },
+      function(data, status, xhr) {
+        // success
+        $fform.get(0).reset(); // clear form
+        $(dash.postSelector+"-success-alert").fadeIn().delay(2000).fadeOut();
+        $(dash.postSelector+"-modal").modal('hide');
+        console.log(data);
+      },
+      'json')
+    .done(function() {
+      // reset to 'new post' mode
+      $fform.data('mode', "new");
+      $(dash.postSelector+"-modal h5").html("New post");
+    })
+    .fail(function(jqxhr, settines, ex) {
+    });
+  });
+}
+
+Dashboard.prototype.handleUrlParamActions = function() {
+  var urlstr = window.location.href;
+  var url = new URL(urlstr);
+  var follow = url.searchParams.get("follow");
+  var reblog = url.searchParams.get("reblog");
+
+  if (follow)
+    this.doFollow(follow);
+
+  if (reblog)
+    this.doReblog(reblog);
+}
+
+Dashboard.prototype.doFollow = function(blog) {
+  var $form = $(this.followSelector+"-form");
+
+  // we have a new blog to follow
+  //console.log(blog);
+  $form.find(".form-follow-url").val(blog);
+  $("#follow-modal").modal('show');
+}
+
+Dashboard.prototype.doReblog = function(url) {
+  // TODO STOPPED HERE FIXME XXX
+  // TODO STOPPED HERE FIXME XXX
+  // TODO STOPPED HERE FIXME XXX
+  // TODO STOPPED HERE FIXME XXX
+  // TODO STOPPED HERE FIXME XXX
+  // TODO STOPPED HERE FIXME XXX
+  console.log("TODO: reblog");
 }

@@ -3,24 +3,13 @@ function FollowButton(cfg) {
   this.selector = cfg.selector;
   this.setBlogWidget = cfg.setBlogWidget
 
-  this._buttonId = "follow-button";
-
   this.init();
 }
 
 FollowButton.prototype.init = function() {
-  var html="<form class='form-inline my-2 my-lg-0'>"
-    + "<button class='btn btn-primary my-2 my-sm-0'"
-    + " id='" + this._buttonId + "'>"
-    + "<span class='oi oi-plus' title='follow' aria-hidden='true'></span>"
-    + " Follow</button>"
-    + "</form>";
+    var fb = this;
 
-  $(this.selector).append(html);
-
-  var fb = this;
-
-  $("#"+fb._buttonId).click(function(e) {
+  $(this.selector).click(function(e) {
     e.preventDefault();
 
     fb.setBlogWidget.getBlog(function(url) {
@@ -34,7 +23,7 @@ FollowButton.prototype.init = function() {
 FollowButton.prototype.handleFollow = function(userUrl) {
   var followUrl = this.uri;
 
-  var url = userUrl + "/follow?add=" + encodeURIComponent(followUrl);
+  var url = userUrl + "/dashboard?follow=" + encodeURIComponent(followUrl);
   var tab = window.open(url, '_blank');
   tab.focus();
 }

@@ -6,17 +6,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/3.0.5/infinite-scroll.pkgd.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/stylesheets/render.css" />
-  <link rel="stylesheet" type="text/css" href="/stylesheets/posts.css" />
+  <link rel="stylesheet" type="text/css" href="/stylesheets/dashboard.css" />
 </head>
 
 <body>
   <% include ../partials/navbar.ejs %>
+  <% include ../partials/masthead.ejs %>
 
-  <div class="container mt-5">
+  <div class="container">
     <div class="row mb-5">
       <div class="col"></div>
       <div class="col-5">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-post-modal">
+          <span class='oi oi-pencil' title='new post' aria-hidden='true'></span>
           New post
         </button>
       </div>
@@ -59,7 +61,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div><!--header-->
-      <div class="modal-body"><form id="create-post-form">
+      <div class="modal-body"><form id="create-post-form" data-mode="new">
         <div class="form-group">
           <input type="text" class="form-control form-post-title" 
             value="" placeholder="Title">
@@ -76,10 +78,40 @@
         class="alert alert-success collapse" role="alert">Post saved!</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" 
-          id="create-post-save-button">Save</button>
+          id="create-post-save-button">
+          <span class='oi oi-pencil' title='save' aria-hidden='true'></span>
+          Save
+        </button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div><!--footer-->
     </div></div><!--document-->
+  </div><!--modal-->
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="follow-modal">
+    <div class="modal-dialog" role="document"><div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Follow new blog</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div><!--header-->
+      <div class="modal-body"><form id="follow-form">
+        <div class="form-group">
+          <input type="text" class="form-control form-follow-url" 
+            value="" placeholder="Blog URL">
+        </div>
+      </form></div><!--body-->
+      <div id="follow-success-alert" 
+        class="alert alert-success collapse" role="alert">Follow success!</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" 
+          id="follow-save-button">
+          <span class='oi oi-plus' title='follow' aria-hidden='true'></span>
+          Follow
+        </button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div><!--footer-->
+    </div></div><!--document->
   </div><!--modal-->
 
   <script>
@@ -87,24 +119,23 @@
     <% include ../partials/render_feed.ejs %>
 
     var dash = new Dashboard({
-      "postFormSelector": "#create-post-form",
-      "postSubmitSelector": "#create-post-save-button",
-      "postSuccessAlertSelector": "#create-post-success-alert"
+      "postSelector": "#create-post",
+      "followSelector": "#follow"
     });
 
-    var postsRenderer = null;
-    $.getJSON("<%= uri[0] %>", function(data) {
+    var renderer = null;
+    $.getJSON("<%= uris[0] %>", function(data) {
       var cfg = {
-        "uris": <%- JSON.stringify(uri) %>,
+        "uris": <%- JSON.stringify(uris) %>,
         "selector": "#posts",
       };
 
-      <%if (uri.length == 1) {%>
+      <%if (uris.length == 1) {%>
       if (data.style_url)
         addCss(data.style_url);
       <% } %>
 
-      postsRenderer = new FeedRenderer(cfg);
+      renderer = new RenderFeed(cfg);
     });  
 
     function addCss(cssPath) {

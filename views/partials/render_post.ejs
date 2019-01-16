@@ -1,18 +1,18 @@
-function PostRenderer(cfg) {
+function RenderPost(cfg) {
   this.uri = cfg.uri;
   this.selector = cfg.selector;
+  this.reblogButton = cfg.reblogButton;
 
   this._mdConverter = new showdown.Converter();
 
   this.init();
 }
-PostRenderer.prototype.init = function() {
+RenderPost.prototype.init = function() {
   var pr = this;
 
   $.getJSON(this.uri, function(data) {
-    console.log(data); // ANDBG
-
     var post = data.post;
+    $(pr.selector).show();
     $(pr.selector+" .date").html(post.date);
     if (post.thumbs.length)
       $(pr.selector+" .img-top").attr('src', post.thumbs[0]);
@@ -26,5 +26,7 @@ PostRenderer.prototype.init = function() {
     }
     var markdown = pr._mdConverter.makeHtml(post.text);
     $(pr.selector+" .text").html(markdown);
+
+    pr.reblogButton.activate(pr.selector+" .reblog-button");
   });
 }

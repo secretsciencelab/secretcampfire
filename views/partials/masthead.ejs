@@ -1,0 +1,47 @@
+<!-- needs 'uri' defined in ejs --> 
+
+<!-- jumbotron -->
+<div class="jumbotron jumbotron-fluid" id="jumbotron"></div>
+<div id="masthead" class="collapse">
+  <div class="avatar collapse"></div>
+  <h1 class="collapse"></h1>
+  <p class="lead collapse"></p>
+</div>
+
+<script>
+function Masthead(cfg) {
+  this.uri = cfg.uri;
+  
+  this.init();
+}
+Masthead.prototype.init = function() {
+  $.getJSON(this.uri, function(data) {
+    // set jumbotron
+    if (data.header_url)
+      $("#jumbotron").css('background-image', 
+        'url(' + data.header_url + ')').addClass('active');
+    else
+      $("#jumbotron").addClass('inactive');
+
+    // set masthead
+    if (data.name || data.description || data.avatar_url)
+    {
+      $("#masthead").show();
+
+      if (data.avatar_url)
+        $("#masthead .avatar").css('background-image', 
+            'url(' + data.avatar_url + ')').show();
+
+      if (data.name)
+        $("#masthead h1").html(data.name).show();
+
+      if (data.description)
+        $("#masthead .lead").html(data.description).show();
+    }
+  });
+}
+
+var g_masthead = new Masthead({
+  "uri": "<%= uri %>"
+});
+</script>

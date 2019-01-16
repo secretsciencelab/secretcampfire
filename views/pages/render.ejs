@@ -10,14 +10,7 @@
 
 <body>
   <% include ../partials/navbar.ejs %>
-
-  <!-- jumbotron -->
-  <div class="jumbotron jumbotron-fluid" id="jumbotron"></div>
-  <div id="masthead" class="collapse">
-    <div class="avatar collapse"></div>
-    <h1 class="collapse"></h1>
-    <p class="lead collapse"></p>
-  </div>
+  <% include ../partials/masthead.ejs %>
 
   <!-- feed view -->
 
@@ -49,8 +42,11 @@
   <div class="container">
     <div class="row mb-4">
       <div class="col"></div>
-      <div class="col-8" id="post-container">
+      <div class="col-8 collapse" id="post-container">
         <a class="img-top-link" href="#"><img class="img-top mb-3" src=""/></a>
+        <div class="action-bar mb-3">
+          <span class='reblog-button oi oi-loop-square' title='reblog' aria-hidden='true'></span>
+        </div>
         <a class="title-link" href="#"><h5 class="title"></h5></a>
         <div class="text"></div>
         <div class="date small"></div>
@@ -63,6 +59,7 @@
     <% include ../partials/render_feed.ejs %>
     <% include ../partials/render_post.ejs %>
     <% include ../partials/follow_button.ejs %>
+    <% include ../partials/reblog_button.ejs %>
   
     var renderer = null;
   
@@ -70,57 +67,43 @@
       if (data.style_url)
         addCss(data.style_url);
 
-      // set jumbotron
-      if (data.header_url)
-        $("#jumbotron").css('background-image', 
-          'url(' + data.header_url + ')').addClass('active');
-      else
-        $("#jumbotron").addClass('inactive');
-
-      // set masthead
-      if (data.name || data.description || data.avatar_url)
-      {
-        $("#masthead").show();
-
-        if (data.avatar_url)
-          $("#masthead .avatar").css('background-image', 
-              'url(' + data.avatar_url + ')').show();
-
-        if (data.name)
-          $("#masthead h1").html(data.name).show();
-
-        if (data.description)
-          $("#masthead .lead").html(data.description).show();
-      }
-
       if (data.posts)
       {
         var cfg = {
           "uris": ["<%= uri %>"],
-          "selector": "#feed-grid"
+          "selector": "#feed-grid",
+          "reblogButton": g_reblogButton
         };
-        renderer = new FeedRenderer(cfg);
+        renderer = new RenderFeed(cfg);
       }
       else
       {
         var cfg = {
           "uri": "<%= uri %>",
-          "selector": "#post-container"
+          "selector": "#post-container",
+          "reblogButton": g_reblogButton
         };
-        renderer = new PostRenderer(cfg);
+        renderer = new RenderPost(cfg);
       }
+
+      /* add Follow button to navbar */
+      var html = "<form class='form-inline my-2 my-lg-0'>"
+        + "<button class='btn btn-primary my-2 my-sm-0' id='follow-button'>"
+        + "<span class='oi oi-plus' title='follow' aria-hidden='true'></span>"
+        + " Follow</button>"
+        + "</form>";
+      $("#navbar-supported-content").append(html);
 
       var urlObj = new URL("<%= uri %>");
       var urlBase = urlObj.protocol + "//" + urlObj.host;
       var followButtonConfig = {
         "uri": urlBase + "/feed",
-        "selector": "#navbar-supported-content",
+        "selector": "#follow-button",
         "setBlogWidget": g_setBlogWidget
       }
       if (data.blog_url)
         followButtonConfig.uri = data.blog_url + "/feed";
       var followButton = new FollowButton(followButtonConfig);
-
     });  
 
     function addCss(cssPath) {
