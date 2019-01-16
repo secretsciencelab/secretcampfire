@@ -1,7 +1,6 @@
 function RenderPost(cfg) {
   this.uri = cfg.uri;
   this.selector = cfg.selector;
-  this.reblogButton = cfg.reblogButton;
 
   this._mdConverter = new showdown.Converter();
 
@@ -27,6 +26,6 @@ RenderPost.prototype.init = function() {
     var markdown = pr._mdConverter.makeHtml(post.text);
     $(pr.selector+" .text").html(markdown);
 
-    pr.reblogButton.activate(pr.selector+" .reblog-button");
+    ReblogButton.activate(pr.selector+" .reblog-button");
   });
 }

@@ -71,8 +71,7 @@
       {
         var cfg = {
           "uris": ["<%= uri %>"],
-          "selector": "#feed-grid",
-          "reblogButton": g_reblogButton
+          "selector": "#feed-grid"
         };
         renderer = new RenderFeed(cfg);
       }
@@ -80,8 +79,7 @@
       {
         var cfg = {
           "uri": "<%= uri %>",
-          "selector": "#post-container",
-          "reblogButton": g_reblogButton
+          "selector": "#post-container"
         };
         renderer = new RenderPost(cfg);
       }
