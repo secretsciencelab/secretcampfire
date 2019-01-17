@@ -59,4 +59,4 @@ To participate and play in the secretcampfire network, your instance must implem
   - hosting: Heroku
   - media hosting: ImageBam / YouTube
 
-The architecture ingredients above are recommendations. You are free to use your favorite technology to meet the 'handshake requirements' above.
+The architecture ingredients above are recommendations. Feel free to use your favorite technology to meet the 'handshake requirements' above.
