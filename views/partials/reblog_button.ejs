@@ -1,19 +1,40 @@
 var ReblogButton = new function() { 
   this.activate = function(selector) {
+    var obj = this;
+
     $(selector).each(function() {
-      if ($(this).data('reblog-action-bound'))
+      var rb = $(this);
+
+      if (rb.data('reblog-action-bound'))
         return;
 
-      $(this).click(function(e) {
-        console.log('reblog clicked!');
-        // TODO STOPPED HERE FIXME XXX
-        // TODO STOPPED HERE FIXME XXX
-        // TODO STOPPED HERE FIXME XXX
-        // TODO STOPPED HERE FIXME XXX
-        // TODO STOPPED HERE FIXME XXX
-        // TODO STOPPED HERE FIXME XXX
+      rb.mouseup(function(e) {
+        var leftClick = e.which == 1;
+        var middleClick = e.which == 2;
+        if (!leftClick && !middleClick)
+          return;
+          
+        e.preventDefault();
+
+        var reblogUrl = rb.data('reblog-url');
+        SetBlogWidget.getBlog(function(url) {
+          obj.handleReblog(url, reblogUrl, middleClick);
+        });
+
+        return false;
       })
       .data('reblog-action-bound', true);
     });
   };
+
+  this.handleReblog = function(userUrl, reblogUrl, openNewTab) {
+    var url = userUrl + "/dashboard?reblog=" + encodeURIComponent(reblogUrl);
+    if (openNewTab)
+    {
+      var tab = window.open(url, '_blank');
+      tab.focus();
+    }
+    else
+      window.location.href = url;
+  }
 };

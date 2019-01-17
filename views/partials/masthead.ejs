@@ -9,39 +9,36 @@
 </div>
 
 <script>
-function Masthead(cfg) {
-  this.uri = cfg.uri;
-  
-  this.init();
-}
-Masthead.prototype.init = function() {
-  $.getJSON(this.uri, function(data) {
-    // set jumbotron
-    if (data.header_url)
-      $("#jumbotron").css('background-image', 
-        'url(' + data.header_url + ')').addClass('active');
-    else
-      $("#jumbotron").addClass('inactive');
+var Masthead = new function() {
+  this.init = function(uri) {
+    this.uri = uri;
 
-    // set masthead
-    if (data.name || data.description || data.avatar_url)
-    {
-      $("#masthead").show();
+    $.getJSON(this.uri, function(data) {
+      // set jumbotron
+      if (data.header_url)
+        $("#jumbotron").css('background-image', 
+          'url(' + data.header_url + ')').addClass('active');
+      else
+        $("#jumbotron").addClass('inactive');
 
-      if (data.avatar_url)
-        $("#masthead .avatar").css('background-image', 
-            'url(' + data.avatar_url + ')').show();
+      // set masthead
+      if (data.name || data.description || data.avatar_url)
+      {
+        $("#masthead").show();
 
-      if (data.name)
-        $("#masthead h1").html(data.name).show();
+        if (data.avatar_url)
+          $("#masthead .avatar").css('background-image', 
+              'url(' + data.avatar_url + ')').show();
 
-      if (data.description)
-        $("#masthead .lead").html(data.description).show();
-    }
-  });
-}
+        if (data.name)
+          $("#masthead h1").html(data.name).show();
 
-var g_masthead = new Masthead({
-  "uri": "<%= uri %>"
-});
+        if (data.description)
+          $("#masthead .lead").html(data.description).show();
+      }
+    });
+  };
+};
+
+Masthead.init("<%= uri %>");
 </script>

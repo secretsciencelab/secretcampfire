@@ -26,6 +26,8 @@ RenderPost.prototype.init = function() {
     var markdown = pr._mdConverter.makeHtml(post.text);
     $(pr.selector+" .text").html(markdown);
 
-    ReblogButton.activate(pr.selector+" .reblog-button");
+    var reblogButtonSelector = pr.selector+" .reblog-button";
+    $(reblogButtonSelector).data('reblog-url', pr.uri);
+    ReblogButton.activate(reblogButtonSelector);
   });
 }

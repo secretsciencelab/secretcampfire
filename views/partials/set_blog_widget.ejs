@@ -24,73 +24,71 @@
 </div><!--modal-->
 
 <script>
-function SetBlogWidget(cfg) {
-  this.selector = cfg.selector 
-  this.sessionDatastore = cfg.sessionDatastore;
-
+var SetBlogWidget = new function() {
   this._datastoreKey = 'blog_url';
   this._callAfterBlogSet = null;
 
-  this.init();
-}
-SetBlogWidget.prototype.init = function() {
-  var sbw = this;
-  $(this.selector+"-save-button").click(function(e) {
-    e.preventDefault();
-    sbw.handleSave();
-    return false;
-  });
+  this.init = function (selector) {
+    this.selector = selector;
 
-  $(this.selector+"-form .form-blog-url").on('keypress', function(e) {
-    if (e.which === 13)
-    {
+    var sbw = this;
+    $(this.selector+"-save-button").click(function(e) {
       e.preventDefault();
-      $(this).attr("disabled", "disabled");
       sbw.handleSave();
-      $(this).removeAttr("disabled");
       return false;
-    }
-  });
-}
-SetBlogWidget.prototype.handleSave = function() {
-  var val = $(this.selector + "-form .form-blog-url").val();
-  if (!val)
-    return false;
+    });
 
-  this.sessionDatastore.setData(this._datastoreKey, val);
-  $(this.selector+"-modal").modal("hide");
-  if (this._callAfterBlogSet)
-  {
-    var cb = this._callAfterBlogSet;
-    this._callAfterBlogSet = null;
-    cb(val);
-  }
-}
-SetBlogWidget.prototype.getBlog = function(cb) {
-  var sbw = this;
-  this.sessionDatastore.getData(this._datastoreKey, function(url) {
-    if (url && url.replace(/^\s+|\s+$/g, '').length != 0)
+    $(this.selector+"-form .form-blog-url").on('keypress', function(e) {
+      if (e.which === 13)
+      {
+        e.preventDefault();
+        $(this).attr("disabled", "disabled");
+        sbw.handleSave();
+        $(this).removeAttr("disabled");
+        return false;
+      }
+    });
+  };
+
+  this.handleSave = function() {
+    var val = $(this.selector + "-form .form-blog-url").val();
+    if (!val)
+      return false;
+
+    SessionDatastore.setData(this._datastoreKey, val);
+    $(this.selector+"-modal").modal("hide");
+    if (this._callAfterBlogSet)
     {
-      // blog URL already set
-      console.log("[SetBlogWidget] blog set: " + url);
-      cb(url);
-      return;
+      var cb = this._callAfterBlogSet;
+      this._callAfterBlogSet = null;
+      cb(val);
     }
+  };
 
-    sbw._callAfterBlogSet = cb;
-    $(sbw.selector+"-modal").modal("show");
-  });
-}
-SetBlogWidget.prototype.open = function() {
-  var sbw = this;
-  sbw.sessionDatastore.getData(sbw._datastoreKey, function(url) {
-    $(sbw.selector+"-form .form-blog-url").val(url);
-    $(sbw.selector+"-modal").modal("show");
-  });
-}
+  this.getBlog = function(cb) {
+    var sbw = this;
+    SessionDatastore.getData(this._datastoreKey, function(url) {
+      if (url && url.replace(/^\s+|\s+$/g, '').length != 0)
+      {
+        // blog URL already set
+        console.log("[SetBlogWidget] blog set: " + url);
+        cb(url);
+        return;
+      }
 
-var g_setBlogWidget = new SetBlogWidget({
-  selector: '#set-blog',
-  sessionDatastore: g_sessionDatastore
-});
+      sbw._callAfterBlogSet = cb;
+      $(sbw.selector+"-modal").modal("show");
+    });
+  };
+
+  this.open = function() {
+    var sbw = this;
+    SessionDatastore.getData(sbw._datastoreKey, function(url) {
+      $(sbw.selector+"-form .form-blog-url").val(url);
+      $(sbw.selector+"-modal").modal("show");
+    });
+  };
+};
+
+SetBlogWidget.init("#set-blog");
 </script>

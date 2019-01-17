@@ -1,89 +1,87 @@
 <div id="session-datastore-container" class="collapse"></div>
 
 <script>
-function SessionDatastore(cfg) {
-  this.selector = cfg.selector;
-
+var SessionDatastore = new function() {
   this._isReady = false;
   this._masterKey = 'session-datastore';
 
-  this.init();
-}
-SessionDatastore.prototype.init = function() {
-  $(this.selector).html("<iframe style='height:0; visibility:0; border:0' id='datastore-frame' name='datastore-frame' src='https://secretsciencelab.github.io/iframe-datastore/'></iframe>");
+  this.init = function(selector) {
+    this.selector = selector;
 
-  window.addEventListener("message", this.receiveMessage.bind(this), false);
-}
-SessionDatastore.prototype.makeDatastoreKey = function(key) {
-  var base = window.location.host;
-  base = base.replace(/[^a-z0-9]/gmi, "_");
-  return base + "_" + key;
-}
-SessionDatastore.prototype.receiveMessage = function(event)
-{
-  if (event.origin != "https://secretsciencelab.github.io")
-    return;
+    $(this.selector).html("<iframe style='height:0; visibility:0; border:0' id='datastore-frame' name='datastore-frame' src='https://secretsciencelab.github.io/iframe-datastore/'></iframe>");
 
-  var message = JSON.parse(event.data);
-  if (message.topic == "ready")
-  {
-    this._isReady = true;
-    $(this.selector).data(this._masterKey, message.data);
-    console.log("[SessionDatastore] init: " + message.data);
+    window.addEventListener("message", this.receiveMessage.bind(this), false);
+  };
 
-    // reset 
-    //$("#datastore-frame").get(0).contentWindow.postMessage("", "*");
-  }
-  else if (message.topic == "saved")
-  {
-    console.log("[SessionDatastore] save success: " + message.data);
-  }
-}
-SessionDatastore.prototype.setData = function(key, data) 
-{
-  var sd = this;
-  if (!this._isReady)
-  {
-    setTimeout(function() { sd.setData(key, data); }, 500);
-    return;
-  }
+  this.makeDatastoreKey = function(key) {
+    var base = window.location.host;
+    base = base.replace(/[^a-z0-9]/gmi, "_");
+    return base + "_" + key;
+  };
 
-  var currDataStr = $(this.selector).data(this._masterKey);
-  var dataToSave = {};
-  if (currDataStr)
-    dataToSave = JSON.parse(currDataStr);
-  dataToSave[this.makeDatastoreKey(key)] = data;
-  dataToSave["_date"] = new Date();
+  this.receiveMessage = function(event) {
+    if (event.origin != "https://secretsciencelab.github.io")
+      return;
+
+    var message = JSON.parse(event.data);
+    if (message.topic == "ready")
+    {
+      this._isReady = true;
+      $(this.selector).data(this._masterKey, message.data);
+      console.log("[SessionDatastore] init: " + message.data);
+
+      // reset 
+      //$("#datastore-frame").get(0).contentWindow.postMessage("", "*");
+    }
+    else if (message.topic == "saved")
+    {
+      console.log("[SessionDatastore] save success: " + message.data);
+    }
+  };
+
+  this.setData = function(key, data) {
+    var sd = this;
+    if (!this._isReady)
+    {
+      setTimeout(function() { sd.setData(key, data); }, 500);
+      return;
+    }
+
+    var currDataStr = $(this.selector).data(this._masterKey);
+    var dataToSave = {};
+    if (currDataStr)
+      dataToSave = JSON.parse(currDataStr);
+    dataToSave[this.makeDatastoreKey(key)] = data;
+    dataToSave["_date"] = new Date();
+      
+    console.log("[SessionDatastore] saving... ");
+    console.log(dataToSave);
     
-  console.log("[SessionDatastore] saving... ");
-  console.log(dataToSave);
-  
-  var messageStr = JSON.stringify(dataToSave);
+    var messageStr = JSON.stringify(dataToSave);
 
-  $(this.selector).data(this._masterKey, messageStr);
-  $("#datastore-frame").get(0).contentWindow.postMessage(messageStr, "*");
-}
-SessionDatastore.prototype.getData = function(key, cb) 
-{
-  var sd = this;
-  if (!this._isReady)
-  {
-    setTimeout(function() { sd.getData(key, cb); }, 500);
-    return;
+    $(this.selector).data(this._masterKey, messageStr);
+    $("#datastore-frame").get(0).contentWindow.postMessage(messageStr, "*");
+  };
+
+  this.getData = function(key, cb) {
+    var sd = this;
+    if (!this._isReady)
+    {
+      setTimeout(function() { sd.getData(key, cb); }, 500);
+      return;
+    }
+
+    var data = $(this.selector).data(this._masterKey);
+    if (!data)
+    {
+      cb(null);
+      return;
+    }
+
+    data = JSON.parse(data);
+    cb(data[this.makeDatastoreKey(key)]);
   }
+};
 
-  var data = $(this.selector).data(this._masterKey);
-  if (!data)
-  {
-    cb(null);
-    return;
-  }
-
-  data = JSON.parse(data);
-  cb(data[this.makeDatastoreKey(key)]);
-}
-
-var g_sessionDatastore = new SessionDatastore({
-  selector: "#session-datastore-container"
-});
+SessionDatastore.init("#session-datastore-container");
 </script>

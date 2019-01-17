@@ -1,7 +1,6 @@
 function FollowButton(cfg) {
   this.uri = cfg.uri;
   this.selector = cfg.selector;
-  this.setBlogWidget = cfg.setBlogWidget
 
   this.init();
 }
@@ -12,7 +11,7 @@ FollowButton.prototype.init = function() {
   $(this.selector).click(function(e) {
     e.preventDefault();
 
-    fb.setBlogWidget.getBlog(function(url) {
+    SetBlogWidget.getBlog(function(url) {
       fb.handleFollow(url);
     });
     

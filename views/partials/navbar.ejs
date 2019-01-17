@@ -17,7 +17,7 @@
 
 <script>
   setInterval(function() {
-    g_sessionDatastore.getData("blog_url", function(url) {
+    SessionDatastore.getData("blog_url", function(url) {
       if (!url || url.replace(/^\s+|\s+$/g, '').length == 0)
       {
         $("#active-blog-url").html("").hide();
@@ -30,7 +30,7 @@
         + url + "</span>"
       );
       $("#active-blog").click(function() {
-        g_setBlogWidget.open();  
+        SetBlogWidget.open();  
       });
     });
   }, 2000);

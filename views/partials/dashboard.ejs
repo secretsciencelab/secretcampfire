@@ -13,31 +13,36 @@ Dashboard.prototype.bindEvents = function() {
   $(dash.postSelector+"-save-button").click(function(e) {
     e.preventDefault();
 
-    var mode = $pform.data("mode"); // "new", "reblog"
-
     var title = $pform.find('.form-post-title').val();
     var thumb = $pform.find('.form-post-thumb').val();
     var url = $pform.find('.form-post-url').val();
+    var reblogUrl = $pform.find('.form-post-reblog-url').val();
     var text = $pform.find('.form-post-text').val();
     var tags = $pform.find('.form-post-tags').val();
 
     // post data to backend to save in DB
     $.post('/post', { 
-      title: title,
-      thumbs: thumb,
-      urls: url,
-      text: text,
-      tags: tags
-    },
-    function(data, status, xhr) {
-      // success
-      $pform.get(0).reset(); // clear form
-      $(dash.postSelector+"-success-alert").fadeIn().delay(2000).fadeOut();
-      console.log(data);
-    },
-    'json')
+        title: title,
+        thumbs: thumb,
+        urls: url,
+        re_url: reblogUrl,
+        text: text,
+        tags: tags
+      },
+      function(data, status, xhr) {
+        // success
+        $pform.get(0).reset(); // clear form
+        $(dash.postSelector+"-success-alert").fadeIn().delay(2000).fadeOut();
+        console.log(data);
+      },
+      'json')
     .done(function() {
-      
+      // reset to 'new post' mode
+      $(dash.postSelector+"-modal h5").html("New post");
+      $(dash.postSelector+"-modal").modal('hide');
+
+      // remove params from url
+      window.history.replaceState(null, null, window.location.pathname);
     })
     .fail(function(jqxhr, settines, ex) {
     });
@@ -59,15 +64,15 @@ Dashboard.prototype.bindEvents = function() {
       function(data, status, xhr) {
         // success
         $fform.get(0).reset(); // clear form
-        $(dash.postSelector+"-success-alert").fadeIn().delay(2000).fadeOut();
-        $(dash.postSelector+"-modal").modal('hide');
+        $(dash.followSelector+"-success-alert").fadeIn().delay(2000).fadeOut();
         console.log(data);
       },
       'json')
     .done(function() {
-      // reset to 'new post' mode
-      $fform.data('mode', "new");
-      $(dash.postSelector+"-modal h5").html("New post");
+      $(dash.followSelector+"-modal").modal('hide');
+
+      // remove params from url
+      window.history.replaceState(null, null, window.location.pathname);
     })
     .fail(function(jqxhr, settines, ex) {
     });
@@ -97,11 +102,24 @@ Dashboard.prototype.doFollow = function(blog) {
 }
 
 Dashboard.prototype.doReblog = function(url) {
-  // TODO STOPPED HERE FIXME XXX
-  // TODO STOPPED HERE FIXME XXX
-  // TODO STOPPED HERE FIXME XXX
-  // TODO STOPPED HERE FIXME XXX
-  // TODO STOPPED HERE FIXME XXX
-  // TODO STOPPED HERE FIXME XXX
-  console.log("TODO: reblog");
+  var dash = this;
+
+  $.getJSON(url, function(data) {
+    console.log(data);
+    var $pform = $(dash.postSelector+"-form");
+    $(dash.postSelector+"-modal h5").html("Reblog");
+
+    if (data.post.thumbs)
+      $pform.find('.form-post-thumb').val(data.post.thumbs[0]);
+    if (data.post.urls)
+      $pform.find('.form-post-url').val(data.post.urls[0]);
+    $pform.find('.form-post-reblog-url').val(url);
+    if (data.post.text)
+    {
+      var text = data.post.text.replace(/^/gm, "> "); // blockquote
+      $pform.find('.form-post-text').val(text);
+    }
+
+    $("#create-post-modal").modal('show');
+  });
 }

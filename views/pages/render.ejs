@@ -96,8 +96,7 @@
       var urlBase = urlObj.protocol + "//" + urlObj.host;
       var followButtonConfig = {
         "uri": urlBase + "/feed",
-        "selector": "#follow-button",
-        "setBlogWidget": g_setBlogWidget
+        "selector": "#follow-button"
       }
       if (data.blog_url)
         followButtonConfig.uri = data.blog_url + "/feed";

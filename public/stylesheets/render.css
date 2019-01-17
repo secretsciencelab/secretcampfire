@@ -57,6 +57,12 @@ a.card-title-link {
   color: #888;
 }
 
+.card-text blockquote {
+  border-left: 2px solid #ddd;
+  padding-left: 1rem;
+}
+
+
 /* 
  * single post view
  */
@@ -73,6 +79,10 @@ a.card-title-link {
 }
 #post-container .text {
   color: #444;
+}
+#post-container .text blockquote {
+  border-left: 2px solid #ddd;
+  padding-left: 1rem;
 }
 #post-container .date {
   color: #888;

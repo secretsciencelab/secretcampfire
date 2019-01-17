@@ -95,8 +95,8 @@
     module.exports.post = function(postData, cb) {
       try {
         // sanitize postData
-        postData.thumb = _makeArray(postData.thumb);
-        postData.url = _makeArray(postData.url);
+        postData.thumbs = _makeArray(postData.thumbs);
+        postData.urls = _makeArray(postData.urls);
         postData.tags = postData.tags.split(/(?:,| )+/);
         
         var newPost = new Post(postData);
