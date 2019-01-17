@@ -39,6 +39,18 @@
   -o-transition: border-width 0.2s ease-out;
   transition: border-width 0.2s ease-out;
 }
+.card-overlay {
+  position: absolute;
+  margin: auto;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 60px;
+  height: 50px;
+  font-size: 20px;
+  color: #eee;
+  padding: 12px;
+  text-align: center;
+}
 .card-body {
   color: #444;
 }
