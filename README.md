@@ -49,7 +49,7 @@ To participate and play in the secretcampfire network, your instance must implem
     - pulls `post` JSON and renders single-post page
   - `/dashboard` (private)
     - for owner to view live stream of followed blogs
-    - for owner to add new posts or reblog posts
+    - for owner to add/manage posts
 
 ## UX guidelines
   - When reblogging, 'urls' and 'text' fields are initialized with the source post's urls/text
