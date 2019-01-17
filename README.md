@@ -48,9 +48,8 @@ To participate and play in the secretcampfire network, your instance must implem
     - pulls `feed` JSON and renders infinite-scroll viewer
     - pulls `post` JSON and renders single-post page
   - `/dashboard` (private)
-    - for owner to add feeds to follow
-    - for owner to view stream of followed feeds
-    - for owner to add/reblog posts to personal feed
+    - for owner to view live stream of followed blogs
+    - for owner to add new posts or reblog posts
 
 ## UX guidelines
   - When reblogging, 'urls' and 'text' fields are initialized with the source post's urls/text
