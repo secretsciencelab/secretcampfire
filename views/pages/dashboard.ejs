@@ -16,10 +16,18 @@
   <div class="container">
     <div class="row mb-5">
       <div class="col"></div>
-      <div class="col-5">
+      <div class="col-5 text-center">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-post-modal">
-          <span class='oi oi-pencil' title='new post' aria-hidden='true'></span>
+          <span class='oi oi-pencil' title='New post' aria-hidden='true'></span>
           New post
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary" id="posts-button">
+          <span class='oi oi-book' title='Your posts' aria-hidden='true'></span>
+          Posts
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary" id="settings-button">
+          <span class='oi oi-cog' title='Settings' aria-hidden='true'></span>
+          Settings
         </button>
       </div>
       <div class="col"></div>
@@ -81,7 +89,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" 
           id="create-post-save-button">
-          <span class='oi oi-pencil' title='save' aria-hidden='true'></span>
+          <span class='oi oi-pencil' title='Save' aria-hidden='true'></span>
           Save
         </button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -108,7 +116,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" 
           id="follow-save-button">
-          <span class='oi oi-plus' title='follow' aria-hidden='true'></span>
+          <span class='oi oi-plus' title='Follow' aria-hidden='true'></span>
           Follow
         </button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

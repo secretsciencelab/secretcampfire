@@ -6,9 +6,13 @@
 
   <div class="collapse navbar-collapse" id="navbar-supported-content">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item collapse" id="active-blog-url">
-      </li>
+      <li class="nav-item collapse" id="active-blog-url"></li>
     </ul>
+    <form class="form-inline">
+      <button class="btn btn-primary" type="button" id="dashboard-button">
+        <span class='oi oi-home' title='Dashboard' aria-hidden='true'></span>
+      </button>
+    </form>
   </div>
 </nav>
 
@@ -34,4 +38,22 @@
       });
     });
   }, 2000);
+
+  $("#dashboard-button").mouseup(function(e) {
+    var leftClick = e.which == 1;
+    var middleClick = e.which == 2;
+    if (!leftClick && !middleClick)
+      return;
+
+    SetBlogWidget.getBlog(function(url) {
+      url += "/dashboard";
+      if (leftClick)
+        window.location.href = url;
+      else
+      {
+        var tab = window.open(url, '_blank');
+        tab.focus();
+      }
+    });
+  });
 </script>
