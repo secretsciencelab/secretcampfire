@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 5000
 var app = express();
 
 app.locals.SITE_NAME = "secret campfire";
+app.locals.SITE_EMAIL = "kalona@secretcampfire.com";
 app.locals.MASTER_URL = "http://secretcampfire.com";
 app.locals.NUM_POSTS_PER_FETCH = 10;
 
@@ -182,6 +183,7 @@ app.get('/dashboard/:index?', function (req, res) {
 app.get('/settings', function (req, res) {
   db.getSettings(function(err, settings) {
     res.render('pages/settings', {
+      'uri': getFeedUrl(req),
       'settings': settings
     });
   });
@@ -190,6 +192,18 @@ app.get('/settings', function (req, res) {
 app.post('/settings', function(req, res) {
   db.saveSettings(req.body, function(err, settings) {
     res.status(200).json(settings);
+  });
+});
+
+app.get('/follow/check/:uri?', function (req, res) {
+	var uri = req.params['uri'];
+  db.isFollowing(uri, function(err, doc) {
+    isFollowing = (doc)? true : false;
+    ret = {
+      'is_following': isFollowing
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(ret, null, 2));
   });
 });
 

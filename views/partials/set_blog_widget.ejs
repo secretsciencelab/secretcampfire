@@ -65,7 +65,7 @@ var SetBlogWidget = new function() {
     }
   };
 
-  this.getBlog = function(cb) {
+  this.getBlog = function(cb, checkOnly) {
     var sbw = this;
     SessionDatastore.getData(this._datastoreKey, function(url) {
       if (url && url.replace(/^\s+|\s+$/g, '').length != 0)
@@ -76,8 +76,13 @@ var SetBlogWidget = new function() {
         return;
       }
 
-      sbw._callAfterBlogSet = cb;
-      $(sbw.selector+"-modal").modal("show");
+      if (!checkOnly)
+      {
+        sbw._callAfterBlogSet = cb;
+        $(sbw.selector+"-modal").modal("show");
+      }
+      else
+        cb(null);
     });
   };
 

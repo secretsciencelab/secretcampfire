@@ -89,9 +89,10 @@
 
       /* add Follow button to navbar */
       var html = "<form class='form-inline my-2 my-lg-0'>"
-        + "<button class='btn btn-primary my-2 my-sm-0' id='follow-button'>"
+        + "<button type='button' id='follow-button' "
+        + " class='btn btn-primary my-2 my-sm-0'>"
         + "<span class='oi oi-plus' title='Follow' aria-hidden='true'></span>"
-        + " Follow</button>"
+        + " <span class='label'>Follow</span></button>"
         + "</form>";
       $("#navbar-supported-content").append(html);
 
@@ -103,7 +104,32 @@
       }
       if (data.blog_url)
         followButtonConfig.uri = data.blog_url + "/feed";
-      var followButton = new FollowButton(followButtonConfig);
+
+      // check if we need to activate the follow button
+      var followButton = null;
+      SetBlogWidget.getBlog(function(blog) {
+        if (!blog)
+        {
+          followButton = new FollowButton(followButtonConfig);
+          return
+        }
+      
+        var checkUrl = blog
+            + "/follow/check/"
+            + encodeURIComponent(followButtonConfig.uri);
+
+        $.getJSON(checkUrl, function(data) {
+          if (data.is_following)
+          {
+            $("#follow-button").addClass('disabled');
+            $("#follow-button .oi").removeClass("oi-plus").addClass("oi-eye");
+            $("#follow-button .label").html("Following");
+          }
+          else
+            followButton = new FollowButton(followButtonConfig);
+        });
+      }, /*checkOnly*/true);
+
     });  
 
     function addCss(cssPath) {

@@ -145,13 +145,17 @@
      * networking
      */
 
+    function _makeUrlKey(url) {
+      // normalize url to make url_key
+      return normalizeUrl(url, {
+        stripHash: true,
+        stripProtocol: true
+      });
+    }
+
     module.exports.follow = function(url, cb) {
       try {
-        // normalize url to make url_key
-        var urlKey = normalizeUrl(url, {
-          stripHash: true,
-          stripProtocol: true
-        });
+        var urlKey = _makeUrlKey(url);
         
         var newFollow = new Follow({
           url_key: urlKey,
@@ -168,7 +172,21 @@
       }
     }
 
+    module.exports.isFollowing = function(url, cb) {
+      var urlKey = _makeUrlKey(url);
+
+      Follow.findOne({'url_key': urlKey}, function(err, doc) {
+        cb(err, doc);
+      });
+    }
+
     module.exports.getFollowing = function(blog) {
+      // TODO XXX STOPPED HERE
+      // TODO XXX STOPPED HERE
+      // TODO XXX STOPPED HERE
+      // TODO XXX STOPPED HERE
+      // TODO XXX STOPPED HERE
+      // https://mongoosejs.com/docs/api.html#aggregate_Aggregate-sample
     }
 
 

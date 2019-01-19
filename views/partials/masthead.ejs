@@ -13,6 +13,10 @@ var Masthead = new function() {
   this.init = function(uri) {
     this.uri = uri;
 
+    this.update();
+  };
+
+  this.update = function() {
     $.getJSON(this.uri, function(data) {
       // set jumbotron
       if (data.header_url)
@@ -37,7 +41,7 @@ var Masthead = new function() {
           $("#masthead .lead").html(data.description).show();
       }
     });
-  };
+  }
 };
 
 Masthead.init("<%= uri %>");

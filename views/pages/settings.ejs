@@ -5,6 +5,8 @@
 </head>
 
 <body>
+  <% include ../partials/masthead.ejs %>
+
   <div class="container mt-5">
     <div class="row mb-4">
       <div class="col"></div>
@@ -48,6 +50,7 @@
       function(data, status, xhr) {
         // success
         $("#success-alert").fadeIn().delay(2000).fadeOut();
+        Masthead.update();
         console.log(data);
       },
       'json')
