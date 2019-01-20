@@ -164,19 +164,26 @@ app.get('/posts/:index?', function (req, res) {
 
   res.render('pages/dashboard', {
     'uri': getFeedUrl(req),
-    'uris': [
+    'render_uris': [
       getFeedUrl(req) + "/" + index
     ]
   });
 });
 
-app.get('/dashboard/:index?', function (req, res) {
-	var index = req.params['index'];
-  index = (index)? parseInt(index) : 0;
+app.get('/dashboard/:page_index?', function(req, res) {
+	var pageIndex = req.params['page_index'];
+  pageIndex = (pageIndex)? parseInt(pageIndex) : 0;
 
-  res.render('pages/dashboard', {
-    'uri': getFeedUrl(req),
-    'uris': [] // TODO - fill with 'following' feeds
+  db.getRandomFollowing(function(err, follows) {
+    followUris = []
+    for (var i=0; i < follows.length; i++)
+      followUris.push(follows[i].url);
+
+    res.render('pages/dashboard', {
+      'uri': getFeedUrl(req),
+      'render_uris': followUris,
+      'page': pageIndex
+    });
   });
 });
 
@@ -207,22 +214,29 @@ app.get('/follow/check/:uri?', function (req, res) {
   });
 });
 
-app.get('/follow/:index?', function (req, res) {
-	var index = req.params['index'];
-  index = (index)? parseInt(index) : 0;
-
-  res.render('pages/follow', {
-    'uri': getFeedUrl(req),
-    'following': [] // TODO
-  });
-});
-
 app.post('/follow', function(req, res) {
   var url = req.body.url;
   // TODO verify that 'url' points to valid feed
   
   db.follow(req.body.url, function(err, newFollow) {
     res.status(200).json(newFollow);
+  });
+});
+
+app.post('/unfollow', function(req, res) {
+  // TODO
+});
+
+app.get('/following/:index?', function (req, res) {
+	var index = req.params['index'];
+  index = (index)? parseInt(index) : 0;
+
+  db.getFollowing(index, 100, function(err, follows) {
+    res.setHeader('Content-Type', 'application/json');
+    ret = {
+      'following': follows
+    }
+    res.send(JSON.stringify(ret, null, 2));
   });
 });
 

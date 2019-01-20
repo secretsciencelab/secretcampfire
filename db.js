@@ -180,13 +180,23 @@
       });
     }
 
-    module.exports.getFollowing = function(blog) {
-      // TODO XXX STOPPED HERE
-      // TODO XXX STOPPED HERE
-      // TODO XXX STOPPED HERE
-      // TODO XXX STOPPED HERE
-      // TODO XXX STOPPED HERE
-      // https://mongoosejs.com/docs/api.html#aggregate_Aggregate-sample
+    module.exports.getFollowing = function(index, limit, cb) {
+        if (index == 0)
+          index = undefined;
+        Follow.find()
+          .skip(index)
+          .limit(limit)
+          .sort({'date': -1})
+          .exec(cb);
+    }
+
+    module.exports.getRandomFollowing = function(cb) {
+      Follow.aggregate([{
+        $sample: { size: 1000 }
+      }], 
+      function(err, follows) {
+        cb(err, follows);
+      });
     }
 
 

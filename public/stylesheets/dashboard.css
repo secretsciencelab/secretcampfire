@@ -1,0 +1,17 @@
+.card-author-post-link {
+  color: #777;
+  text-decoration: none !important;
+  font-weight: bold;
+}
+
+.card-author-avatar {
+  position: absolute;
+  left: -75px;
+  top: 0px;
+  width: 60px;
+  height: 60px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+}

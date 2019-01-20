@@ -51,6 +51,8 @@
       <div class="grid-item">
       <div class="card mb-4">
         <a class="card-img-fold-link" href="#"><span class="fold"></span></a>
+        <a class="card-author-link" href="#"><div class="card-author-avatar"></div></a>
+        <a class="card-author-post-link small px-3 py-2" href="#"><div class="card-author"></div></a>
         <a class="card-img-top-link" href="#"><img class="card-img-top" src=""/></a>
         <div class="card-body">
           <a class="card-title-link" href="#"><h5 class="card-title"></h5></a>
@@ -134,13 +136,13 @@
     });
 
     var renderer = null;
-    $.getJSON("<%= uris[0] %>", function(data) {
+    $.getJSON("<%= render_uris[0] %>", function(data) {
       var cfg = {
-        "uris": <%- JSON.stringify(uris) %>,
+        "uris": <%- JSON.stringify(render_uris) %>,
         "selector": "#posts",
       };
 
-      <%if (uris.length == 1) {%>
+      <%if (render_uris.length == 1) {%>
       if (data.style_url)
         addCss(data.style_url);
       <% } %>

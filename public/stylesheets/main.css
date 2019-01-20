@@ -12,6 +12,9 @@ nav:hover {
 .navbar-brand .logo {
   height: 35px;
 }
+#active-blog:hover {
+  color: #46b;
+}
 
 #jumbotron {
   padding: 2rem 2rem;

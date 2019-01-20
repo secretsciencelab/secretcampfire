@@ -106,22 +106,30 @@ RenderFeed.prototype.initInfiniteScroll = function() {
     for (var i=0; i < data.posts.length; i++)
     {
       var post = data.posts[i];
+      var postRenderUrl = postUrlBase + "/render/" 
+        + encodeURIComponent(postUrlBase + post.post_url);
 
       var newCard = $(fr.templateSelector + " > div").clone();
       newCard.attr('id', "card-"+(fr.infCardIdCounter++));
       newCard.find("img").data('iscroll-id', newCard.attr('id'));
-      newCard.find(".card-img-fold-link").attr("href", 
-        postUrlBase + "/render/" 
-        + encodeURIComponent(postUrlBase + post.post_url));
+      newCard.find(".card-img-fold-link").attr("href", postRenderUrl);
       if (post.urls.length)
       {
         newCard.find(".card-img-top-link").attr("href", post.urls[0]);
         newCard.find(".card-title-link").attr("href", post.urls[0]);
       }
       if (post.thumbs.length)
-        newCard.find("img").attr('src', post.thumbs[0]);
+        newCard.find(".card-img-top").attr('src', post.thumbs[0]).show();
       else
-        newCard.find("img").hide();
+        newCard.find(".card-img-top").hide();
+      newCard.find(".card-author-link").attr('href', postUrlBase);
+      if (data.avatar_url)
+        newCard.find(".card-author-avatar").css('background-image', 
+          'url(' + data.avatar_url + ')');
+      else
+        newCard.find(".card-author-avatar").hide();
+      newCard.find(".card-author-post-link").attr('href', postRenderUrl);
+      newCard.find(".card-author").html(urlObj.host);
       newCard.find(".card-title").html(post.title);
       var markdown = fr._mdConverter.makeHtml(post.text);
       newCard.find(".card-text").html(markdown);
