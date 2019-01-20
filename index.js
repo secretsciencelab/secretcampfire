@@ -126,6 +126,18 @@ app.get('/render/:uri?', function (req, res) {
   });
 });
 
+app.get('/follow/check/:uri?', function (req, res) {
+	var uri = req.params['uri'];
+  db.isFollowing(uri, function(err, doc) {
+    isFollowing = (doc)? true : false;
+    ret = {
+      'is_following': isFollowing
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
 // catch-all route
 app.get('*', function (req, res, next) {
   if (req.url.indexOf("/posts") != -1
@@ -199,18 +211,6 @@ app.get('/settings', function (req, res) {
 app.post('/settings', function(req, res) {
   db.saveSettings(req.body, function(err, settings) {
     res.status(200).json(settings);
-  });
-});
-
-app.get('/follow/check/:uri?', function (req, res) {
-	var uri = req.params['uri'];
-  db.isFollowing(uri, function(err, doc) {
-    isFollowing = (doc)? true : false;
-    ret = {
-      'is_following': isFollowing
-    }
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(ret, null, 2));
   });
 });
 
