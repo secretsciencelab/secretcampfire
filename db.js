@@ -192,7 +192,7 @@
 
     module.exports.getRandomFollowing = function(cb) {
       Follow.aggregate([{
-        $sample: { size: 1000 }
+        $sample: { size: 100 }
       }], 
       function(err, follows) {
         cb(err, follows);
