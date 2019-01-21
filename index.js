@@ -1,11 +1,43 @@
-const cors = require('cors');
-const express = require('express')
-const basicAuth = require('express-basic-auth')
 const bodyParser = require('body-parser')
-const db = require('./db')
+const cors = require('cors')
+const cel = require('connect-ensure-login')
+const express = require('express')
 const http = require('http')
+const md5 = require('md5');
 const path = require('path')
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
+const session = require('express-session')
+const db = require('./db')
 const PORT = process.env.PORT || 5000
+
+/* 
+ * setup passport for auth
+ */
+
+passport.use(new LocalStrategy(function(username, password, cb) {
+  db.getSettings(function(err, settings) {
+    if (err) { return cb(err); }
+    if (!settings) { return cb(null, false); }
+    if (settings.password != md5(password)) { return cb(null, false); }
+    return cb(null, settings);
+  });
+}));
+
+passport.serializeUser(function(user, cb) {
+  cb(null, user.id);
+});
+
+passport.deserializeUser(function(id, cb) {
+  db.getSettings(function(err, user) {
+    if (err) { return cb(err); }
+    cb(null, user);
+  });
+});
+
+/*
+ * setup app
+ */
 
 var app = express();
 
@@ -22,15 +54,34 @@ app
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({ extended: true }))
   .use(cors())
-  .options('*', cors());
+  .options('*', cors())
+  .use(session({
+    secret: app.locals.SITE_NAME, resave: false, saveUninitialized: false 
+  }))
+  .use(passport.initialize())
+  .use(passport.session())
 
 // handle errors
 app.use((err, req, res, next) => {
-    if (!err)
-      return next();
+  if (!err)
+    return next();
 
-    res.status(500);
-    res.send('500: Internal server error');
+  res.status(500);
+  res.send('500: Internal server error');
+});
+
+app.get('/login', function(req, res) {
+  res.render('pages/login', {});
+});
+
+app.post('/login', passport.authenticate('local', { 
+  successReturnToOrRedirect: '/',
+  failureRedirect: '/login' 
+}));
+
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
 });
 
 function getReqProtocol(req) {
@@ -154,23 +205,15 @@ app.get('*', function (req, res, next) {
  * protected routes below
  */
 
-var adminPassword = process.env.ADMIN_PASSWORD
-  || Math.random().toString(36).substr(2);
-app.use(basicAuth({ 
-  users: { 'admin': adminPassword }, 
-  challenge: true
-}));
-
-app.post('/post', function(req, res) {
+app.post('/post', cel.ensureLoggedIn(), function(req, res) {
   db.post(req.body, function(err, newPost) {
     res.status(200).json(newPost);
   });
 
-  // TODO: allow post to user's other blog on a diff server using auth headers
-  //console.log(req.auth);
+  // TODO: allow post to user's other blog on a diff server
 });
 
-app.get('/posts/:index?', function (req, res) {
+app.get('/posts/:index?', cel.ensureLoggedIn(), function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
@@ -182,7 +225,7 @@ app.get('/posts/:index?', function (req, res) {
   });
 });
 
-app.get('/dashboard/:page_index?', function(req, res) {
+app.get('/dashboard/:page_index?', cel.ensureLoggedIn(), function(req, res) {
 	var pageIndex = req.params['page_index'];
   pageIndex = (pageIndex)? parseInt(pageIndex) : 0;
 
@@ -199,7 +242,7 @@ app.get('/dashboard/:page_index?', function(req, res) {
   });
 });
 
-app.get('/settings', function (req, res) {
+app.get('/settings', cel.ensureLoggedIn(), function (req, res) {
   db.getSettings(function(err, settings) {
     res.render('pages/settings', {
       'uri': getFeedUrl(req),
@@ -208,13 +251,13 @@ app.get('/settings', function (req, res) {
   });
 });
 
-app.post('/settings', function(req, res) {
+app.post('/settings', cel.ensureLoggedIn(), function(req, res) {
   db.saveSettings(req.body, function(err, settings) {
     res.status(200).json(settings);
   });
 });
 
-app.post('/follow', function(req, res) {
+app.post('/follow', cel.ensureLoggedIn(), function(req, res) {
   var url = req.body.url;
   // TODO verify that 'url' points to valid feed
   
@@ -223,11 +266,11 @@ app.post('/follow', function(req, res) {
   });
 });
 
-app.post('/unfollow', function(req, res) {
+app.post('/unfollow', cel.ensureLoggedIn(), function(req, res) {
   // TODO
 });
 
-app.get('/following/:index?', function (req, res) {
+app.get('/following/:index?', cel.ensureLoggedIn(), function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
@@ -238,10 +281,6 @@ app.get('/following/:index?', function (req, res) {
     }
     res.send(JSON.stringify(ret, null, 2));
   });
-});
-
-app.get('/logout', function (req, res) {
-    return res.status(401).end();
 });
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));

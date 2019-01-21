@@ -1,6 +1,7 @@
 (function() {
     const mongoose = require('mongoose');
     const normalizeUrl = require('normalize-url');
+    const md5 = require('md5');
 
     mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser:true }, function (error) {
       if (error) console.error(error);
@@ -60,6 +61,7 @@
           // make new entry and return it
           settings = new Settings();
           settings.id = settings._id;
+          settings.password = md5("password");
 
           settings.save(function(err) {
             cb(err, settings)
@@ -74,7 +76,7 @@
         settings.avatar_url = newSettings.avatar_url;  
         settings.header_url = newSettings.header_url;  
         if (newSettings.password)
-          settings.password = newSettings.password;
+          settings.password = md5(newSettings.password);
         
         settings.save(function(err) {
           cb(err, settings);
