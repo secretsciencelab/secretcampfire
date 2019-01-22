@@ -129,9 +129,6 @@
      */
 
     module.exports.fetchPosts = function(index, limit, cb) {
-      cb(null, []);
-      return; // ANDBG XXX
-
       try {
         if (index == 0)
           index = undefined;
