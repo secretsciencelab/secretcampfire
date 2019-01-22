@@ -5,13 +5,16 @@
 }
 
 .card-author-avatar {
-  position: absolute;
-  left: -75px;
-  top: 0px;
-  width: 60px;
-  height: 60px;
+  vertical-align: middle;
+  width: 35px;
+  height: 35px;
+  background-image: url('/media/logoLight.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   border-radius: 50%;
+}
+
+.card-author {
+  vertical-align: middle;
 }

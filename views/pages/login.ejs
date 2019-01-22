@@ -1,12 +1,33 @@
-<form action="/login" method="post">
-	<input type="hidden" name="username" value="admin"/>
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
 
-	<div>
-	<label>Password:</label>
-	<input type="password" name="password"/>
-	</div>
-	<div>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-4 text-center mt-5">
+      <img id="center-logo" class="mb-4" src="/media/logoLight.png" />
+      <form action="/login" method="post">
+      	<input type="hidden" name="username" value="admin"/>
+      
+      	<div>
+      	<label>Enter password:</label>
+      	<input type="password" class="form-control" name="password"
+          placeholder="Password"/>
+      	</div>
 
-	<input type="submit" value="Submit"/>
-	</div>
-</form>
+      	<div class="mt-3">
+        <button type="button" class="btn btn-primary" title="Login">
+          Login
+        </button>
+      	</div>
+      </form>
+    </div>
+    <div class="col"></div>
+  </div><!--row-->
+</div><!--container-->
+</body>
+</html>

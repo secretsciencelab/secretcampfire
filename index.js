@@ -44,13 +44,12 @@ var app = express();
 app.locals.SITE_NAME = "secret campfire";
 app.locals.SITE_EMAIL = "kalona@secretcampfire.com";
 app.locals.MASTER_URL = "http://secretcampfire.com";
-app.locals.NUM_POSTS_PER_FETCH = 10;
+app.locals.NUM_POSTS_PER_FETCH = 5;
 
 app
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index'))
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({ extended: true }))
   .use(cors())
@@ -68,6 +67,18 @@ app.use((err, req, res, next) => {
 
   res.status(500);
   res.send('500: Internal server error');
+});
+
+app.get('/', function(req, res) {
+  db.getSettings(function(err, settings) {
+    if (settings.password == md5("password"))
+    {
+      res.render('pages/index');
+      return;
+    }
+
+    res.redirect('/render');
+  });
 });
 
 app.get('/login', function(req, res) {

@@ -38,6 +38,11 @@
       <div class="col-5">
         <div id="posts" class="grid">
           <div class="grid-sizer"></div>
+
+          <div id="no-posts-message" class="text-center collapse">
+            <img id="center-logo" src="/media/logoLight.png" />
+            <div>No posts yet</div>
+          </div>
         </div>
       </div><!--col-->
       <div class="col"></div>
@@ -51,8 +56,10 @@
       <div class="grid-item">
       <div class="card mb-4">
         <a class="card-img-fold-link" href="#"><span class="fold"></span></a>
-        <a class="card-author-link" href="#"><div class="card-author-avatar"></div></a>
-        <a class="card-author-post-link small px-3 py-2" href="#"><div class="card-author"></div></a>
+        <div>
+        <a class="card-author-link" href="#"><div class="d-inline-block mx-1 my-2 card-author-avatar"></div></a>
+        <a class="card-author-post-link small py-2" href="#"><div class="d-inline-block card-author"></div></a>
+        </div>
         <a class="card-img-top-link" href="#"><img class="card-img-top" src=""/></a>
         <div class="card-body">
           <a class="card-title-link" href="#"><h5 class="card-title"></h5></a>
@@ -140,6 +147,9 @@
       var cfg = {
         "uris": <%- JSON.stringify(render_uris) %>,
         "selector": "#posts",
+        "onNoPosts": function() {
+          $("#no-posts-message").show();          
+        }
       };
 
       <%if (render_uris.length == 1) {%>

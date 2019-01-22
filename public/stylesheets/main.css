@@ -1,3 +1,8 @@
+#center-logo {
+  height: 100px;
+  opacity: 0.5;
+}
+
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
   background-color: #111 !important;
   border-color: #333;
