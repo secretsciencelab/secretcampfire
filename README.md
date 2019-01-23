@@ -1,5 +1,3 @@
-![secretcampfire](http://assets.innbetweenworlds.com/media/campfire/glowingForest.jpg)
-
 # secret campfire (version 1.0)
 
 An immortal, lightweight, self-hosted microblogging system that...
@@ -27,3 +25,7 @@ An immortal, lightweight, self-hosted microblogging system that...
 6. Visit `your-app.herokuapp.com` in a browser (where `your-app` is the name you entered in step 2). 
 
 7. If all went well, you'll see a welcome message that says "Congratulations! Your secret campfire blog is alive!" Follow the instructions there to set your password and secure your blog. 
+  
+## 
+
+![secretcampfire](http://assets.innbetweenworlds.com/media/campfire/glowingForest.jpg)
