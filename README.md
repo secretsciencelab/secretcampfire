@@ -1,6 +1,6 @@
 ![secretcampfire](http://assets.innbetweenworlds.com/media/campfire/glowingForest.jpg)
 
-# secret campfire
+# secret campfire (v. 1.0)
 
 An immortal, lightweight, self-hosted microblogging system that...
 - supports tumblr features like `reblog`, `follow` and an infinite-scroll `dashboard` feed
