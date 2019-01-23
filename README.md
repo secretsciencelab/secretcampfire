@@ -18,7 +18,7 @@ An immortal, lightweight, self-hosted microblogging system that...
 
 2. Enter a name for your app. This will be the name used in your blog's address. E.g. if you enter `secretcampfire`, your blog's address will be `secretcampfire.herokuapp.com`.
 
-3. Go to ![dashboard.heroku.com](https://dashboard.heroku.com) and select your app.
+3. Go to [dashboard.heroku.com](https://dashboard.heroku.com) and select your app.
 
 4. Click the `Resources` tab at the top.
 
