@@ -12,7 +12,21 @@ An immortal, lightweight, self-hosted microblogging system that...
 - is open-source, so you may customize it to your heart's content
 - can run on any platform you like, so you are never locked into one service
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+## Quickstart
+
+1. Click [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+2. Enter a name for your app. This will be the name used in your blog's address. E.g. if you enter `secretcampfire`, your blog's address will be `secretcampfire.herokuapp.com`.
+
+3. Go to ![dashboard.heroku.com](https://dashboard.heroku.com) and select your app.
+
+4. Click the `Resources` tab at the top.
+
+5. In the `Add-ons` search bar, type `mlab` and select `mLab MongoDB`. This will be the database that stores your blog's content. Select the "Sandbox - Free" plan and click `Provision`.
+
+6. Visit `your-app.herokuapp.com` in a browser (where `your-app` is the name you entered in step 2). 
+
+7. If all went well, you should see a welcome message that says "Congratulations! Your secret campfire blog is alive!" Follow the instructions there to set your password and secure your blog. 
 
 ## Secret handshake requirements
 To participate and play in the secretcampfire network, your instance must implement the following endpoints:
