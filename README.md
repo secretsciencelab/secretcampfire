@@ -1,3 +1,5 @@
+<img src="http://assets.innbetweenworlds.com/media/campfire/fireIconWhiteT.png" height="50">
+
 # secret campfire (version 1.0)
 
 An immortal, lightweight, self-hosted microblogging system that...
