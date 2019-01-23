@@ -1,4 +1,4 @@
-## Secret handshake requirements
+## `secret campfire` handshake requirements
 To participate and play in the secretcampfire network, your instance must implement the following endpoints:
   - `/feed`
     - feed JSON schema:
