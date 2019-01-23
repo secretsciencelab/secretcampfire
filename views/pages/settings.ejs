@@ -8,25 +8,56 @@
   <% include ../partials/navbar.ejs %>
   <% include ../partials/masthead.ejs %>
 
-  <div class="container mt-5">
-    <div class="row mb-4">
+  <div class="container mt-4">
+    <div class="row mb-5">
+      <div class="col"></div>
+      <div class="col-5 text-center">
+        <a href="/dashboard"><button type="button" class="btn btn-sm btn-primary">
+          <span class='oi oi-home' title='Back to Dashboard' aria-hidden='true'></span>
+          Back to Dashboard
+        </button></a>
+      </div>
+      <div class="col"></div>
+    </div>
+
+    <div class="row">
       <div class="col"></div>
       <div class="col-5">
-        <h4 class="mb-3">Settings</h4>
-        <form id="settings-form"><div class="form-group">
+        <form id="settings-form">
+          <div class="form-group">
+          <label>Blog name</label>
           <input type="text" class="form-control form-name" 
             value="<%= settings.name %>" placeholder="Blog name" />
+          </div>
+
+          <div class="form-group">
+          <label>Blog description</label>
           <input type="text" class="form-control form-description" 
             value="<%= settings.description %>" placeholder="Blog description" />
+          </div>
+
+          <div class="form-group">
+          <label>Avatar image URL</label>
           <input type="text" class="form-control form-avatar" 
             value="<%= settings.avatar_url %>" placeholder="Avatar image URL" />
+          </div>
+
+          <div class="form-group">
+          <label>Header image URL</label>
           <input type="text" class="form-control form-header" 
             value="<%= settings.header_url %>" placeholder="Header image URL" />
-        </div></form>
+          </div>
+
+          <div class="form-group">
+          <label>Change password</label>
+          <input type="password" class="form-control form-password" 
+            value="" placeholder="New password" />
+          </div>
+        </form>
         <div id="success-alert" 
           class="alert alert-success collapse" role="alert">Settings saved!</div>
-        <button type="button" class="btn btn-primary" 
-          id="settings-save-button">Save</button>
+        <button type="button" class="mt-2 btn btn-primary" 
+          id="settings-save-button">Save settings</button>
       </div>
       <div class="col"></div>
     </div><!--row-->
@@ -41,12 +72,14 @@
       var description = form.find('.form-description').val();
       var avatar = form.find('.form-avatar').val();
       var header = form.find('.form-header').val();
+      var password = form.find('.form-password').val();
 
       $.post('/settings', { 
         name: name,
         description: description,
         avatar_url: avatar,
-        header_url: header
+        header_url: header,
+        password: password
       },
       function(data, status, xhr) {
         // success
