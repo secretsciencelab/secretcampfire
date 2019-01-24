@@ -20,40 +20,119 @@
 <% include ../partials/set_blog_widget.ejs %>
 
 <script>
-  setInterval(function() {
-    SessionDatastore.getData("blog_url", function(url) {
-      if (!url || url.replace(/^\s+|\s+$/g, '').length == 0)
+var Navbar = new function() {
+  this.init = function() {
+    var nb = this;
+
+    $.getJSON("/is_owner", function(data) {
+      nb._isOwner = data.is_owner;
+
+      nb.bindDashButton(); 
+      nb.drawActiveBlogWidget(); 
+    });
+  };
+
+  this.drawActiveBlogWidget = function() {
+    if (this._isOwner)
+      return;
+
+    setInterval(function() {
+      SessionDatastore.getData("blog_url", function(url) {
+        if (!url || url.replace(/^\s+|\s+$/g, '').length == 0)
+        {
+          $("#active-blog-url").html("").hide();
+          return;
+        }
+
+        $("#active-blog-url").show();
+        $("#active-blog-url").html("Viewing as <span id='active-blog' "
+          + "style='cursor:pointer;font-weight:bold;'>"
+          + url + "</span>"
+        );
+        $("#active-blog").click(function() {
+          SetBlogWidget.open();  
+        });
+      });
+    }, 2000);
+  };
+
+  this.bindDashButton = function() {
+    var nb = this;
+    $("#dashboard-button").mouseup(function(e) {
+      var leftClick = e.which == 1;
+      var middleClick = e.which == 2;
+      if (!leftClick && !middleClick)
+        return;
+
+      if (nb._isOwner)
       {
-        $("#active-blog-url").html("").hide();
+        var url = "/dashboard";
+        if (leftClick)
+          window.location.href = url;
+        else
+        {
+          var tab = window.open(url, '_blank');
+          tab.focus();
+        }
         return;
       }
 
-      $("#active-blog-url").show();
-      $("#active-blog-url").html("Viewing as <span id='active-blog' "
-        + "style='cursor:pointer;font-weight:bold;'>"
-        + url + "</span>"
-      );
-      $("#active-blog").click(function() {
-        SetBlogWidget.open();  
+      SetBlogWidget.getBlog(function(url) {
+        url += "/dashboard";
+        if (leftClick)
+          window.location.href = url;
+        else
+        {
+          var tab = window.open(url, '_blank');
+          tab.focus();
+        }
       });
     });
-  }, 2000);
+  };
 
-  $("#dashboard-button").mouseup(function(e) {
-    var leftClick = e.which == 1;
-    var middleClick = e.which == 2;
-    if (!leftClick && !middleClick)
+  this.addFollowButton = function(uri) {
+    if (this._isOwner)
       return;
 
-    SetBlogWidget.getBlog(function(url) {
-      url += "/dashboard";
-      if (leftClick)
-        window.location.href = url;
-      else
+    var html = "<form class='form-inline my-2 my-lg-0'>"
+      + "<button type='button' id='follow-button' "
+      + " class='btn btn-primary my-2 my-sm-0'>"
+      + "<span class='oi oi-plus' title='Follow' aria-hidden='true'></span>"
+      + " <span class='label'>Follow</span></button>"
+      + "</form>";
+    $("#navbar-supported-content").append(html);
+
+    var followButtonConfig = {
+      "uri": uri,
+      "selector": "#follow-button"
+    }
+
+    // check if button is "Follow" or "Following"
+    var followButton = null;
+    SetBlogWidget.getBlog(function(blog) {
+      if (!blog)
       {
-        var tab = window.open(url, '_blank');
-        tab.focus();
+        followButton = new FollowButton(followButtonConfig);
+        return;
       }
-    });
-  });
+    
+      var checkUrl = blog
+          + "/follow/check/"
+          + encodeURIComponent(followButtonConfig.uri);
+
+      $.getJSON(checkUrl, function(data) {
+        if (data.is_following)
+        {
+          $("#follow-button .oi").removeClass("oi-plus").addClass("oi-eye");
+          $("#follow-button .label").html("Following");
+          followButtonConfig.isFollowing = true;
+        }
+  
+        followButton = new FollowButton(followButtonConfig);
+      });
+    }, /*checkOnly*/true);
+  };
+};
+
+Navbar.init();
 </script>

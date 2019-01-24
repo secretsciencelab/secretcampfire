@@ -87,49 +87,13 @@
         renderer = new RenderPost(cfg);
       }
 
-      /* add Follow button to navbar */
-      var html = "<form class='form-inline my-2 my-lg-0'>"
-        + "<button type='button' id='follow-button' "
-        + " class='btn btn-primary my-2 my-sm-0'>"
-        + "<span class='oi oi-plus' title='Follow' aria-hidden='true'></span>"
-        + " <span class='label'>Follow</span></button>"
-        + "</form>";
-      $("#navbar-supported-content").append(html);
-
+      // add Follow button to navbar
       var urlObj = new URL("<%= uri %>");
       var urlBase = urlObj.protocol + "//" + urlObj.host;
-      var followButtonConfig = {
-        "uri": urlBase + "/feed",
-        "selector": "#follow-button"
-      }
+      var followTarget = urlBase + "/feed";
       if (data.blog_url)
-        followButtonConfig.uri = data.blog_url + "/feed";
-
-      // check if we need to activate the follow button
-      var followButton = null;
-      SetBlogWidget.getBlog(function(blog) {
-        if (!blog)
-        {
-          followButton = new FollowButton(followButtonConfig);
-          return;
-        }
-      
-        var checkUrl = blog
-            + "/follow/check/"
-            + encodeURIComponent(followButtonConfig.uri);
-
-        $.getJSON(checkUrl, function(data) {
-          if (data.is_following)
-          {
-            $("#follow-button .oi").removeClass("oi-plus").addClass("oi-eye");
-            $("#follow-button .label").html("Following");
-            followButtonConfig.isFollowing = true;
-          }
-  
-          followButton = new FollowButton(followButtonConfig);
-        });
-      }, /*checkOnly*/true);
-
+        followTarget = data.blog_url + "/feed";
+      Navbar.addFollowButton(followTarget);
     });  
 
     function addCss(cssPath) {

@@ -202,6 +202,19 @@ app.get('/follow/check/:uri?', function (req, res) {
   });
 });
 
+app.get('/is_owner', function (req, res) {
+  var isOwner = false;
+  if (req.user)
+    isOwner = true;
+
+  ret = {
+    'is_owner': isOwner
+  };
+
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify(ret, null, 2));
+});
+
 // catch-all route
 app.get('*', function (req, res, next) {
   if (req.url.indexOf("/posts") != -1
@@ -281,7 +294,6 @@ app.post('/follow', cel.ensureLoggedIn(), function(req, res) {
 
 app.post('/unfollow', cel.ensureLoggedIn(), function(req, res) {
   var url = req.body.url;
-  console.log("ANDBG unfollow " + url);
 
   db.unfollow(url, function(err) {
     res.status(200).json({ });
