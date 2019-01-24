@@ -9,6 +9,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const session = require('express-session')
 const db = require('./db')
+const consts = require('./consts')
 const PORT = process.env.PORT || 5000
 
 /* 
@@ -41,10 +42,11 @@ passport.deserializeUser(function(id, cb) {
 
 var app = express();
 
-app.locals.SITE_NAME = "secret campfire";
-app.locals.SITE_EMAIL = "kalona@secretcampfire.com";
-app.locals.MASTER_URL = "http://secretcampfire.com";
-app.locals.NUM_POSTS_PER_FETCH = 5;
+app.locals.SITE_NAME = consts.SITE_NAME;
+app.locals.SITE_EMAIL = consts.SITE_EMAIL;
+app.locals.MASTER_URL = consts.MASTER_URL;
+app.locals.MASTER_FEED = consts.MASTER_FEED;
+app.locals.NUM_POSTS_PER_FETCH = consts.NUM_POSTS_PER_FETCH;
 
 app
   .use(express.static(path.join(__dirname, 'public')))
@@ -278,7 +280,12 @@ app.post('/follow', cel.ensureLoggedIn(), function(req, res) {
 });
 
 app.post('/unfollow', cel.ensureLoggedIn(), function(req, res) {
-  // TODO
+  var url = req.body.url;
+  console.log("ANDBG unfollow " + url);
+
+  db.unfollow(url, function(err) {
+    res.status(200).json({ });
+  });
 });
 
 app.get('/following/:index?', cel.ensureLoggedIn(), function (req, res) {

@@ -1,6 +1,7 @@
 function Dashboard(cfg) {
   this.postSelector = cfg.postSelector;
   this.followSelector = cfg.followSelector;
+  this.unfollowSelector = cfg.unfollowSelector;
 
   this.bindEvents();
   this.handleUrlParamActions();
@@ -50,7 +51,7 @@ Dashboard.prototype.bindEvents = function() {
     return false;
   });
 
-  var $fform = $(dash.postSelector+"-form");
+  var $fform = $(dash.followSelector+"-form");
   $(dash.followSelector+"-save-button").click(function(e) {
     e.preventDefault();
 
@@ -77,16 +78,48 @@ Dashboard.prototype.bindEvents = function() {
     .fail(function(jqxhr, settines, ex) {
     });
   });
+
+  var $uform = $(dash.unfollowSelector+"-form");
+  $(dash.unfollowSelector+"-save-button").click(function(e) {
+    e.preventDefault();
+
+    var url = $uform.find(".form-unfollow-url").val();
+    console.log(url);
+
+    // post URL to backend to save in DB
+    $.post('/unfollow', { 
+        url: url
+      },
+      function(data, status, xhr) {
+        // success
+        $uform.get(0).reset(); // clear form
+        $(dash.unfollowSelector+"-success-alert").fadeIn().delay(2000).fadeOut();
+        console.log(data);
+      },
+      'json')
+    .done(function() {
+      $(dash.unfollowSelector+"-modal").modal('hide');
+
+      // remove params from url
+      window.history.replaceState(null, null, window.location.pathname);
+    })
+    .fail(function(jqxhr, settines, ex) {
+    });
+  });
 }
 
 Dashboard.prototype.handleUrlParamActions = function() {
   var urlstr = window.location.href;
   var url = new URL(urlstr);
   var follow = url.searchParams.get("follow");
+  var unfollow = url.searchParams.get("unfollow");
   var reblog = url.searchParams.get("reblog");
 
   if (follow)
     this.doFollow(follow);
+
+  if (unfollow)
+    this.doUnfollow(unfollow);
 
   if (reblog)
     this.doReblog(reblog);
@@ -98,7 +131,13 @@ Dashboard.prototype.doFollow = function(blog) {
   // we have a new blog to follow
   //console.log(blog);
   $form.find(".form-follow-url").val(blog);
-  $("#follow-modal").modal('show');
+  $(this.followSelector+"-modal").modal('show');
+}
+
+Dashboard.prototype.doUnfollow = function(blog) {
+  var $form = $(this.unfollowSelector+"-form");
+  $form.find(".form-unfollow-url").val(blog);
+  $(this.unfollowSelector+"-modal").modal('show');
 }
 
 Dashboard.prototype.doReblog = function(url) {

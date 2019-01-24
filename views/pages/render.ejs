@@ -121,12 +121,12 @@
         $.getJSON(checkUrl, function(data) {
           if (data.is_following)
           {
-            $("#follow-button").addClass('disabled');
             $("#follow-button .oi").removeClass("oi-plus").addClass("oi-eye");
             $("#follow-button .label").html("Following");
+            followButtonConfig.isFollowing = true;
           }
-          else
-            followButton = new FollowButton(followButtonConfig);
+  
+          followButton = new FollowButton(followButtonConfig);
         });
       }, /*checkOnly*/true);
 

@@ -2,6 +2,7 @@
     const mongoose = require('mongoose');
     const normalizeUrl = require('normalize-url');
     const md5 = require('md5');
+    const consts = require('./consts');
 
     mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser:true }, function (error) {
       if (error) console.error(error);
@@ -54,18 +55,24 @@
           if (settings)
           {
             // return existing
-            cb(err, settings);
+            if (cb)
+              cb(err, settings);
             return;
           }
 
-          // make new entry and return it
+          // welcome new user! 
+          // make new Settings entry
           settings = new Settings();
           settings.id = settings._id;
           settings.password = md5("password");
 
           settings.save(function(err) {
-            cb(err, settings)
+            if (cb)
+              cb(err, settings)
           });
+
+          // follow "staff" blog to start
+          db.follow(consts.MASTER_FEED, null);
         });
     }
 
@@ -79,7 +86,8 @@
           settings.password = md5(newSettings.password);
         
         settings.save(function(err) {
-          cb(err, settings);
+          if (cb)
+            cb(err, settings);
         });
       });
     }
@@ -106,11 +114,13 @@
         newPost.post_url = "/post/" + newPost.id
 
         newPost.save(function (err) {
-          cb(err, newPost);
+          if (cb)
+            cb(err, newPost);
         });
       }
       catch(err) {
-        cb(err, {});
+        if (cb)
+          cb(err, {});
       }
     }
 
@@ -139,7 +149,8 @@
           .exec(cb);
       }
       catch(err) {
-        cb(err, []);
+        if (cb)
+          cb(err, []);
       }
     }
 
@@ -166,19 +177,31 @@
         newFollow.id = newFollow._id;
 
         newFollow.save(function (err) {
-          cb(err, newFollow);
+          if (cb)
+            cb(err, newFollow);
         });
       }
       catch(err) {
-        cb(err, {});
+        if (cb)
+          cb(err, {});
       }
+    }
+
+    module.exports.unfollow = function(url, cb) {
+      var urlKey = _makeUrlKey(url);
+
+      Follow.deleteMany({'url_key': urlKey}, function(err) {
+        if (cb)
+          cb(err);
+      });
     }
 
     module.exports.isFollowing = function(url, cb) {
       var urlKey = _makeUrlKey(url);
 
       Follow.findOne({'url_key': urlKey}, function(err, doc) {
-        cb(err, doc);
+        if (cb)
+          cb(err, doc);
       });
     }
 
@@ -197,9 +220,8 @@
         $sample: { size: 100 }
       }], 
       function(err, follows) {
-        cb(err, follows);
+        if (cb)
+          cb(err, follows);
       });
     }
-
-
 }());

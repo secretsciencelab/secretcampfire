@@ -1,6 +1,7 @@
 function FollowButton(cfg) {
   this.uri = cfg.uri;
   this.selector = cfg.selector;
+  this.isFollowing = cfg.isFollowing;
 
   this.init();
 }
@@ -12,7 +13,10 @@ FollowButton.prototype.init = function() {
     e.preventDefault();
 
     SetBlogWidget.getBlog(function(url) {
-      fb.handleFollow(url);
+      if (!fb.isFollowing)
+        fb.handleFollow(url);
+      else
+        fb.handleUnfollow(url);
     });
     
     return false;
@@ -23,6 +27,14 @@ FollowButton.prototype.handleFollow = function(userUrl) {
   var followUrl = this.uri;
 
   var url = userUrl + "/dashboard?follow=" + encodeURIComponent(followUrl);
+  var tab = window.open(url, '_blank');
+  tab.focus();
+}
+
+FollowButton.prototype.handleUnfollow = function(userUrl) {
+  var unfollowUrl = this.uri;
+
+  var url = userUrl + "/dashboard?unfollow=" + encodeURIComponent(unfollowUrl);
   var tab = window.open(url, '_blank');
   tab.focus();
 }

@@ -130,7 +130,34 @@
         </button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div><!--footer-->
-    </div></div><!--document->
+    </div></div><!--document-->
+  </div><!--modal-->
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="unfollow-modal">
+    <div class="modal-dialog" role="document"><div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Unfollow blog</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div><!--header-->
+      <div class="modal-body"><form id="unfollow-form">
+        <div class="form-group">
+          <input type="text" class="form-control form-unfollow-url" 
+            value="" placeholder="Blog URL">
+        </div>
+      </form></div><!--body-->
+      <div id="unfollow-success-alert" 
+        class="alert alert-success collapse" role="alert">Unfollow success!</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" 
+          id="unfollow-save-button">
+          <span class='oi oi-minus' title='Unfollow' aria-hidden='true'></span>
+          Unfollow
+        </button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div><!--footer-->
+    </div></div><!--document-->
   </div><!--modal-->
 
   <script>
@@ -139,7 +166,8 @@
 
     var dash = new Dashboard({
       "postSelector": "#create-post",
-      "followSelector": "#follow"
+      "followSelector": "#follow",
+      "unfollowSelector": "#unfollow"
     });
 
     var renderer = null;
