@@ -38,7 +38,7 @@ var SetBlogWidget = new function() {
       if (!data.is_owner)
         return;
 
-      var url = window.location.host;
+      var url = window.location.protocol + "//" + window.location.host;
       $(sbw.selector + "-form .form-blog-url").val(url);
       sbw.handleSave();
     });

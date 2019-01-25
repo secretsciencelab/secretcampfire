@@ -14,12 +14,12 @@ var SessionDatastore = new function() {
   };
 
   this.makeDatastoreKey = function(key) {
-    //var base = window.location.host;
-    //base = base.replace(/[^a-z0-9]/gmi, "_");
-    //return base + "_" + key;
-
     // use global keys so they are visible across sites
-    return "<%= MASTER_URL %>_" + key;
+    //var base = window.location.host;
+    var base = "<%= MASTER_URL %>";
+
+    base = base.replace(/[^a-z0-9]/gmi, "_");
+    return base + "_" + key;
   };
 
   this.receiveMessage = function(event) {
