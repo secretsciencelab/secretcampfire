@@ -17,6 +17,11 @@
   <div class="container">
     <div id="feed-grid" class="grid">
       <div class="grid-sizer col-md-4"></div>
+
+      <div id="no-posts-message" class="text-center collapse">
+        <img id="center-logo" src="/media/logoLight.png" />
+        <div>No posts yet</div>
+      </div>
     </div><!--feed-grid-->
   </div><!--container-->
 
@@ -74,7 +79,10 @@
       {
         var cfg = {
           "uris": ["<%= uri %>"],
-          "selector": "#feed-grid"
+          "selector": "#feed-grid",
+          "onNoPosts": function() {
+            $("#no-posts-message").show();          
+          }
         };
         renderer = new RenderFeed(cfg);
       }
