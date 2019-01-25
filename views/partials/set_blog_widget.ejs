@@ -32,6 +32,14 @@ var SetBlogWidget = new function() {
     this.selector = selector;
 
     var sbw = this;
+
+    // auto-set blog to current site if logged in
+    $.getJSON("/is_owner", function(data) {
+      var url = window.location.host;
+      $(sbw.selector + "-form .form-blog-url").val(url);
+      sbw.handleSave();
+    });
+
     $(this.selector+"-save-button").click(function(e) {
       e.preventDefault();
       sbw.handleSave();
