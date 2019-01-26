@@ -8,7 +8,7 @@ An immortal, lightweight, self-hosted microblogging system that...
 - can never be killed, because you own and control:
   - your blog
   - your blog's content 
-  - your blogs social network
+  - your blog's social network
 - is open-source, so you may customize it to your heart's content
 - can run on any platform you like, so you are never locked into one service
 
