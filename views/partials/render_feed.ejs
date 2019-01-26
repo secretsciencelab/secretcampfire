@@ -1,11 +1,15 @@
 function RenderFeed(cfg) {
-  if (!cfg.uris || cfg.uris.length == 0)
-    return;
-
   this.selector = cfg.selector;
   this.selectorButton = cfg.selector+"-button";
   this.templateSelector = this.selector + "-template";
   this.onNoPosts = cfg.onNoPosts;
+
+  if (!cfg.uris || cfg.uris.length == 0)
+  {
+    if (this.onNoPosts)
+      this.onNoPosts();
+    return;
+  }
 
   this._mdConverter = new showdown.Converter();
   this._numPostsFetched = 0;
@@ -179,5 +183,5 @@ RenderFeed.prototype.allFeedsDone = function() {
   $(this.selectorButton).hide();
   
   if (this._numPostsFetched == 0 && this.onNoPosts)
-    this.onNoPosts();  
+    this.onNoPosts();
 }

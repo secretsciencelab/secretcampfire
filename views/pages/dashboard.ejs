@@ -155,9 +155,15 @@
     </div></div><!--document-->
   </div><!--modal-->
 
-  <div id="no-posts-message" class="text-center collapse">
-    <img id="center-logo" src="/media/logoLight.png" />
+  <div id="no-posts-message" class="mt-3 text-center collapse">
+    <img id="center-logo" src="/media/logoLight.png" class="mb-3"/>
     <div>No posts yet</div>
+  </div>
+
+  <div id="no-follows-message" class="mt-3 text-center collapse">
+    <img id="center-logo" src="/media/logoLight.png" class="mb-3"/>
+    <div>Nothing to see in your feed yet</div>
+    <div>Please follow more blogs</div>
   </div>
 
   <% include ../partials/footer.ejs %>
@@ -178,7 +184,10 @@
         "uris": <%- JSON.stringify(render_uris) %>,
         "selector": "#posts",
         "onNoPosts": function() {
-          $("#no-posts-message").show();          
+          if (window.location.href.indexOf("dashboard") != -1)
+            $("#no-follows-message").show();          
+          else
+            $("#no-posts-message").show();          
         }
       };
 
