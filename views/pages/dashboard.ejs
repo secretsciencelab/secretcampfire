@@ -178,28 +178,24 @@
       "unfollowSelector": "#unfollow"
     });
 
-    var renderer = null;
     $.getJSON("<%= render_uris[0] %>", function(data) {
-      var cfg = {
-        "uris": <%- JSON.stringify(render_uris) %>,
-        "selector": "#posts",
-        "onNoPosts": function() {
-          console.log("no posts " + window.location.href.indexOf("dashboard"));
-          console.log("no posts " + window.location.href);
-          if (window.location.href.indexOf("dashboard") != -1)
-            $("#no-follows-message").show();          
-          else
-            $("#no-posts-message").show();          
-        }
-      };
-
       <%if (render_uris.length == 1) {%>
       if (data.style_url)
         addCss(data.style_url);
       <% } %>
-
-      renderer = new RenderFeed(cfg);
     });  
+
+    var cfg = {
+      "uris": <%- JSON.stringify(render_uris) %>,
+      "selector": "#posts",
+      "onNoPosts": function() {
+        if (window.location.href.indexOf("dashboard") != -1)
+          $("#no-follows-message").show();          
+        else
+          $("#no-posts-message").show();          
+      }
+    };
+    var renderer = new RenderFeed(cfg);
 
     function addCss(cssPath) {
       var stylesheet = document.createElement("link");

@@ -4,11 +4,8 @@ function RenderFeed(cfg) {
   this.templateSelector = this.selector + "-template";
   this.onNoPosts = cfg.onNoPosts;
 
-  console.log("RenderFeed ");
-  console.log(cfg.uris);
   if (!cfg.uris || cfg.uris.length == 0)
   {
-    console.log("no uris");
     if (this.onNoPosts)
       this.onNoPosts();
     return;
