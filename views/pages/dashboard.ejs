@@ -38,11 +38,6 @@
       <div class="col-5">
         <div id="posts" class="grid">
           <div class="grid-sizer"></div>
-
-          <div id="no-posts-message" class="text-center collapse">
-            <img id="center-logo" src="/media/logoLight.png" />
-            <div>No posts yet</div>
-          </div>
         </div>
       </div><!--col-->
       <div class="col"></div>
@@ -159,6 +154,13 @@
       </div><!--footer-->
     </div></div><!--document-->
   </div><!--modal-->
+
+  <div id="no-posts-message" class="text-center collapse">
+    <img id="center-logo" src="/media/logoLight.png" />
+    <div>No posts yet</div>
+  </div>
+
+  <% include ../partials/footer.ejs %>
 
   <script>
     <% include ../partials/dashboard.ejs %>
