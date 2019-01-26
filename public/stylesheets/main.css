@@ -11,11 +11,22 @@
   background-color: #16c !important;
 }
 
+/*
 nav:hover {
   background-color: rgba(255, 255, 255, 0.3);
 }
+*/
 .navbar-brand .logo {
   height: 35px;
+}
+#active-blog-url {
+	padding: 0px 10px;
+}
+.navbar-brand .logo, #active-blog-url {
+	background-color: rgba(255, 255, 255, 0.3);
+}
+.navbar-brand .logo:hover, #active-blog-url:hover {
+  background-color: rgba(255, 255, 255, 0.6);
 }
 #active-blog:hover {
   color: #46b;
@@ -51,3 +62,18 @@ nav:hover {
   margin-left: auto;
   margin-right: auto;
 }
+
+footer {
+  color: #666;
+}
+footer a {
+  color: #111;
+}
+footer a:hover {
+  text-decoration: none;
+}
+footer .logo {
+  height: 20px;
+  opacity: 0.5;
+}
+

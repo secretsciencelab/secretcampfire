@@ -45,6 +45,7 @@ var app = express();
 app.locals.SITE_NAME = consts.SITE_NAME;
 app.locals.SITE_EMAIL = consts.SITE_EMAIL;
 app.locals.MASTER_URL = consts.MASTER_URL;
+app.locals.MASTER_DOMAIN = consts.MASTER_DOMAIN;
 app.locals.MASTER_FEED = consts.MASTER_FEED;
 app.locals.NUM_POSTS_PER_FETCH = consts.NUM_POSTS_PER_FETCH;
 
