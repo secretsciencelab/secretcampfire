@@ -184,6 +184,8 @@
         "uris": <%- JSON.stringify(render_uris) %>,
         "selector": "#posts",
         "onNoPosts": function() {
+          console.log("no posts " + window.location.href.indexOf("dashboard"));
+          console.log("no posts " + window.location.href);
           if (window.location.href.indexOf("dashboard") != -1)
             $("#no-follows-message").show();          
           else
