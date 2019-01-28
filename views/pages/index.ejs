@@ -5,25 +5,29 @@
 </head>
 
 <body>
-  <div class="container mt-4">
-    <img id="center-logo" class="mt-5" src="/media/logoLight.png" />
-    <h1 class="mb-4 mt-3">Congratulations!</h1>
-    <p>Your <b><%= SITE_NAME %></b> blog is alive!</p>
-    <p>But before you run off to play, please secure your blog by setting your password:</p>
-    <ol>
-      <li>
-        Visit your <a href="/dashboard">Dashboard</a> and log in. (The default password is <em>password</em>).
-      </li>
-      <li>
-        Click on the <a href="/settings">Settings</a> button.
-      </li>
-      <li>
-        Set your new password and click Save.
-      </li>
-      <li>
-        Enjoy your shiny new <b><%= SITE_NAME %></b> blog!
-      </li>
-    </ol>
-  </div>
+  <div class="container mt-4"><div class="row">
+      <div class="col"></div>
+      <div class="col-md-6">
+        <img id="center-logo" class="mt-5" src="/media/logoLight.png" />
+        <h1 class="mb-4 mt-3">Congratulations!</h1>
+        <p>Your <b><%= SITE_NAME %></b> blog is alive!</p>
+        <p>But before you run off to play, secure your blog by setting your password:</p>
+        <ol>
+          <li>
+            Visit your <a href="/dashboard">Dashboard</a> and log in. (The default password is <em>password</em>).
+          </li>
+          <li>
+            Click on the <a href="/settings">Settings</a> button.
+          </li>
+          <li>
+            Set your new password and click Save.
+          </li>
+          <li>
+            Enjoy your shiny new <b><%= SITE_NAME %></b> blog!
+          </li>
+        </ol>
+      </div>
+      <div class="col"></div>
+  </div></div>
 </body>
 </html>
