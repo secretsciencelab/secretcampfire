@@ -1,0 +1,62 @@
+function News(cfg) {
+  this.url = cfg.url;
+  this.page = cfg.page;
+  this.selector = cfg.selector; // base #id for different news containers
+
+  this.init();
+}
+
+News.prototype.init = function() {
+  var news = this;
+  $.getJSON(news.url, function(data) {
+    news.feed = [];
+
+    var now = new Date();
+    for (var i=0; i < data.news.length; i++)
+    {
+      var post = data.news[i];
+      if (post.page.indexOf(news.page) == -1)
+        continue;
+
+      var postDate = new Date(post.date);
+      var diffTime = now.getTime() - postDate.getTime();
+      var oneDay = 24*60*60*1000;
+      var diffDays = Math.round(Math.abs(diffTime/oneDay));
+
+      if (diffDays > 30)
+        continue;
+
+      // TODO: check SessionDatastore to see if user hid this already
+
+      news.feed.push(post);
+    }
+
+    news.draw();
+  });
+}
+
+News.prototype.draw = function() {
+  for (var i=0; i < this.feed.length; i++)
+  {
+    var post = this.feed[i];
+    var container = $(this.selector+"-"+post.position);
+
+    var html = 
+      "<div class='news-post' data-id='" + post.id + "'>"
+      + "<button type='button' class='close' aria-label='Close'>"
+      + "<span aria-hidden='true'>&times;</span></button>"
+      + "<div class='headline'>" + post.headline + "</div>"
+      + "<div class='subhead'>" + post.subhead + "</div>"
+      + "<div class='body'>" + post.body + "</div>"
+      + "</div>";
+
+    container.append(html);
+  }
+
+  this.bindActions();
+}
+
+News.prototype.bindActions = function() {
+  // TODO bind actions to all "$(.news-post .close)"
+  // - if 'x' clicked, remember closed using SessionDatastore
+}

@@ -15,6 +15,12 @@
 
   <div class="container">
     <div class="row mb-5">
+      <div class="col" id="news-top"></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row mb-5">
       <div class="col"></div>
       <div class="col-md-6 text-center">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-post-modal">
@@ -34,15 +40,13 @@
     </div>
 
     <div class="row">
-      <div class="col">
-      </div>
+      <div class="col" id="news-left"></div>
       <div class="col-md-6">
         <div id="posts" class="grid">
           <div class="grid-sizer"></div>
         </div>
       </div><!--col-->
-      <div class="col">
-      </div>
+      <div class="col" id="news-right"></div>
     </div><!--row-->
 
     <div id="posts-button" class="collapse text-center">
@@ -173,6 +177,7 @@
   <script>
     <% include ../partials/dashboard.ejs %>
     <% include ../partials/render_feed.ejs %>
+    <% include ../partials/news.ejs %>
 
     var dash = new Dashboard({
       "postSelector": "#create-post",
@@ -187,7 +192,7 @@
       <% } %>
     });  
 
-    var cfg = {
+    var renderer = new RenderFeed({
       "uris": <%- JSON.stringify(render_uris) %>,
       "selector": "#posts",
       "onNoPosts": function() {
@@ -196,8 +201,14 @@
         else
           $("#no-posts-message").show();          
       }
-    };
-    var renderer = new RenderFeed(cfg);
+    });
+
+    var news = new News({
+      //"url": "<%= MASTER_NEWS %>",
+      "url": "http://localhost:5000/news.json", // FIXME
+      "selector": "#news",
+      "page": "dashboard"
+    });
 
     function addCss(cssPath) {
       var stylesheet = document.createElement("link");
@@ -207,6 +218,8 @@
       document.getElementsByTagName("head")[0].appendChild(stylesheet);
       window.___gcfg={parsetags:'onload'};
     }
+
+    console.log(JSON.stringify(new Date()));
   </script>
 </body>
 </html>

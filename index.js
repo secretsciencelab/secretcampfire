@@ -47,6 +47,7 @@ app.locals.SITE_EMAIL = consts.SITE_EMAIL;
 app.locals.MASTER_URL = consts.MASTER_URL;
 app.locals.MASTER_DOMAIN = consts.MASTER_DOMAIN;
 app.locals.MASTER_FEED = consts.MASTER_FEED;
+app.locals.MASTER_NEWS = consts.MASTER_NEWS;
 app.locals.NUM_POSTS_PER_FETCH = consts.NUM_POSTS_PER_FETCH;
 
 app
