@@ -37,7 +37,7 @@ var Navbar = new function() {
       return;
 
     setInterval(function() {
-      SessionDatastore.getData("blog_url", function(url) {
+      SessionDatastore.getData("blog_url", function(key, url) {
         if (!url || url.replace(/^\s+|\s+$/g, '').length == 0)
         {
           $("#active-blog-url").html("").hide();

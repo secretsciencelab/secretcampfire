@@ -11,11 +11,8 @@
   background-color: #16c !important;
 }
 
-/*
-nav:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-*/
+/* navbar */
+
 .navbar-brand .logo {
   height: 35px;
 }
@@ -31,6 +28,8 @@ nav:hover {
 #active-blog:hover {
   color: #46b;
 }
+
+/* masthead */
 
 #jumbotron {
   padding: 2rem 2rem;
@@ -63,6 +62,8 @@ nav:hover {
   margin-right: auto;
 }
 
+/* footer */
+
 footer {
   color: #666;
 }
@@ -77,3 +78,8 @@ footer .logo {
   opacity: 0.5;
 }
 
+/* news */
+
+.news-post img {
+  max-width: 100%;
+}

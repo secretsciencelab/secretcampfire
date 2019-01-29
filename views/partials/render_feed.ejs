@@ -78,7 +78,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
   this.infscroll = this.infScrollContainer.data('infiniteScroll');
 
   // https://infinite-scroll.com/extras.html#loading-json
-  this.infScrollContainer.on('load.infiniteScroll', function(ev, response, path) {
+  this.infScrollContainer.on('load.infiniteScroll', function(ev, resp, path) {
     var data = null;
     var feedIdx = 0;
 
@@ -86,7 +86,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
     {
       var rootPath = fr.getFeedRootAndPageIdx(path)[0];
       feedIdx = fr.uriRoot2FeedIdx[rootPath];
-      data = JSON.parse(response);
+      data = JSON.parse(resp);
       if (data.posts)
         fr._numPostsFetched += data.posts.length;
     }
@@ -96,11 +96,22 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       // nothing more for this feed
       fr.feeds[feedIdx].has_more = false;
 
-      // hide 'more' button if all feeds are done
       if (!fr.feedsHaveMore())
+      {
         fr.allFeedsDone();
+        return;
+      }
 
-      return;
+      // push dummy post so infscroll thinks there was an update 
+      // ... and other feeds can continue
+      if (!data)
+        data = {};
+      if (!data.posts)
+        data.posts = [];
+      data.posts.push(null);
+
+      // auto-trigger loading the next feed
+      $(fr.selectorButton).trigger('click'); 
     }
     else
       $(fr.selectorButton).fadeIn();
@@ -114,31 +125,40 @@ RenderFeed.prototype.initInfiniteScroll = function() {
     for (var i=0; i < data.posts.length; i++)
     {
       var post = data.posts[i];
-      var postRenderUrl = postUrlBase + "/render/" 
-        + encodeURIComponent(postUrlBase + post.post_url);
-
-      var newCard = $(fr.templateSelector + " > div").clone();
-      newCard.attr('id', "card-"+(fr.infCardIdCounter++));
-      newCard.find("img").data('iscroll-id', newCard.attr('id'));
-      newCard.find(".card-img-fold-link").attr("href", postRenderUrl);
-      if (post.urls.length)
+      var cardId = fr.infCardIdCounter++;
+      
+      var newCard = $("<div class='d-none' id='card-" + cardId + "'>"
+        + "<img data-iscroll-id='" + cardId + "' src=''></div>");
+      if (post)
       {
-        newCard.find(".card-img-top-link").attr("href", post.urls[0]);
-        newCard.find(".card-title-link").attr("href", post.urls[0]);
+        newCard = $(fr.templateSelector + " > div").clone();
+
+        var postRenderUrl = postUrlBase + "/render/" 
+          + encodeURIComponent(postUrlBase + post.post_url);
+
+        newCard.attr('id', "card-"+cardId);
+        newCard.find("img").data('iscroll-id', newCard.attr('id'));
+        newCard.find(".card-img-fold-link").attr("href", postRenderUrl);
+        if (post.urls && post.urls.length)
+        {
+          newCard.find(".card-img-top-link").attr("href", post.urls[0]);
+          newCard.find(".card-title-link").attr("href", post.urls[0]);
+        }
+        if (post.thumbs && post.thumbs.length)
+          newCard.find(".card-img-top").attr('src', post.thumbs[0]).show();
+        else
+          newCard.find(".card-img-top").hide();
+        newCard.find(".card-author-link").attr('href', postUrlBase);
+        if (data.avatar_url)
+          newCard.find(".card-author-avatar").css('background-image', 
+            'url(' + data.avatar_url + ')');
+        newCard.find(".card-author-post-link").attr('href', postRenderUrl);
+        newCard.find(".card-author").html(urlObj.host);
+        newCard.find(".card-title").html(post.title);
+        var markdown = fr._mdConverter.makeHtml(post.text);
+        newCard.find(".card-text").html(markdown);
       }
-      if (post.thumbs.length)
-        newCard.find(".card-img-top").attr('src', post.thumbs[0]).show();
-      else
-        newCard.find(".card-img-top").hide();
-      newCard.find(".card-author-link").attr('href', postUrlBase);
-      if (data.avatar_url)
-        newCard.find(".card-author-avatar").css('background-image', 
-          'url(' + data.avatar_url + ')');
-      newCard.find(".card-author-post-link").attr('href', postRenderUrl);
-      newCard.find(".card-author").html(urlObj.host);
-      newCard.find(".card-title").html(post.title);
-      var markdown = fr._mdConverter.makeHtml(post.text);
-      newCard.find(".card-text").html(markdown);
+
       newCards = newCards.add(newCard);
       fr.msnryContainer.append(newCard);
     }
@@ -180,6 +200,7 @@ RenderFeed.prototype.feedsHaveMore = function() {
 }
 
 RenderFeed.prototype.allFeedsDone = function() {
+  // hide 'more' button
   $(this.selectorButton).hide();
   
   if (this._numPostsFetched == 0 && this.onNoPosts)

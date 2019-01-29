@@ -1,31 +1,4 @@
 { 
   "news": [
-    {
-      "id": "1",
-      "date": "2019-01-28T08:26:47.486Z",
-      "position": "top",
-      "page": ["dashboard"],
-      "headline": "Headline",
-      "subhead": "subhead",
-      "body": "hello world"
-    },
-    {
-      "id": "2",
-      "date": "2019-01-28T08:26:47.486Z",
-      "position": "left",
-      "page": ["dashboard"],
-      "headline": "Headline",
-      "subhead": "subhead",
-      "body": "hello world"
-    },
-    {
-      "id": "3",
-      "date": "2019-01-28T08:26:47.486Z",
-      "position": "right",
-      "page": ["dashboard"],
-      "headline": "Headline",
-      "subhead": "subhead",
-      "body": "hello world"
-    }
   ] 
 }

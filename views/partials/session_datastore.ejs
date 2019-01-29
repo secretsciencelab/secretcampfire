@@ -77,12 +77,12 @@ var SessionDatastore = new function() {
     var data = $(this.selector).data(this._masterKey);
     if (!data)
     {
-      cb(null);
+      cb(key, null);
       return;
     }
 
     data = JSON.parse(data);
-    cb(data[this.makeDatastoreKey(key)]);
+    cb(key, data[this.makeDatastoreKey(key)]);
   }
 };
 

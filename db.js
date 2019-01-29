@@ -46,52 +46,6 @@
     });
     Follow = mongoose.model('Follow', FollowSchema);
 
-    /*
-     * blog
-     */
-    module.exports.getSettings = function(cb) {
-      Settings.findOne().sort({created_at: -1})
-        .exec(function(err, settings) {
-          if (settings)
-          {
-            // return existing
-            if (cb)
-              cb(err, settings);
-            return;
-          }
-
-          // welcome new user! 
-          // make new Settings entry
-          settings = new Settings();
-          settings.id = settings._id;
-          settings.password = md5("password");
-
-          settings.save(function(err) {
-            if (cb)
-              cb(err, settings)
-          });
-
-          // follow "staff" blog to start
-          db.follow(consts.MASTER_FEED, null);
-        });
-    }
-
-    module.exports.saveSettings = function(newSettings, cb) {
-      module.exports.getSettings(function(err, settings) {
-        settings.name = newSettings.name;  
-        settings.description = newSettings.description;  
-        settings.avatar_url = newSettings.avatar_url;  
-        settings.header_url = newSettings.header_url;  
-        if (newSettings.password)
-          settings.password = md5(newSettings.password);
-        
-        settings.save(function(err) {
-          if (cb)
-            cb(err, settings);
-        });
-      });
-    }
-
     /* 
      * post
      */
@@ -224,4 +178,51 @@
           cb(err, follows);
       });
     }
+
+    /*
+     * blog
+     */
+    module.exports.getSettings = function(cb) {
+      Settings.findOne().sort({created_at: -1})
+        .exec(function(err, settings) {
+          if (settings)
+          {
+            // return existing
+            if (cb)
+              cb(err, settings);
+            return;
+          }
+
+          // welcome new user! 
+          // make new Settings entry
+          settings = new Settings();
+          settings.id = settings._id;
+          settings.password = md5("password");
+
+          settings.save(function(err) {
+            if (cb)
+              cb(err, settings)
+          });
+
+          // follow "staff" blog to start
+          module.exports.follow(consts.MASTER_FEED, null);
+        });
+    }
+
+    module.exports.saveSettings = function(newSettings, cb) {
+      module.exports.getSettings(function(err, settings) {
+        settings.name = newSettings.name;  
+        settings.description = newSettings.description;  
+        settings.avatar_url = newSettings.avatar_url;  
+        settings.header_url = newSettings.header_url;  
+        if (newSettings.password)
+          settings.password = md5(newSettings.password);
+        
+        settings.save(function(err) {
+          if (cb)
+            cb(err, settings);
+        });
+      });
+    }
+
 }());

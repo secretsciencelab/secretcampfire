@@ -51,13 +51,13 @@ app.locals.MASTER_NEWS = consts.MASTER_NEWS;
 app.locals.NUM_POSTS_PER_FETCH = consts.NUM_POSTS_PER_FETCH;
 
 app
+  .use(cors())
+  .options('*', cors())
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({ extended: true }))
-  .use(cors())
-  .options('*', cors())
   .use(session({
     secret: app.locals.SITE_NAME, resave: false, saveUninitialized: false 
   }))

@@ -14,7 +14,7 @@
   <% include ../partials/masthead.ejs %>
 
   <div class="container">
-    <div class="row mb-5">
+    <div class="row">
       <div class="col" id="news-top"></div>
     </div>
   </div>
@@ -204,8 +204,8 @@
     });
 
     var news = new News({
-      //"url": "<%= MASTER_NEWS %>",
-      "url": "http://localhost:5000/news.json", // FIXME
+      "url": "<%= MASTER_NEWS %>",
+      //"url": "http://localhost:5000/news_test.json", // ANDBG
       "selector": "#news",
       "page": "dashboard"
     });

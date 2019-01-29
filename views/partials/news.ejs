@@ -3,14 +3,16 @@ function News(cfg) {
   this.page = cfg.page;
   this.selector = cfg.selector; // base #id for different news containers
 
+  this._datastoreKey = 'news';
+
   this.init();
 }
 
 News.prototype.init = function() {
   var news = this;
-  $.getJSON(news.url, function(data) {
-    news.feed = [];
 
+  news.postId2Post = {};
+  $.getJSON(news.url, function(data) {
     var now = new Date();
     for (var i=0; i < data.news.length; i++)
     {
@@ -26,37 +28,57 @@ News.prototype.init = function() {
       if (diffDays > 30)
         continue;
 
-      // TODO: check SessionDatastore to see if user hid this already
-
-      news.feed.push(post);
+      // check if user closed this already
+      news.postId2Post[post.id] = post;
+      SessionDatastore.getData(news._makeClosedKey(post.id),
+        function(key, closed) {
+          if (!closed)
+            news.draw(news.postId2Post[key.split("_closed_")[1]]);
+        });
     }
-
-    news.draw();
   });
 }
 
-News.prototype.draw = function() {
-  for (var i=0; i < this.feed.length; i++)
-  {
-    var post = this.feed[i];
-    var container = $(this.selector+"-"+post.position);
+News.prototype.draw = function(post) {
+  var container = $(this.selector+"-"+post.position);
 
-    var html = 
-      "<div class='news-post' data-id='" + post.id + "'>"
-      + "<button type='button' class='close' aria-label='Close'>"
-      + "<span aria-hidden='true'>&times;</span></button>"
-      + "<div class='headline'>" + post.headline + "</div>"
-      + "<div class='subhead'>" + post.subhead + "</div>"
-      + "<div class='body'>" + post.body + "</div>"
-      + "</div>";
-
-    container.append(html);
+  var pos2Class = {
+    'top': 'mb-3',
+    'right': 'ml-3',
+    'left': 'mr-3'
   }
-
-  this.bindActions();
+  var xClass = pos2Class[post.position];
+  var html = 
+    "<div class='news-post " + xClass + "' data-id='" + post.id + "'>"
+    + "<button type='button' class='close collapse' aria-label='Close'>"
+    + "<span aria-hidden='true'>&times;</span></button>"
+    + "<div class='headline'>" + post.headline + "</div>"
+    + "<div class='subhead'>" + post.subhead + "</div>"
+    + "<div class='body'>" + post.body + "</div>"
+    + "</div>";
+  var el = $(html);
+  this.bindActions(el);
+  container.append(el);
 }
 
-News.prototype.bindActions = function() {
-  // TODO bind actions to all "$(.news-post .close)"
-  // - if 'x' clicked, remember closed using SessionDatastore
+News.prototype.bindActions = function(el) {
+  var news =  this;
+  el.find(".close").click(function(e) {
+    var postId = el.data('id');
+    SessionDatastore.setData(news._makeClosedKey(postId), "1");
+    el.hide();
+  });
+
+  el.bind({
+    mouseenter: function(e) {
+      el.find(".close").show();
+    },
+    mouseleave: function(e) {
+      el.find(".close").hide();
+    }
+  });
+}
+
+News.prototype._makeClosedKey = function(postId) {
+  return this.datastoreKey + "_closed_" + postId;  
 }

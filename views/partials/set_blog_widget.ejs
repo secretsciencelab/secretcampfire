@@ -78,7 +78,7 @@ var SetBlogWidget = new function() {
 
   this.getBlog = function(cb, checkOnly) {
     var sbw = this;
-    SessionDatastore.getData(this._datastoreKey, function(url) {
+    SessionDatastore.getData(this._datastoreKey, function(key, url) {
       if (url && url.replace(/^\s+|\s+$/g, '').length != 0)
       {
         // blog URL already set
@@ -99,7 +99,7 @@ var SetBlogWidget = new function() {
 
   this.open = function() {
     var sbw = this;
-    SessionDatastore.getData(sbw._datastoreKey, function(url) {
+    SessionDatastore.getData(sbw._datastoreKey, function(key, url) {
       $(sbw.selector+"-form .form-blog-url").val(url);
       $(sbw.selector+"-modal").modal("show");
     });
