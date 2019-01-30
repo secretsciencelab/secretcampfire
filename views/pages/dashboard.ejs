@@ -20,6 +20,15 @@
   </div>
 
   <div class="container">
+    <div id="back-to-dash-button" class="row mb-3 text-center collapse">
+      <div class="col">
+        <a href="/dashboard"><button type="button" class="btn btn-sm btn-primary">
+          <span class='oi oi-home' title='Back to Dashboard' aria-hidden='true'></span>
+          Back to Dashboard
+        </button></a>
+      </div>
+    </div>
+
     <div class="row mb-5">
       <div class="col"></div>
       <div class="col-md-6 text-center">
@@ -218,6 +227,10 @@
       document.getElementsByTagName("head")[0].appendChild(stylesheet);
       window.___gcfg={parsetags:'onload'};
     }
+
+    
+    if (window.location.href.indexOf("posts") != -1)
+      $("#back-to-dash-button").show();
 
     console.log(JSON.stringify(new Date()));
   </script>
