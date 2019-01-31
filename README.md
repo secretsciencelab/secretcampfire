@@ -4,13 +4,14 @@
 
 An immortal, lightweight, self-hosted microblogging system that...
 - supports tumblr features like `reblog`, `follow` and an infinite-scroll `dashboard` feed
-- is built with 100% free (but industry-grade) services, so it costs you nothing to run your blog 24/7 forever
+- runs in the cloud and is built with 100% free (but industry-grade) components, so it costs you nothing to run your blog 24/7 forever
 - can never be killed, because you own and control:
   - your blog
   - your blog's content 
   - your blog's social network
 - is open-source, so you may customize it to your heart's content
 - can run on any platform you like, so you are never locked into one service
+- is free as in *free*dom
 
 ## Quickstart
 
@@ -31,3 +32,14 @@ An immortal, lightweight, self-hosted microblogging system that...
 ## 
 
 ![secretcampfire](http://assets.innbetweenworlds.com/media/campfire/glowingForest.jpg)
+
+## Prologue
+
+Once upon a time, most websites on the Internet were owned by the people. Humble individuals. Mom, pop, brother, sister. But that time is long gone. Today, most websites and publishing platforms lie in the grubby claws of a few big corporations. 
+
+Whenever someone else controls your data, they have power over you. They can hold you hostage, control what you say and strangle your voice anytime what you say does not agree with their business agenda.
+And so today, more than ever, our freedom is in danger.
+
+And that's why `secret campfire` was created on January 2019. Its purpose is to preserve our freedom on the Interwebs. 
+
+Share the love and defend your freedom! http://secretcampfire.com
