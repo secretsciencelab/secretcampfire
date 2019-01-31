@@ -194,15 +194,19 @@
       "unfollowSelector": "#unfollow"
     });
 
-    $.getJSON("<%= render_uris[0] %>", function(data) {
-      <%if (render_uris.length == 1) {%>
-      if (data.style_url)
-        addCss(data.style_url);
-      <% } %>
-    });  
+    var renderUris = <%- JSON.stringify(render_uris) %>;
+
+    if (renderUris.length == 1) {
+      $.getJSON(renderUris[0], function(data) {
+        if (data.style_url)
+          addCss(data.style_url);
+        if (data.name)
+          $("title").prepend(data.name + " - ");
+      });  
+    }
 
     var renderer = new RenderFeed({
-      "uris": <%- JSON.stringify(render_uris) %>,
+      "uris": renderUris,
       "selector": "#posts",
       "onNoPosts": function() {
         if (window.location.href.indexOf("dashboard") != -1)
