@@ -10,6 +10,13 @@ function Dashboard(cfg) {
 Dashboard.prototype.bindEvents = function() {
   var dash = this;
 
+  $(dash.postSelector+"-modal").on('shown.bs.modal', function() {
+    $(this).find('input:text')[0].focus();
+  });
+  $(dash.followSelector+"-modal").on('shown.bs.modal', function() {
+    $(this).find('input:text')[0].focus();
+  });
+
   var $pform = $(dash.postSelector+"-form");
   $(dash.postSelector+"-save-button").click(function(e) {
     e.preventDefault();
