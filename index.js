@@ -191,7 +191,15 @@ app.get('/post/:id', function (req, res) {
 app.get('/render/:uri?', function (req, res) {
   var uri = getFeedUrl(req); // default to own feed
   if (req.params['uri'])
-    uri = req.params['uri'];
+  {
+    if (/^\d+$/.test(req.params['uri']))
+    {
+      // all digits = offset into own feed
+      uri += "/" + req.params['uri'];
+    }
+    else
+      uri = req.params['uri'];
+  }
 
   res.render('pages/render', {
     'uri': uri

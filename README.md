@@ -2,7 +2,7 @@
 
 # secret campfire (version 1.0)
 
-An immortal, lightweight, self-hosted microblogging system that...
+An immortal self-hosted microblogging system that...
 - supports tumblr features like `reblog`, `follow` and an infinite-scroll `dashboard` feed
 - runs in the cloud and is built with 100% free (but industry-grade) components, so it costs you nothing to run your blog 24/7 forever
 - can never be killed, because you own and control:
