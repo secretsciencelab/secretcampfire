@@ -35,9 +35,9 @@ An immortal, lightweight, self-hosted microblogging system that...
 
 ## Prologue
 
-Once upon a time, most websites on the Internet were owned by the people. Humble individuals. Mom, pop, brother, sister. But that time is long gone. Today, most websites and publishing platforms lie in the grubby claws of a few big corporations. 
+Once upon a time, most websites on the Internet were owned by the people. Humble individuals. Mom, pop, brother and sister. But that time is long gone. Today, most websites and publishing platforms lie in the grubby claws of a few big corporations. 
 
-Whenever someone else controls your data, they have power over you. They can hold you hostage, control what you say and strangle your voice anytime what you say does not agree with their business agenda.
+When someone else controls your data, they have power over you. They can hold you hostage, control what you say and strangle your voice anytime what you say does not agree with their business agenda.
 And so today, more than ever, our freedom is in danger.
 
 And that's why `secret campfire` was created on January 2019. Its purpose is to preserve our freedom on the Interwebs. 
