@@ -65,8 +65,8 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       var feedIdx = pageIndex % fr.feeds.length;
       var root = fr.feeds[feedIdx].root;
       var offset = fr.feeds[feedIdx].start_offset
-        + parseInt(pageIndex / fr.feeds.length);
-      offset *= <%= NUM_POSTS_PER_FETCH %>;
+        + (parseInt(pageIndex / fr.feeds.length)
+           * <%= NUM_POSTS_PER_FETCH %>);
 
       return root + "/" + offset;
     },
