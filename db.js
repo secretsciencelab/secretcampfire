@@ -60,7 +60,9 @@
       try {
         // sanitize postData
         for (key in PostSchema.paths)
-          if (key.indexOf("_") != 0 && typeof postData[key] === "undefined")
+          if (key.indexOf("_") != 0 
+            && key.indexOf("date") == -1
+            && typeof postData[key] === "undefined")
             postData[key] = ""
         postData.thumbs = _makeArray(postData.thumbs);
         postData.urls = _makeArray(postData.urls);
