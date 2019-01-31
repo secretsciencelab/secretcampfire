@@ -106,8 +106,14 @@ function getFeedUrl(req) {
   // default to own feed
   return getReqProtocol(req) + '://' + req.headers.host + '/feed';
 }
+function nocache(req, res, next) {
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.header('Expires', '-1');
+  res.header('Pragma', 'no-cache');
+  next();
+}
 
-app.get('/feed/:index?', function (req, res) {
+app.get('/feed/:index?', nocache, function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
   var test = req.query['test'];
