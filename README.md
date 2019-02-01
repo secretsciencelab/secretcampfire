@@ -13,21 +13,23 @@ An immortal personal microblogging system that...
 - can run on any platform you like, so you are never locked into one service
 - is free as in *free*dom
 
-## Quickstart (estimated time: 3 minutes)
+## Quickstart (estimated time: 5 minutes)
 
 1. Click [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-2. Enter a name for your app. This name will become your blog's address. E.g. if you enter `secretcampfire`, your blog's address will be `secretcampfire.herokuapp.com`. Click `Deploy app`.
+2. Make a new Heroku account if you don't have one yet (it's free). Sign in if you do.
 
-3. Go to [dashboard.heroku.com](https://dashboard.heroku.com) and select your app.
+3. Enter a name for your app. This name will become your blog's address. E.g. if you enter `secretcampfire`, your blog's address will be `secretcampfire.herokuapp.com`. Click `Deploy app`.
 
-4. Click the `Resources` tab at the top.
+4. Go to [dashboard.heroku.com](https://dashboard.heroku.com) and select your app.
 
-5. In the `Add-ons` search bar, type `mlab` and select `mLab MongoDB`. This will be the database that stores your blog's content. Select the `Sandbox - Free` plan and click `Provision`.
+5. Click the `Resources` tab at the top.
 
-6. Visit `your-app.herokuapp.com` in a browser (where `your-app` is the name you entered in step 2). 
+6. In the `Add-ons` search bar, type `mlab` and select `mLab MongoDB`. This will be the database that stores your blog's content. Select the `Sandbox - Free` plan and click `Provision`.
 
-7. If all went well, you'll see a welcome message that says "Congratulations! Your secret campfire blog is alive!" Follow the instructions there to set your password and secure your blog. 
+7. Visit `your-app.herokuapp.com` in a browser (where `your-app` is the name you entered in step 2). 
+
+8. If all went well, you'll see a welcome message that says "Congratulations! Your secret campfire blog is alive!" Follow the instructions there to set your password and secure your blog. 
   
 ## 
 
