@@ -90,3 +90,24 @@ footer .logo {
 .news-post img {
   max-width: 100%;
 }
+
+/* kalona */
+#kalona {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  cursor: pointer;
+}
+#kalona a:focus {
+  outline: none;
+}
+#kalona img {
+  width: 30px;
+}
+.kalona-popover {
+	background-color: rgba(0, 0, 0, 0.8);
+}
+.kalona-popover .popover-header,
+.kalona-popover .popover-body {
+  color: #ddd;
+}

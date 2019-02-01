@@ -1,0 +1,16 @@
+<div id="kalona">
+  <a id="kalona-button" tabindex="0" role="button" data-toggle="popover">
+    <img src="/media/kalona.png"/>
+  </a>
+</div>
+
+<script>
+  $("#kalona-button").popover({
+    container: 'body',
+    html: true,
+    placement: 'auto',
+    content: "Hello, friend :)",
+    trigger: 'focus',
+    template: '<div class="popover kalona-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
+  });
+</script>
