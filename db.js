@@ -84,14 +84,8 @@
       }
     }
 
-    module.exports.reblog = function(post) {
-    }
-
     module.exports.getPost = function(id, cb) {
       Post.findById(id, cb);
-    }
-
-    module.exports.update = function(id, keyVals) {
     }
 
     /* 
