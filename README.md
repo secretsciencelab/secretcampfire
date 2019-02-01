@@ -27,7 +27,7 @@ An immortal personal microblogging system that...
 
 6. In the `Add-ons` search bar, type `mlab` and select `mLab MongoDB`. This database is to store your blog's content. Select the `Sandbox - Free` plan and click `Provision`.
 
-7. Visit `your-app.herokuapp.com` in a browser (where `your-app` is the name you entered in step 2). 
+7. Visit `your-app.herokuapp.com` in a browser (where `your-app` is the name you entered in step 3). 
 
 8. If all went well, you'll see a welcome message that says "Congratulations! Your secret campfire blog is alive!" Follow the instructions there to set your password and secure your blog. 
   
