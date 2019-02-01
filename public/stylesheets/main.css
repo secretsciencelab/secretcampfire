@@ -50,6 +50,12 @@
 }
 #masthead h1, #masthead .lead {
 }
+#masthead a {
+  color: #212529;
+}
+#masthead a:hover {
+  text-decoration: none;
+}
 #masthead .avatar {
   margin-top: calc(-60px - 2rem);
   width: 120px;

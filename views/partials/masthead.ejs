@@ -3,8 +3,8 @@
 <!-- jumbotron -->
 <div class="jumbotron jumbotron-fluid" id="jumbotron"></div>
 <div id="masthead" class="collapse">
-  <div class="avatar collapse"></div>
-  <h1 class="collapse"></h1>
+  <a href="/"><div class="avatar collapse"></div></a>
+  <a href="/"><h1 class="collapse"></h1></a>
   <p class="lead collapse"></p>
 </div>
 
@@ -43,6 +43,9 @@ var Masthead = new function() {
 
         if (data.description)
           $("#masthead .lead").html(data.description).show();
+
+        if (data.blog_url)
+          $("#masthead a").attr('href', data.blog_url);
       }
     });
   }
