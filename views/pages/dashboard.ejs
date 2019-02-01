@@ -15,18 +15,22 @@
 
   <div class="container">
     <div class="row">
-      <div class="col" id="news-top"></div>
+      <div class="col">
+        <div id="news-top" class="p-2 mb-2 collapse"></div>
+      </div>
     </div>
   </div>
 
   <div class="container">
-    <div id="back-to-dash-button" class="row mb-3 text-center collapse">
-      <div class="col">
+    <div class="row">
+      <div class="col"></div>
+      <div id="back-to-dash-button" class="col-md-6 text-center mb-3 collapse"> 
         <a href="/dashboard"><button type="button" class="btn btn-sm btn-primary">
           <span class='oi oi-home' title='Back to Dashboard' aria-hidden='true'></span>
           Back to Dashboard
         </button></a>
       </div>
+      <div class="col"></div>
     </div>
 
     <div class="row mb-5">
@@ -49,13 +53,18 @@
     </div>
 
     <div class="row">
-      <div class="col" id="news-left"></div>
+      <div class="col"><div id="news-left" class="p-2 collapse"></div></div>
       <div class="col-md-6">
         <div id="posts" class="grid">
           <div class="grid-sizer col-md-12"></div>
         </div>
       </div><!--col-->
-      <div class="col" id="news-right"></div>
+      <div class="col">
+        <div id="news-right" class="p-2 collapse">
+          <div class="title mb-1">News</div>
+        </div>
+        <% include ../partials/footer.ejs %>
+      </div>
     </div><!--row-->
 
     <div id="posts-button" class="collapse text-center">
@@ -180,8 +189,6 @@
     <div>Nothing to see in your feed yet</div>
     <div>Please follow more blogs</div>
   </div>
-
-  <% include ../partials/footer.ejs %>
 
   <script>
     <% include ../partials/dashboard.ejs %>

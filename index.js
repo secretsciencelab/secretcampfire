@@ -267,19 +267,18 @@ app.get('/posts/:index?', cel.ensureLoggedIn(), function (req, res) {
   });
 });
 
-app.get('/dashboard/:page_index?', cel.ensureLoggedIn(), function(req, res) {
-	var pageIndex = req.params['page_index'];
-  pageIndex = (pageIndex)? parseInt(pageIndex) : 0;
+app.get('/dashboard/:start_offset?', cel.ensureLoggedIn(), function(req, res) {
+	var startOffset = req.params['start_offset'];
+  startOffset = (startOffset)? parseInt(startOffset) : 0;
 
   db.getRandomFollowing(function(err, follows) {
     followUris = []
     for (var i=0; i < follows.length; i++)
-      followUris.push(follows[i].url);
+      followUris.push(follows[i].url + "/" + startOffset);
 
     res.render('pages/dashboard', {
       'uri': getFeedUrl(req),
-      'render_uris': followUris,
-      'page': pageIndex
+      'render_uris': followUris
     });
   });
 });

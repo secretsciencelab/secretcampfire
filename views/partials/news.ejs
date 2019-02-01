@@ -43,15 +43,15 @@ News.prototype.draw = function(post) {
   var container = $(this.selector+"-"+post.position);
 
   var pos2Class = {
-    'top': 'mb-3',
-    'right': 'ml-3',
-    'left': 'mr-3'
+    'top': '',
+    'right': '',
+    'left': ''
   }
   var xClass = pos2Class[post.position];
   var html = 
     "<div class='news-post " + xClass + "' data-id='" + post.id + "'>"
     + "<button type='button' class='close collapse' aria-label='Close'>"
-    + "<span aria-hidden='true'>&times;</span></button>"
+    + "<span aria-hidden='true' class='small'>&times;</span></button>"
     + "<div class='headline'>" + post.headline + "</div>"
     + "<div class='subhead'>" + post.subhead + "</div>"
     + "<div class='body'>" + post.body + "</div>"
@@ -59,6 +59,7 @@ News.prototype.draw = function(post) {
   var el = $(html);
   this.bindActions(el);
   container.append(el);
+  container.show();
 }
 
 News.prototype.bindActions = function(el) {

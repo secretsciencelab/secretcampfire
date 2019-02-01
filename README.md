@@ -42,4 +42,4 @@ And so today, more than ever, our freedom is in danger.
 
 And that's why `secret campfire` was created on January 2019. Its purpose is to preserve our freedom on the Interwebs. 
 
-Share the love and defend your freedom! http://secretcampfire.com
+Share the love and enjoy your freedom! http://secretcampfire.com

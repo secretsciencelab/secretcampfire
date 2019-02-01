@@ -65,12 +65,13 @@
 /* footer */
 
 footer {
-  color: #666;
+  color: #aaa;
 }
 footer a {
-  color: #111;
+  color: #888;
 }
 footer a:hover {
+  color: #111;
   text-decoration: none;
 }
 footer .logo {

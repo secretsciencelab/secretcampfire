@@ -18,3 +18,10 @@
 .card-author {
   vertical-align: middle;
 }
+
+#news-right, #news-left, #news-top {
+  border: 1px solid #ddd;
+}
+#news-right .title, #news-left .title, #news-top .title {
+  color: #999;
+}
