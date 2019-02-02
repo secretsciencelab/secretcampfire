@@ -1,5 +1,5 @@
-## `secretcampfire` handshake requirements
-To participate and play in the `secretcampfire` network, your instance must implement the following endpoints:
+## `secret campfire` handshake requirements
+To participate and play in the `secret campfire` network, your instance must implement the following endpoints:
   - `/feed`
     - feed JSON schema:
       ```
@@ -8,7 +8,9 @@ To participate and play in the `secretcampfire` network, your instance must impl
           "description": "",
           "avatar_url": "",
           "header_url": "",
+          "blog_url": "http://instance",
           "style_url": "http://instance/stylesheets/feed.css",
+          "nsfw": false,
           "posts": [
             {
               "title": "Title",
@@ -38,9 +40,9 @@ To participate and play in the `secretcampfire` network, your instance must impl
 ## UX guidelines
   - When reblogging, 'urls' and 'text' fields are initialized with the source post's urls/text
 
-## Technologies used
+## Recommended tech
   - MVC: Node.js + Express + Bootstrap + MongoDB
-  - hosting: Heroku
-  - media hosting: ImageBam / YouTube
+  - hosting: Heroku, Google Cloud Platform
+  - media hosting: Gfycat, Imgur, ImageBam, YouTube, etc
 
 The architecture ingredients above are recommendations. Feel free to use your favorite technology to meet the 'handshake requirements' above.

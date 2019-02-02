@@ -137,7 +137,8 @@ app.get('/feed/:index?', nocache, function (req, res) {
         'style_url': getReqProtocol(req) 
           + '://' + req.headers.host + '/stylesheets/feed.css',
         'posts': docs,
-        'blog_url': getReqProtocol(req) + "://" + req.headers.host
+        'blog_url': getReqProtocol(req) + "://" + req.headers.host,
+        'nsfw': false
       };
 
       if (settings)
@@ -146,6 +147,8 @@ app.get('/feed/:index?', nocache, function (req, res) {
         feed.description = settings.description;
         feed.avatar_url = settings.avatar_url;
         feed.header_url = settings.header_url;
+        if (settings.nsfw)
+          feed.nsfw = true;
       }
 
       res.setHeader('Content-Type', 'application/json');

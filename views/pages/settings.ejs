@@ -8,7 +8,7 @@
   <% include ../partials/navbar.ejs %>
   <% include ../partials/masthead.ejs %>
 
-  <div class="container mt-4">
+  <div class="container mt-4 mb-5">
     <div class="row mb-3 text-center">
       <div class="col">
       <a href="/dashboard"><button type="button" class="btn btn-sm btn-primary">
@@ -52,6 +52,18 @@
           <input type="password" class="form-control form-password" 
             value="" placeholder="New password" />
           </div>
+
+          <div class="form-group"><div class="form-check">
+          <input class="form-check-input form-nsfw" type="checkbox" 
+            <%if (settings.nsfw) { %>
+            checked
+            <% } %>
+            id="check-nsfw">
+          <label class="form-check-label" for="check-nsfw">
+            has NSFW content
+          </label>
+          </div></div>
+
         </form>
         <div id="success-alert" 
           class="alert alert-success collapse" role="alert">Settings saved!</div>
@@ -63,6 +75,8 @@
     </div><!--row-->
   </div><!--container-->
 
+  <% include ../partials/footer.ejs %>
+
   <script>
     $("#settings-save-button").click(function(e) {
       e.preventDefault();
@@ -73,13 +87,15 @@
       var avatar = form.find('.form-avatar').val();
       var header = form.find('.form-header').val();
       var password = form.find('.form-password').val();
+      var nsfw = form.find('.form-nsfw').is(":checked");
 
       $.post('/settings', { 
         name: name,
         description: description,
         avatar_url: avatar,
         header_url: header,
-        password: password
+        password: password,
+        nsfw: nsfw
       },
       function(data, status, xhr) {
         // success

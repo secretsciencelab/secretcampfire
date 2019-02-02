@@ -16,7 +16,8 @@
       avatar_url: String,
       header_url: String,
       style_url: String,
-      password: String
+      password: String,
+      nsfw: Boolean
     });
     Settings = mongoose.model('Settings', SettingsSchema);
 
@@ -215,6 +216,7 @@
         settings.description = newSettings.description;  
         settings.avatar_url = newSettings.avatar_url;  
         settings.header_url = newSettings.header_url;  
+        settings.nsfw = newSettings.nsfw;
         if (newSettings.password)
           settings.password = md5(newSettings.password);
         
