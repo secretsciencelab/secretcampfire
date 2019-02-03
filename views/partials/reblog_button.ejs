@@ -28,6 +28,15 @@ var ReblogButton = new function() {
   };
 
   this.handleReblog = function(userUrl, reblogUrl, openNewTab) {
+    var targetUrl = userUrl + "/dashboard?reblog=" 
+      + encodeURIComponent(reblogUrl);
+    if (openNewTab)
+    {
+      var tab = window.open(targetUrl, '_blank');
+      tab.focus();
+      return;
+    }
+
     var urlObj = new URL(userUrl);
     if (window.location.host == urlObj.host 
       && window.location.href.indexOf("dashboard") != -1
@@ -38,13 +47,6 @@ var ReblogButton = new function() {
       return;
     }
 
-    var url = userUrl + "/dashboard?reblog=" + encodeURIComponent(reblogUrl);
-    if (openNewTab)
-    {
-      var tab = window.open(url, '_blank');
-      tab.focus();
-    }
-    else
-      window.location.href = url;
+    window.location.href = targetUrl;
   }
 };
