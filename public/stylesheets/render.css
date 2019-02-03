@@ -79,6 +79,12 @@ a.card-title-link {
  * single post view
  */
 
+#post-container .reblog-info a {
+  font-weight: bold;
+  text-decoration: none;
+  color: #444;
+}
+
 #post-container img.img-top {
   width: 100%;
 }
@@ -96,13 +102,24 @@ a.card-title-link {
   border-left: 2px solid #ddd;
   padding-left: 1rem;
 }
-#post-container .date {
-  color: #888;
-}
 #post-container .oi {
   font-size: 20px;
   color: #aaa;
 }
 #post-container .oi:hover {
   color: #333;
+}
+
+#post-container .action-bar {
+  color: #888;
+}
+#post-container .action-bar .action-bar-button {
+  padding: 5px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+}
+#post-container .action-bar .action-bar-button:hover {
+  color: #ccc;
+  background-color: #333;
+  border: 1px solid #ccc;
 }

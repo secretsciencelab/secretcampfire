@@ -1,4 +1,9 @@
-.card-author-post-link {
+.card-authorbar {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.card-author-post-link,
+.card-reblog-author-post-link {
   color: #444;
   text-decoration: none !important;
   font-weight: bold;
@@ -15,7 +20,7 @@
   border-radius: 50%;
 }
 
-.card-author {
+.card-author, .card-reblog-author {
   vertical-align: middle;
 }
 

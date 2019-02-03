@@ -29,7 +29,7 @@
     <div class="grid-item col-md-4">
     <div class="card grid-item-content">
       <div class="card-overlay collapse">
-        <span class='reblog-button oi oi-loop-square' title='Reblog' aria-hidden='true'></span>
+        <span class='reblog-button oi oi-loop' title='Reblog' aria-hidden='true'></span>
       </div>
       <a class="card-img-fold-link" href="#"><span class="fold"></span></a>
       <a class="card-img-top-link" href="#"><img class="card-img-top" src=""/></a>
@@ -47,13 +47,24 @@
     <div class="row mb-4">
       <div class="col"></div>
       <div class="col-8 collapse" id="post-container">
+        <div class="reblog-info collapse">
+          <div class='oi oi-loop' aria-hidden='true'></div>
+          <a class="reblog-author-post-link ml-2" href="#">
+            <div class="d-inline-block reblog-author"></div></a>
+        </div><!--reblog-info-->
         <a class="img-top-link" href="#"><img class="img-top mb-3" src=""/></a>
         <div class="action-bar mb-3 px-2">
-          <span class='reblog-button oi oi-loop-square' title='Reblog' aria-hidden='true'></span>
-        </div>
+          <div class="row">
+            <div class="col">
+              <div class="date small"></div>
+            </div>
+            <div class="col text-right">
+              <div class='reblog-button oi oi-loop action-bar-button' title='Reblog' aria-hidden='true'></div>
+            </div>
+          </div><!--row-->
+        </div><!--action-bar-->
         <a class="title-link" href="#"><h5 class="title"></h5></a>
         <div class="text"></div>
-        <div class="date small"></div>
       </div>
       <div class="col"></div>
     </div><!--row-->

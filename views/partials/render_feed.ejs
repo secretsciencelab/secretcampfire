@@ -53,6 +53,12 @@ RenderFeed.prototype.initMasonry = function() {
   this.msnry = this.msnryContainer.data('masonry');
 }
 
+RenderFeed.prototype._getShortSweetSiteHostname = function(hostname) {
+  var sweet = hostname.split('.herokuapp.')[0];
+  sweet = sweet.split('.appspot.')[0];
+  return sweet;
+}
+
 RenderFeed.prototype.initInfiniteScroll = function() {
   var fr = this;
 
@@ -154,7 +160,18 @@ RenderFeed.prototype.initInfiniteScroll = function() {
           newCard.find(".card-author-avatar").css('background-image', 
             'url(' + data.avatar_url + ')');
         newCard.find(".card-author-post-link").attr('href', postRenderUrl);
-        newCard.find(".card-author").html(urlObj.host);
+        newCard.find(".card-author").html(
+          fr._getShortSweetSiteHostname(urlObj.host));
+
+        if (post.re_url)
+        {
+          var urlObj = new URL(post.re_url);
+          newCard.find(".card-reblog-author-post-link").attr('href', post.re_url)
+            .prepend("<div class='oi oi-loop' aria-hidden='true'></div>");
+          newCard.find(".card-reblog-author").html(
+            fr._getShortSweetSiteHostname(urlObj.host));
+        }
+
         newCard.find(".card-title").html(post.title);
         var markdown = fr._mdConverter.makeHtml(post.text);
         newCard.find(".card-text").html(markdown);

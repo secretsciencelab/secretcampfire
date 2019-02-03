@@ -12,6 +12,15 @@ RenderPost.prototype.init = function() {
   $.getJSON(this.uri, function(data) {
     var post = data.post;
     $(pr.selector).show();
+
+    if (post.re_url)
+    {
+      var urlObj = new URL(post.re_url);
+      $(pr.selector+" .reblog-info").show();
+      $(pr.selector+" .reblog-author-post-link").attr('href', post.re_url);
+      $(pr.selector+" .reblog-author").html(urlObj.host);
+    }
+
     $(pr.selector+" .date").html(post.date);
     if (post.thumbs.length)
       $(pr.selector+" .img-top").attr('src', post.thumbs[0]);
