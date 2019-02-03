@@ -77,7 +77,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       return root + "/" + offset + "?n=" + fr.numPostsPerFetch;
     },
     responseType: 'text',
-    scrollThreshold: 800,
+    scrollThreshold: 1000,
 		button: this.selectorButton,
     outlayer: this.msnry,
     history: false
