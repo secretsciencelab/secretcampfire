@@ -17,11 +17,11 @@ var Masthead = new function() {
   };
 
   this.update = function() {
-    if (NsfwOverlay)
+    if (typeof NsfwOverlay !== 'undefined')
       NsfwOverlay.open();
 
     $.getJSON(this.uri, function(data) {
-      if (NsfwOverlay)
+      if (typeof NsfwOverlay !== 'undefined')
       {
         if (data.nsfw)
           NsfwOverlay.lock();
