@@ -1,5 +1,3 @@
-<% include ../partials/nsfw_overlay.ejs %>
-
 <!-- needs 'uri' defined in ejs --> 
 
 <!-- jumbotron -->
@@ -23,10 +21,13 @@ var Masthead = new function() {
       NsfwOverlay.open();
 
     $.getJSON(this.uri, function(data) {
-      if (NsfwOverlay && data.nsfw)
-        NsfwOverlay.lock();
-      else
-        NsfwOverlay.close();
+      if (NsfwOverlay)
+      {
+        if (data.nsfw)
+          NsfwOverlay.lock();
+        else
+          NsfwOverlay.close();
+      }
 
       // set jumbotron
       if (data.header_url)
