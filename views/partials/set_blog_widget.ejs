@@ -59,6 +59,10 @@ var SetBlogWidget = new function() {
         return false;
       }
     });
+
+    $(this.selector+"-modal").on('shown.bs.modal', function() {
+      $(this).find('input:text')[0].focus();
+    });
   };
 
   this.handleSave = function() {
