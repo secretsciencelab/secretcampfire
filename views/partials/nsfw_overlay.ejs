@@ -1,0 +1,84 @@
+<div id="nsfw-overlay" class="collapse">
+  <div class="container">
+    <div class="row text-center">
+      <div class="loading midbox" style="width: 80px;">
+        <img src="/media/logoLight.png" style="width: 100%"/>
+      </div>
+    </div>
+
+    <div class="row text-center">
+      <div class="notice midbox col-lg-6 col-xl-4 small collapse">
+        <h1>Adult content warning</h1>
+        <p>By clicking 'Enter' below, you are making the following statements:
+        <ol class="text-left">
+          <li>I am an adult, at least 18 years of age
+          <li>I have the legal right to possess adult material in my community.
+          <li>I will not permit any person(s) under 18 to have access to any materials contained within this site.
+          <li>I am voluntarily choosing to access this site.
+          <li>I do not find images or videos of nude adults, adults engaged in sexual acts, or other sexual material to be offensive or objectionable.
+          <li>I will exit this site immediately if I am offended in any way.
+          <li>I understand and agree to abide by the standards and laws of my community.
+          <li>I agree that I shall not hold the owners of the website or its employees responsible for any materials located on this site.
+          <li>If I use these services in violation of this agreement, I understand I may be in violation of local and/or federal laws and am solely responsible for my actions.
+          <li>By clicking on 'Enter' below and entering the site, I agree to abide by these terms.
+        </ol>
+        </p>
+        <div><button class="btn btn-primary" type="button">Enter</button></div>
+      </div><!--notice-->
+    </div><!--row-->
+  </div><!--container-->
+</div>
+
+<script>
+var NsfwOverlay = new function() {
+  this.selector = "#nsfw-overlay";
+  this._datastoreKey = 'nsfw_overlay';
+
+  this.init = function() {
+    var nolay = this;
+    $(this.selector).css('color', '#ccc');
+    $(this.selector).css('min-height', '100%');
+    $(this.selector).css('width', '100%');
+    $(this.selector).css('position', 'fixed');
+    $(this.selector).css('overflow-y', 'scroll');
+    $(this.selector).css('z-index', '1');
+    $(this.selector).css('left', '0');
+    $(this.selector).css('top', '0');
+    $(this.selector).css('background', 'rgb(0,0,0)');
+    $(this.selector).css('background', 
+      'radial-gradient(circle, rgba(0,0,0,1) 0%,'
+      + 'rgba(0,36,36,1) 85%, rgba(0,66,66,1) 100%)');
+
+    var midboxSelector = this.selector + " .midbox";
+    $(midboxSelector).css('position', 'absolute');
+    $(midboxSelector).css('top', '50%');
+    $(midboxSelector).css('left', '50%');
+    $(midboxSelector).css('transform', 'translateX(-50%) translateY(-50%)');
+
+    $(this.selector + " button").click(function(e) {
+      $(nolay.selector).hide();
+      SessionDatastore.setData(nolay._datastoreKey, 'x');
+    });
+  };
+
+  this.open = function() {
+    $(this.selector).show();
+  };
+  this.close = function() {
+    $(this.selector).hide();
+  };
+
+  this.lock = function() {
+    var nolay = this;
+
+    SessionDatastore.getData(nolay._datastoreKey, function(key, val) {
+      if (val == 'x')
+        nolay.close();
+
+      $(nolay.selector + " .notice").show();
+    });
+  }
+};
+
+NsfwOverlay.init();
+</script>
