@@ -220,10 +220,15 @@
       $.getJSON(renderUris[0], function(data) {
         if (data.style_url)
           addCss(data.style_url);
+
         if (data.name)
-          $("title").prepend(data.name + " - ");
+          $("title").prepend(data.name + " - Posts - ");
+        else
+          $("title").prepend("Dashboard - Posts - ");
       });  
     }
+    else
+      $("title").prepend("Dashboard - ");
 
     var renderer = new RenderFeed({
       "uris": renderUris,
