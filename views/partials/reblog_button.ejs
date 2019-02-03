@@ -28,6 +28,16 @@ var ReblogButton = new function() {
   };
 
   this.handleReblog = function(userUrl, reblogUrl, openNewTab) {
+    var urlObj = new URL(userUrl);
+    if (window.location.host == urlObj.host 
+      && window.location.href.indexOf("dashboard") != -1
+      && typeof Dashboard !== 'undefined')
+    {
+      // already on Dashboard -- just invoke Dashboard directly
+      Dashboard.doReblog(reblogUrl);
+      return;
+    }
+
     var url = userUrl + "/dashboard?reblog=" + encodeURIComponent(reblogUrl);
     if (openNewTab)
     {

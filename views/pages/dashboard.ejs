@@ -84,8 +84,16 @@
         <a class="card-img-top-link" href="#"><img class="card-img-top" src=""/></a>
         <div class="card-body">
           <a class="card-title-link" href="#"><h5 class="card-title"></h5></a>
-          <p class="card-text"></p>
+          <div class="card-text"></div>
         </div>
+
+        <div class="card-action-bar p-1">
+          <div class="row">
+            <div class="col text-right">
+              <div class='card-reblog-button oi oi-loop action-bar-button' title='Reblog' aria-hidden='true'></div>
+            </div>
+          </div><!--row-->
+        </div><!--card-action-bar-->
       </div><!--card-->
       </div><!--grid-item-->
     </div><!--posts-template-->
@@ -196,10 +204,11 @@
 
   <script>
     <% include ../partials/dashboard.ejs %>
+    <% include ../partials/reblog_button.ejs %>
     <% include ../partials/render_feed.ejs %>
     <% include ../partials/news.ejs %>
 
-    var dash = new Dashboard({
+    Dashboard.init({
       "postSelector": "#create-post",
       "followSelector": "#follow",
       "unfollowSelector": "#unfollow"

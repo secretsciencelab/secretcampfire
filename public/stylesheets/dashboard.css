@@ -1,3 +1,4 @@
+/* cards */
 .card-authorbar {
   overflow: hidden;
   white-space: nowrap;
@@ -23,6 +24,25 @@
 .card-author, .card-reblog-author {
   vertical-align: middle;
 }
+
+.card-action-bar {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  color: #bbb;
+}
+
+.card-action-bar .action-bar-button {
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+}
+.card-action-bar .action-bar-button:hover {
+  color: #ccc;
+  background-color: #333;
+}
+
+/* news */
 
 #news-right, #news-left, #news-top {
   border: 1px solid #ddd;

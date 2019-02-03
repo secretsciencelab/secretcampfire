@@ -29,7 +29,7 @@
     <div class="grid-item col-md-4">
     <div class="card grid-item-content">
       <div class="card-overlay collapse">
-        <span class='reblog-button oi oi-loop' title='Reblog' aria-hidden='true'></span>
+        <span class='card-reblog-button oi oi-loop' title='Reblog' aria-hidden='true'></span>
       </div>
       <a class="card-img-fold-link" href="#"><span class="fold"></span></a>
       <a class="card-img-top-link" href="#"><img class="card-img-top" src=""/></a>
@@ -79,10 +79,10 @@
   <% include ../partials/kalona.ejs %>
 
   <script>
+    <% include ../partials/reblog_button.ejs %>
     <% include ../partials/render_feed.ejs %>
     <% include ../partials/render_post.ejs %>
     <% include ../partials/follow_button.ejs %>
-    <% include ../partials/reblog_button.ejs %>
   
     var renderer = null;
   

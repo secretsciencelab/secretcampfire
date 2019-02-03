@@ -22,12 +22,12 @@ RenderPost.prototype.init = function() {
     }
 
     $(pr.selector+" .date").html(post.date);
-    if (post.thumbs.length)
+    if (post.thumbs && post.thumbs.length && post.thumbs[0])
       $(pr.selector+" .img-top").attr('src', post.thumbs[0]);
     else
       $(pr.selector+" .img-top").hide();
     $(pr.selector+" .title").html(post.title);
-    if (post.urls.length)
+    if (post.urls && post.urls.length && post.urls[0])
     {
       $(pr.selector+" .img-top-link").attr('href', post.urls[0]);
       $(pr.selector+" .title-link").attr('href', post.urls[0]);

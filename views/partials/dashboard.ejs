@@ -1,171 +1,196 @@
-function Dashboard(cfg) {
-  this.postSelector = cfg.postSelector;
-  this.followSelector = cfg.followSelector;
-  this.unfollowSelector = cfg.unfollowSelector;
+var Dashboard = new function() {
+  this.init = function(cfg) {
+    this.postSelector = cfg.postSelector;
+    this.followSelector = cfg.followSelector;
+    this.unfollowSelector = cfg.unfollowSelector;
 
-  this.bindEvents();
-  this.handleUrlParamActions();
-}
+    this.bindEvents();
+    this.handleUrlParamActions();
+  }
 
-Dashboard.prototype.bindEvents = function() {
-  var dash = this;
+  this.bindEvents = function() {
+    var dash = this;
 
-  $(dash.postSelector+"-modal").on('shown.bs.modal', function() {
-    $(this).find('input:text')[0].focus();
-  });
-  $(dash.followSelector+"-modal").on('shown.bs.modal', function() {
-    $(this).find('input:text')[0].focus();
-  });
-
-  var $pform = $(dash.postSelector+"-form");
-  $(dash.postSelector+"-save-button").click(function(e) {
-    e.preventDefault();
-
-    var title = $pform.find('.form-post-title').val();
-    var thumb = $pform.find('.form-post-thumb').val();
-    var url = $pform.find('.form-post-url').val();
-    var reblogUrl = $pform.find('.form-post-reblog-url').val();
-    var text = $pform.find('.form-post-text').val();
-    var tags = $pform.find('.form-post-tags').val();
-
-    // post data to backend to save in DB
-    $.post('/post', { 
-        title: title,
-        thumbs: thumb,
-        urls: url,
-        re_url: reblogUrl,
-        text: text,
-        tags: tags
-      },
-      function(data, status, xhr) {
-        // success
-        $pform.get(0).reset(); // clear form
-        $(dash.postSelector+"-success-alert").fadeIn().delay(2000).fadeOut();
-        console.log(data);
-      },
-      'json')
-    .done(function() {
+    $(dash.postSelector+"-form").on('reset', function() {
+      // clear hidden inputs as well (e.g. reblog url)
+      $("input[type='hidden']", $(this)).val('');
+    });
+    $(dash.postSelector+"-modal").on('shown.bs.modal', function() {
+      $(this).find('input:text')[0].focus();
+    });
+    $(dash.postSelector+"-modal").on('hidden.bs.modal', function() {
+      $(this).find('form').get(0).reset(); // clear form
       // reset to 'new post' mode
       $(dash.postSelector+"-modal h5").html("New post");
-      $(dash.postSelector+"-modal").modal('hide');
-
-      // remove params from url
-      window.history.replaceState(null, null, window.location.pathname);
-    })
-    .fail(function(jqxhr, settines, ex) {
+    });
+    $(dash.followSelector+"-modal").on('shown.bs.modal', function() {
+      $(this).find('input:text')[0].focus();
+    });
+    $(dash.followSelector+"-modal").on('hidden.bs.modal', function() {
+      $(this).find('form').get(0).reset(); // clear form
+    });
+    $(dash.unfollowSelector+"-modal").on('shown.bs.modal', function() {
+      $(this).find('input:text')[0].focus();
+    });
+    $(dash.unfollowSelector+"-modal").on('hidden.bs.modal', function() {
+      $(this).find('form').get(0).reset(); // clear form
     });
 
-    return false;
-  });
-
-  var $fform = $(dash.followSelector+"-form");
-  $(dash.followSelector+"-save-button").click(function(e) {
-    e.preventDefault();
-
-    var url = $fform.find(".form-follow-url").val();
-    console.log(url);
-
-    // post URL to backend to save in DB
-    $.post('/follow', { 
-        url: url
-      },
-      function(data, status, xhr) {
-        // success
-        $fform.get(0).reset(); // clear form
-        $(dash.followSelector+"-success-alert").fadeIn().delay(2000).fadeOut();
-        console.log(data);
-      },
-      'json')
-    .done(function() {
-      $(dash.followSelector+"-modal").modal('hide');
-
-      // remove params from url
-      window.history.replaceState(null, null, window.location.pathname);
-    })
-    .fail(function(jqxhr, settines, ex) {
-    });
-  });
-
-  var $uform = $(dash.unfollowSelector+"-form");
-  $(dash.unfollowSelector+"-save-button").click(function(e) {
-    e.preventDefault();
-
-    var url = $uform.find(".form-unfollow-url").val();
-    console.log(url);
-
-    // post URL to backend to save in DB
-    $.post('/unfollow', { 
-        url: url
-      },
-      function(data, status, xhr) {
-        // success
-        $uform.get(0).reset(); // clear form
-        $(dash.unfollowSelector+"-success-alert").fadeIn().delay(2000).fadeOut();
-        console.log(data);
-      },
-      'json')
-    .done(function() {
-      $(dash.unfollowSelector+"-modal").modal('hide');
-
-      // remove params from url
-      window.history.replaceState(null, null, window.location.pathname);
-    })
-    .fail(function(jqxhr, settines, ex) {
-    });
-  });
-}
-
-Dashboard.prototype.handleUrlParamActions = function() {
-  var urlstr = window.location.href;
-  var url = new URL(urlstr);
-  var follow = url.searchParams.get("follow");
-  var unfollow = url.searchParams.get("unfollow");
-  var reblog = url.searchParams.get("reblog");
-
-  if (follow)
-    this.doFollow(follow);
-
-  if (unfollow)
-    this.doUnfollow(unfollow);
-
-  if (reblog)
-    this.doReblog(reblog);
-}
-
-Dashboard.prototype.doFollow = function(blog) {
-  var $form = $(this.followSelector+"-form");
-
-  // we have a new blog to follow
-  //console.log(blog);
-  $form.find(".form-follow-url").val(blog);
-  $(this.followSelector+"-modal").modal('show');
-}
-
-Dashboard.prototype.doUnfollow = function(blog) {
-  var $form = $(this.unfollowSelector+"-form");
-  $form.find(".form-unfollow-url").val(blog);
-  $(this.unfollowSelector+"-modal").modal('show');
-}
-
-Dashboard.prototype.doReblog = function(url) {
-  var dash = this;
-
-  $.getJSON(url, function(data) {
-    console.log(data);
     var $pform = $(dash.postSelector+"-form");
-    $(dash.postSelector+"-modal h5").html("Reblog");
+    $(dash.postSelector+"-save-button").click(function(e) {
+      e.preventDefault();
 
-    if (data.post.thumbs)
-      $pform.find('.form-post-thumb').val(data.post.thumbs[0]);
-    if (data.post.urls)
-      $pform.find('.form-post-url').val(data.post.urls[0]);
-    $pform.find('.form-post-reblog-url').val(url);
-    if (data.post.text)
-    {
-      var text = data.post.text.replace(/^/gm, "> "); // blockquote
-      $pform.find('.form-post-text').val(text);
-    }
+      var title = $pform.find('.form-post-title').val();
+      var thumb = $pform.find('.form-post-thumb').val();
+      var url = $pform.find('.form-post-url').val();
+      var reblogUrl = $pform.find('.form-post-reblog-url').val();
+      var text = $pform.find('.form-post-text').val();
+      var tags = $pform.find('.form-post-tags').val();
 
-    $("#create-post-modal").modal('show');
-  });
-}
+      // post data to backend to save in DB
+      $.post('/post', { 
+          title: title,
+          thumbs: thumb,
+          urls: url,
+          re_url: reblogUrl,
+          text: text,
+          tags: tags
+        },
+        function(data, status, xhr) {
+          // success
+          console.log(data);
+        },
+        'json')
+      .done(function() {
+        $(dash.postSelector+"-success-alert").fadeIn().delay(1000)
+          .fadeOut(function() {
+            $(dash.postSelector+"-modal").modal('hide');
+          });
+
+        // remove params from url
+        window.history.replaceState(null, null, window.location.pathname);
+      })
+      .fail(function(jqxhr, settines, ex) {
+      });
+
+      return false;
+    });
+
+    var $fform = $(dash.followSelector+"-form");
+    $(dash.followSelector+"-save-button").click(function(e) {
+      e.preventDefault();
+
+      var url = $fform.find(".form-follow-url").val();
+      console.log(url);
+
+      // post URL to backend to save in DB
+      $.post('/follow', { 
+          url: url
+        },
+        function(data, status, xhr) {
+          // success
+          console.log(data);
+        },
+        'json')
+      .done(function() {
+        $(dash.followSelector+"-success-alert").fadeIn().delay(1000)
+          .fadeOut(function() {
+            $(dash.followSelector+"-modal").modal('hide');
+          });
+
+        // remove params from url
+        window.history.replaceState(null, null, window.location.pathname);
+      })
+      .fail(function(jqxhr, settines, ex) {
+      });
+    });
+
+    var $uform = $(dash.unfollowSelector+"-form");
+    $(dash.unfollowSelector+"-save-button").click(function(e) {
+      e.preventDefault();
+
+      var url = $uform.find(".form-unfollow-url").val();
+      console.log(url);
+
+      // post URL to backend to save in DB
+      $.post('/unfollow', { 
+          url: url
+        },
+        function(data, status, xhr) {
+          // success
+          console.log(data);
+        },
+        'json')
+      .done(function() {
+        $(dash.unfollowSelector+"-success-alert").fadeIn().delay(1000)
+          .fadeOut(function() {
+            $(dash.unfollowSelector+"-modal").modal('hide');
+          });
+
+        // remove params from url
+        window.history.replaceState(null, null, window.location.pathname);
+      })
+      .fail(function(jqxhr, settines, ex) {
+      });
+    });
+  }
+
+  this.handleUrlParamActions = function() {
+    var urlstr = window.location.href;
+    var url = new URL(urlstr);
+    var follow = url.searchParams.get("follow");
+    var unfollow = url.searchParams.get("unfollow");
+    var reblog = url.searchParams.get("reblog");
+
+    if (follow)
+      this.doFollow(follow);
+
+    if (unfollow)
+      this.doUnfollow(unfollow);
+
+    if (reblog)
+      this.doReblog(reblog);
+  }
+
+  this.doFollow = function(blog) {
+    var $form = $(this.followSelector+"-form");
+
+    // we have a new blog to follow
+    //console.log(blog);
+    $form.find(".form-follow-url").val(blog);
+    $(this.followSelector+"-modal").modal('show');
+  }
+
+  this.doUnfollow = function(blog) {
+    var $form = $(this.unfollowSelector+"-form");
+    $form.find(".form-unfollow-url").val(blog);
+    $(this.unfollowSelector+"-modal").modal('show');
+  }
+
+  this.doReblog = function(url) {
+    var dash = this;
+
+    $.getJSON(url, function(data) {
+      console.log(data);
+      var $pform = $(dash.postSelector+"-form");
+      $(dash.postSelector+"-modal h5").html("Reblog");
+
+      if (data.post.thumbs)
+        $pform.find('.form-post-thumb').val(data.post.thumbs[0]);
+      if (data.post.urls)
+        $pform.find('.form-post-url').val(data.post.urls[0]);
+      $pform.find('.form-post-reblog-url').val(url);
+      if (data.post.text)
+      {
+        var text = "";
+        // indent with markdown blockquote
+        if (data.post.title)
+          text += "> **" + data.post.title + "**\n\n";
+        text += data.post.text.replace(/^/gm, "> ");
+        $pform.find('.form-post-text').val(text);
+      }
+
+      $("#create-post-modal").modal('show');
+    });
+  }
+};
