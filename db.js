@@ -26,6 +26,7 @@
       title: String,
       date: { type: Date, default: Date.now },
       thumbs: [String],
+      images: [String],
       urls: [String],
       text: String,
       tags: [String],
@@ -66,6 +67,7 @@
             && typeof postData[key] === "undefined")
             postData[key] = ""
         postData.thumbs = _makeArray(postData.thumbs);
+        postData.images = _makeArray(postData.images);
         postData.urls = _makeArray(postData.urls);
         postData.tags = postData.tags.split(/(?:,| )+/);
         

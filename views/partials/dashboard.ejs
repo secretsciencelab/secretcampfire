@@ -42,6 +42,7 @@ var Dashboard = new function() {
 
       var title = $pform.find('.form-post-title').val();
       var thumb = $pform.find('.form-post-thumb').val();
+      var image = $pform.find('.form-post-image').val();
       var url = $pform.find('.form-post-url').val();
       var reblogUrl = $pform.find('.form-post-reblog-url').val();
       var text = $pform.find('.form-post-text').val();
@@ -51,6 +52,7 @@ var Dashboard = new function() {
       $.post('/post', { 
           title: title,
           thumbs: thumb,
+          images: image,
           urls: url,
           re_url: reblogUrl,
           text: text,
@@ -177,6 +179,8 @@ var Dashboard = new function() {
 
       if (data.post.thumbs)
         $pform.find('.form-post-thumb').val(data.post.thumbs[0]);
+      if (data.post.images)
+        $pform.find('.form-post-images').val(data.post.images[0]);
       if (data.post.urls)
         $pform.find('.form-post-url').val(data.post.urls[0]);
       $pform.find('.form-post-reblog-url').val(url);

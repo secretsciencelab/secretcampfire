@@ -3,6 +3,7 @@ function RenderFeed(cfg) {
   this.selectorButton = cfg.selector+"-button";
   this.templateSelector = this.selector + "-template";
   this.onNoPosts = cfg.onNoPosts;
+  this.postImagePref = cfg.postImagePref;
   this.numPostsPerFetch = cfg.numPostsPerFetch;
 
   if (!cfg.uris || cfg.uris.length == 0)
@@ -150,10 +151,17 @@ RenderFeed.prototype.initInfiniteScroll = function() {
           newCard.find(".card-img-top-link").attr("href", post.urls[0]);
           newCard.find(".card-title-link").attr("href", post.urls[0]);
         }
-        if (post.thumbs && post.thumbs.length && post.thumbs[0])
-          newCard.find(".card-img-top").attr('src', post.thumbs[0]).show();
-        else
-          newCard.find(".card-img-top").hide();
+        newCard.find(".card-img-top").hide();
+        for (var pi=0; pi < fr.postImagePref.length; pi++)
+        {
+          var imgField = fr.postImagePref[pi];
+          if (post[imgField] && post[imgField].length && post[imgField][0])
+          {
+            newCard.find(".card-img-top")
+              .attr('src', post[imgField][0]).show();
+            break;
+          }
+        }
         newCard.find(".card-author-link").attr('href', postUrlBase);
         if (data.avatar_url)
           newCard.find(".card-author-avatar").css('background-image', 

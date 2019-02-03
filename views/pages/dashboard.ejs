@@ -112,6 +112,8 @@
           <input type="text" class="form-control form-post-title" 
             value="" placeholder="Title" autofocus />
           <input type="text" class="form-control form-post-thumb" 
+            value="" placeholder="Thumbnail" />
+          <input type="text" class="form-control form-post-image" 
             value="" placeholder="Image" />
           <input type="text" class="form-control form-post-url" 
             value="" placeholder="URL" />
@@ -239,6 +241,7 @@
         else
           $("#no-posts-message").show();          
       },
+      "postImagePref": ["images", "thumbs"],
       "numPostsPerFetch": <%= NUM_POSTS_PER_FETCH %>
     });
 
