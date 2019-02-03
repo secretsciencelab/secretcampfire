@@ -73,6 +73,37 @@ app.use((err, req, res, next) => {
   res.send('500: Internal server error');
 });
 
+function _getReqProtocol(req) {
+  return req.headers['x-forwarded-proto'] || req.protocol;
+}
+function _getFeedUrl(req) {
+  // default to own feed
+  return _getReqProtocol(req) + '://' + req.headers.host + '/feed';
+}
+function _render(req, res, myuri) {
+  var uri = _getFeedUrl(req); // default to own feed
+  if (myuri)
+  {
+    if (/^\d+$/.test(myuri))
+    {
+      // all digits = offset into own feed
+      uri += "/" + myuri;
+    }
+    else
+      uri = myuri;
+  }
+
+  res.render('pages/render', {
+    'uri': uri
+  });
+}
+function _nocache(req, res, next) {
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.header('Expires', '-1');
+  res.header('Pragma', 'no-cache');
+  next();
+}
+
 app.get('/', function(req, res) {
   db.getSettings(function(err, settings) {
     if (settings.password == md5("password"))
@@ -81,7 +112,7 @@ app.get('/', function(req, res) {
       return;
     }
 
-    res.redirect('/render');
+    _render(req, res);
   });
 });
 
@@ -99,21 +130,7 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-function getReqProtocol(req) {
-  return req.headers['x-forwarded-proto'] || req.protocol;
-}
-function getFeedUrl(req) {
-  // default to own feed
-  return getReqProtocol(req) + '://' + req.headers.host + '/feed';
-}
-function nocache(req, res, next) {
-  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-  res.header('Expires', '-1');
-  res.header('Pragma', 'no-cache');
-  next();
-}
-
-app.get('/feed/:index?', nocache, function (req, res) {
+app.get('/feed/:index?', _nocache, function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
   var test = req.query['test'];
@@ -134,10 +151,10 @@ app.get('/feed/:index?', nocache, function (req, res) {
         'description': '',
         'avatar_url': '',
         'header_url': '',
-        'style_url': getReqProtocol(req) 
+        'style_url': _getReqProtocol(req) 
           + '://' + req.headers.host + '/stylesheets/feed.css',
         'posts': docs,
-        'blog_url': getReqProtocol(req) + "://" + req.headers.host,
+        'blog_url': _getReqProtocol(req) + "://" + req.headers.host,
         'nsfw': false
       };
 
@@ -172,10 +189,10 @@ app.get('/post/:id', function (req, res) {
         'description': '',
         'avatar_url': '',
         'header_url': '',
-        'style_url': getReqProtocol(req) 
+        'style_url': _getReqProtocol(req) 
           + '://' + req.headers.host + '/stylesheets/feed.css',
         'post': post,
-        'blog_url': getReqProtocol(req) + "://" + req.headers.host
+        'blog_url': _getReqProtocol(req) + "://" + req.headers.host
       };
 
       if (settings)
@@ -192,21 +209,7 @@ app.get('/post/:id', function (req, res) {
 });
 
 app.get('/render/:uri?', function (req, res) {
-  var uri = getFeedUrl(req); // default to own feed
-  if (req.params['uri'])
-  {
-    if (/^\d+$/.test(req.params['uri']))
-    {
-      // all digits = offset into own feed
-      uri += "/" + req.params['uri'];
-    }
-    else
-      uri = req.params['uri'];
-  }
-
-  res.render('pages/render', {
-    'uri': uri
-  });
+  _render(req, res, req.params['uri']);
 });
 
 app.get('/follow/check/:uri?', function (req, res) {
@@ -263,9 +266,9 @@ app.get('/posts/:index?', cel.ensureLoggedIn(), function (req, res) {
   index = (index)? parseInt(index) : 0;
 
   res.render('pages/dashboard', {
-    'uri': getFeedUrl(req),
+    'uri': _getFeedUrl(req),
     'render_uris': [
-      getFeedUrl(req) + "/" + index
+      _getFeedUrl(req) + "/" + index
     ]
   });
 });
@@ -280,7 +283,7 @@ app.get('/dashboard/:start_offset?', cel.ensureLoggedIn(), function(req, res) {
       followUris.push(follows[i].url + "/" + startOffset);
 
     res.render('pages/dashboard', {
-      'uri': getFeedUrl(req),
+      'uri': _getFeedUrl(req),
       'render_uris': followUris
     });
   });
@@ -289,7 +292,7 @@ app.get('/dashboard/:start_offset?', cel.ensureLoggedIn(), function(req, res) {
 app.get('/settings', cel.ensureLoggedIn(), function (req, res) {
   db.getSettings(function(err, settings) {
     res.render('pages/settings', {
-      'uri': getFeedUrl(req),
+      'uri': _getFeedUrl(req),
       'settings': settings
     });
   });
