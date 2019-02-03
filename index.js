@@ -131,11 +131,7 @@ app.get('/logout', function(req, res) {
 });
 
 app.get('/feed/:index?', _nocache, function (req, res) {
-	var index = req.params['index'];
-  index = (index)? parseInt(index) : 0;
-  var test = req.query['test'];
-
-  if (test)
+  if (req.query['test'])
   {
     // send sample feed
     res.setHeader('Content-Type', 'application/json');
@@ -143,8 +139,15 @@ app.get('/feed/:index?', _nocache, function (req, res) {
     return;
   }
 
+	var index = req.params['index'];
+  index = (index)? parseInt(index) : 0;
+
+  var numToFetch = app.locals.NUM_POSTS_PER_FETCH;
+  if (req.query['n'])
+    numToFetch = parseInt(req.query['n']);
+
   db.getSettings(function(err, settings) {
-    db.fetchPosts(index, app.locals.NUM_POSTS_PER_FETCH, function(err, docs) {
+    db.fetchPosts(index, numToFetch, function(err, docs) {
       // send page from DB
       var feed = {
         'name': req.headers.host, 

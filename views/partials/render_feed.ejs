@@ -3,6 +3,7 @@ function RenderFeed(cfg) {
   this.selectorButton = cfg.selector+"-button";
   this.templateSelector = this.selector + "-template";
   this.onNoPosts = cfg.onNoPosts;
+  this.numPostsPerFetch = cfg.numPostsPerFetch;
 
   if (!cfg.uris || cfg.uris.length == 0)
   {
@@ -65,10 +66,9 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       var feedIdx = pageIndex % fr.feeds.length;
       var root = fr.feeds[feedIdx].root;
       var offset = fr.feeds[feedIdx].start_offset
-        + (parseInt(pageIndex / fr.feeds.length)
-           * <%= NUM_POSTS_PER_FETCH %>);
+        + (parseInt(pageIndex / fr.feeds.length) * fr.numPostsPerFetch);
 
-      return root + "/" + offset;
+      return root + "/" + offset + "?n=" + fr.numPostsPerFetch;
     },
     responseType: 'text',
 		button: this.selectorButton,
@@ -177,7 +177,7 @@ RenderFeed.prototype.getFeedRootAndPageIdx = function(uri) {
   var root = uri;
   var idx = 0;
 
-  var arr = uri.match(/(.+)\/(\d+)$/);
+  var arr = uri.match(/(.+)\/(\d+).*$/);
   if (arr != null)
   {
     root = arr[1];

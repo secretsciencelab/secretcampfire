@@ -222,7 +222,8 @@
           $("#no-follows-message").show();          
         else
           $("#no-posts-message").show();          
-      }
+      },
+      "numPostsPerFetch": <%= NUM_POSTS_PER_FETCH %>
     });
 
     var news = new News({
