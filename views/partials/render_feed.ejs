@@ -32,7 +32,6 @@ RenderFeed.prototype.initFeeds = function(uris) {
     var rootAndIdx = this.getFeedRootAndPageIdx(uris[i]);
 
     this.feeds.push({
-      'uri': uris[i],
       'root': rootAndIdx[0],
       'start_offset': rootAndIdx[1],
       'has_more': true
@@ -191,6 +190,11 @@ RenderFeed.prototype.initInfiniteScroll = function() {
   this.infScrollContainer.infiniteScroll('loadNextPage');
 }
 
+RenderFeed.prototype.syncProtocol = function(uri) {
+  var urlObj = new URL(uri);
+  return window.location.protocol + "//" + urlObj.host + urlObj.pathname;
+}
+
 RenderFeed.prototype.getFeedRootAndPageIdx = function(uri) {
   var root = uri;
   var idx = 0;
@@ -198,7 +202,7 @@ RenderFeed.prototype.getFeedRootAndPageIdx = function(uri) {
   var arr = uri.match(/(.+)\/(\d+).*$/);
   if (arr != null)
   {
-    root = arr[1];
+    root = this.syncProtocol(arr[1]);
     idx = parseInt(arr[2]);
   }
 
