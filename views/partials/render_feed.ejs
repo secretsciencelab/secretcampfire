@@ -164,11 +164,14 @@ RenderFeed.prototype.initInfiniteScroll = function() {
 
         if (post.re_url)
         {
-          var urlObj = new URL(post.re_url);
-          newCard.find(".card-reblog-author-post-link").attr('href', post.re_url)
+          var reUrlObj = new URL(post.re_url);
+          var reblogRenderUrl = reUrlObj.protocol + "//" + reUrlObj.host 
+            + "/render/" + encodeURIComponent(post.re_url);
+          newCard.find(".card-reblog-author-post-link")
+            .attr('href', reblogRenderUrl)
             .prepend("<div class='oi oi-loop' aria-hidden='true'></div>");
           newCard.find(".card-reblog-author").html(
-            fr._getShortSweetSiteHostname(urlObj.host));
+            fr._getShortSweetSiteHostname(reUrlObj.host));
         }
 
         newCard.find(".card-title").html(post.title);

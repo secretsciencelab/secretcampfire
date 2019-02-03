@@ -16,8 +16,10 @@ RenderPost.prototype.init = function() {
     if (post.re_url)
     {
       var urlObj = new URL(post.re_url);
+      var reblogRenderUrl = urlObj.protocol + "//" + urlObj.host 
+        + "/render/" + encodeURIComponent(post.re_url);
       $(pr.selector+" .reblog-info").show();
-      $(pr.selector+" .reblog-author-post-link").attr('href', post.re_url);
+      $(pr.selector+" .reblog-author-post-link").attr('href', reblogRenderUrl);
       $(pr.selector+" .reblog-author").html(urlObj.host);
     }
 
