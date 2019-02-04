@@ -39,8 +39,8 @@ var Navbar = new function() {
     if (this._isOwner)
       return;
 
-    setInterval(function() {
-      SessionDatastore.getData("blog_url", function(key, url) {
+    var t = setInterval(function() {
+      SetBlogWidget.getBlog(function(url) {
         if (!url || url.replace(/^\s+|\s+$/g, '').length == 0)
         {
           $("#active-blog-url").html("").hide();
@@ -55,6 +55,8 @@ var Navbar = new function() {
         $("#active-blog").click(function() {
           SetBlogWidget.open();  
         });
+
+        clearInterval(t);
       });
     }, 2000);
   };

@@ -25,7 +25,8 @@
 
 <script>
 var SetBlogWidget = new function() {
-  this._datastoreKey = 'blog_url';
+  this._datastoreActiveKey = 'blog_url';
+  this._datastoreAllKey = 'all_blog_urls';
   this._callAfterBlogSet = null;
 
   this.init = function (selector) {
@@ -70,7 +71,10 @@ var SetBlogWidget = new function() {
     if (!val)
       return false;
 
-    SessionDatastore.setData(this._datastoreKey, val);
+    // update active blog
+
+    SessionDatastore.setData(this._datastoreActiveKey, val);
+
     $(this.selector+"-modal").modal("hide");
     if (this._callAfterBlogSet)
     {
@@ -78,11 +82,25 @@ var SetBlogWidget = new function() {
       this._callAfterBlogSet = null;
       cb(val);
     }
+
+    // update list of all blogs
+
+    SessionDatastore.getData(this._datastoreAllKey, function(key, urls) {
+      if (!urls)
+        urls = [];  
+
+      if (urls.indexOf(val) == -1)
+        urls.push(val);
+
+      SessionDatastore.setData(this._datastoreAllKey, urls);
+      console.log("[SetBlogWidget] updated blogset...");
+      console.log(urls);
+    });
   };
 
   this.getBlog = function(cb, checkOnly) {
     var sbw = this;
-    SessionDatastore.getData(this._datastoreKey, function(key, url) {
+    SessionDatastore.getData(this._datastoreActiveKey, function(key, url) {
       if (url && url.replace(/^\s+|\s+$/g, '').length != 0)
       {
         // blog URL already set
@@ -103,7 +121,7 @@ var SetBlogWidget = new function() {
 
   this.open = function() {
     var sbw = this;
-    SessionDatastore.getData(sbw._datastoreKey, function(key, url) {
+    SessionDatastore.getData(sbw._datastoreActiveKey, function(key, url) {
       $(sbw.selector+"-form .form-blog-url").val(url);
       $(sbw.selector+"-modal").modal("show");
     });
