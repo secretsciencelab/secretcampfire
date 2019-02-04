@@ -67,9 +67,12 @@ var Navbar = new function() {
           + menuItemsHtml
           + '</div></div>';
         }
+        var urlObj = new URL(urls[0]);
+        var activeUrl = urlObj.host; // strip away protocol
+        activeUrl = activeUrl.split(".herokuapp.com")[0]; // papa bless
         $("#active-blog-display").html("Viewing as <span id='active-blog' "
           + "style='cursor:pointer;font-weight:bold;'>"
-          + urls[0]
+          + activeUrl
           + "</span> "
           + dropdownHtml).show();
         $("#active-blog").click(function() {
