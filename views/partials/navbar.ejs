@@ -35,6 +35,13 @@ var Navbar = new function() {
     });
   };
 
+  function _prettifyBlessedUrlForDisplay(url) {
+    var urlObj = new URL(url);
+    var displayUrl = urlObj.host; // strip away protocol
+    displayUrl = displayUrl.split(".herokuapp.com")[0]; // papa bless
+    return displayUrl;
+  }
+
   this.drawActiveBlogWidget = function() {
     if (this._isOwner)
       return;
@@ -67,12 +74,9 @@ var Navbar = new function() {
           + menuItemsHtml
           + '</div></div>';
         }
-        var urlObj = new URL(urls[0]);
-        var activeUrl = urlObj.host; // strip away protocol
-        activeUrl = activeUrl.split(".herokuapp.com")[0]; // papa bless
         $("#active-blog-display").html("Viewing as <span id='active-blog' "
           + "style='cursor:pointer;font-weight:bold;'>"
-          + activeUrl
+          + _prettifyBlessedUrlForDisplay(urls[0])
           + "</span> "
           + dropdownHtml).show();
         $("#active-blog").click(function() {
@@ -81,7 +85,7 @@ var Navbar = new function() {
         $("#active-blog-display .dropdown-item").click(function(e) {
           var url = $(this).data('url');
           SetBlogWidget.setBlog(url);
-          $("#active-blog").html(url);
+          $("#active-blog").html(_prettifyBlessedUrlForDisplay(url));
         });
 
         clearInterval(t);
