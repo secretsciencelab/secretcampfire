@@ -6,7 +6,7 @@
 
   <div class="collapse navbar-collapse" id="navbar-supported-content">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item collapse" id="active-blog-url"></li>
+      <li class="nav-item collapse" id="active-blog-display"></li>
     </ul>
     <form class="form-inline">
       <button class="btn btn-primary collapse" type="button" id="navbar-delete-button">
@@ -40,20 +40,42 @@ var Navbar = new function() {
       return;
 
     var t = setInterval(function() {
-      SetBlogWidget.getBlog(function(url) {
-        if (!url || url.replace(/^\s+|\s+$/g, '').length == 0)
+      SetBlogWidget.getBlogs(function(urls) {
+        if (!urls)
         {
-          $("#active-blog-url").html("").hide();
+          $("#active-blog-display").html("").hide();
           return;
         }
 
-        $("#active-blog-url").show();
-        $("#active-blog-url").html("Viewing as <span id='active-blog' "
+        var menuItemsHtml = "";
+        for (var ui=0; ui < urls.length; ui++)
+          menuItemsHtml += '<div class="dropdown-item"'
+            + ' style="cursor:pointer"'
+            + ' data-url="' + urls[ui] + '">' + urls[ui]
+            + '</div>';
+
+        var dropdownHtml 
+          = '<div class="dropdown d-inline-block">'
+          + '<button class="btn btn-outline-dark btn-sm dropdown-toggle"'
+          + ' type="button" id="navbar-active-blog-dropdown"'
+          + ' data-toggle="dropdown" aria-haspopup="true"'
+          + ' aria-expanded="false"></button>'
+          + '<div class="dropdown-menu"'
+          + ' aria-labelledby="navbar-active-blog-dropdown">'
+          + menuItemsHtml
+          + '</div></div>';
+        $("#active-blog-display").html("Viewing as <span id='active-blog' "
           + "style='cursor:pointer;font-weight:bold;'>"
-          + url + "</span>"
-        );
+          + urls[0]
+          + "</span> "
+          + dropdownHtml).show();
         $("#active-blog").click(function() {
           SetBlogWidget.open();  
+        });
+        $("#active-blog-display .dropdown-item").click(function(e) {
+          var url = $(this).data('url');
+          SetBlogWidget.setBlog(url);
+          $("#active-blog").html(url);
         });
 
         clearInterval(t);

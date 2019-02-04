@@ -24,13 +24,16 @@
 .navbar-brand .logo {
   height: 35px;
 }
-#active-blog-url {
+#active-blog-display {
 	padding: 0px 10px;
 }
-.navbar-brand .logo, #active-blog-url {
+#active-blog-display .btn {
+  border-color: transparent;
+}
+.navbar-brand .logo, #active-blog-display {
 	background-color: rgba(255, 255, 255, 0.3);
 }
-.navbar-brand .logo:hover, #active-blog-url:hover {
+.navbar-brand .logo:hover, #active-blog-display:hover {
   background-color: rgba(255, 255, 255, 0.6);
 }
 #active-blog:hover {

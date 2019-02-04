@@ -25,9 +25,15 @@
 
 <script>
 var SetBlogWidget = new function() {
-  this._datastoreActiveKey = 'blog_url';
-  this._datastoreAllKey = 'all_blog_urls';
+  this._datastoreKey = 'blog_urls';
   this._callAfterBlogSet = null;
+
+  function _trim(str) {
+    if (!str)
+      return str;
+
+    return str.replace(/^\s+|\s+$/g, '');
+  }
 
   this.init = function (selector) {
     this.selector = selector;
@@ -40,13 +46,12 @@ var SetBlogWidget = new function() {
         return;
 
       var url = window.location.protocol + "//" + window.location.host;
-      $(sbw.selector + "-form .form-blog-url").val(url);
-      sbw.handleSave();
+      sbw.setBlog(url);
     });
 
     $(this.selector+"-save-button").click(function(e) {
       e.preventDefault();
-      sbw.handleSave();
+      sbw.saveForm();
       return false;
     });
 
@@ -55,7 +60,7 @@ var SetBlogWidget = new function() {
       {
         e.preventDefault();
         $(this).attr("disabled", "disabled");
-        sbw.handleSave();
+        sbw.saveForm();
         $(this).removeAttr("disabled");
         return false;
       }
@@ -66,14 +71,11 @@ var SetBlogWidget = new function() {
     });
   };
 
-  this.handleSave = function() {
+  this.saveForm = function() {
     var val = $(this.selector + "-form .form-blog-url").val();
+    val = _trim(val);
     if (!val)
       return false;
-
-    // update active blog
-
-    SessionDatastore.setData(this._datastoreActiveKey, val);
 
     $(this.selector+"-modal").modal("hide");
     if (this._callAfterBlogSet)
@@ -84,30 +86,32 @@ var SetBlogWidget = new function() {
     }
 
     // update list of all blogs
-
     var sbw = this;
-    SessionDatastore.getData(this._datastoreAllKey, function(key, urls) {
+    SessionDatastore.getData(this._datastoreKey, function(key, urls) {
       if (!urls)
         urls = [];  
 
-      if (urls.indexOf(val) != -1)
-        return;
+      var findIdx = urls.indexOf(val);
+      if (findIdx == 0)
+        return; // nothing to do, already on top of queue
 
-      urls.push(val);
-      SessionDatastore.setData(sbw._datastoreAllKey, urls);
-      console.log("[SetBlogWidget] updated allblogs...");
-      console.log(urls);
+      if (findIdx != -1)
+        urls.splice(findIdx, 1); // delete old entry
+
+      urls.unshift(val); // push to front
+      urls = urls.slice(0, 10); // only keep recent N entries
+      SessionDatastore.setData(sbw._datastoreKey, urls);
     });
   };
 
   this.getBlog = function(cb, checkOnly) {
     var sbw = this;
-    SessionDatastore.getData(this._datastoreActiveKey, function(key, url) {
-      if (url && url.replace(/^\s+|\s+$/g, '').length != 0)
+    SessionDatastore.getData(this._datastoreKey, function(key, urls) {
+      if (urls && urls.length)
       {
         // blog URL already set
-        console.log("[SetBlogWidget] blog set: " + url);
-        cb(url);
+        console.log("[SetBlogWidget] active blog: " + urls[0]);
+        cb(urls[0]);
         return;
       }
 
@@ -121,9 +125,30 @@ var SetBlogWidget = new function() {
     });
   };
 
+  this.getBlogs = function(cb) {
+    SessionDatastore.getData(this._datastoreKey, function(key, urls) {
+      if (urls)
+      {
+        console.log("[SetBlogWidget] all blogs: ");
+        console.log(urls);
+      }
+
+      cb(urls);
+    });
+  };
+
+  this.setBlog = function(url) {
+    // programmatically set blog without modal input
+    $(this.selector + "-form .form-blog-url").val(url);
+    this.saveForm();
+  }
+
   this.open = function() {
     var sbw = this;
-    SessionDatastore.getData(sbw._datastoreActiveKey, function(key, url) {
+    SessionDatastore.getData(sbw._datastoreKey, function(key, urls) {
+      var url = '';
+      if (urls && urls.length)
+        url = urls[0];
       $(sbw.selector+"-form .form-blog-url").val(url);
       $(sbw.selector+"-modal").modal("show");
     });
