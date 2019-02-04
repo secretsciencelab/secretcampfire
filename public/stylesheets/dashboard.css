@@ -44,10 +44,25 @@
 
 /* news */
 
+.news-container {
+  max-height: 100vh;
+  overflow: auto;
+}
+
 #news-right, #news-left, #news-top {
+  color: #666;
+  font-size: 15px;
+}
+#news-right .section,
+#news-left .section {
   border: 1px solid #ddd;
 }
-#news-right .title, #news-left .title, #news-top .title {
+#news-right .section-title, 
+#news-left .section-title, 
+#news-top .section-title {
   color: #999;
 }
 
+footer {
+  margin-top: 10px;
+}

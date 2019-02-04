@@ -16,7 +16,7 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <div id="news-top" class="p-2 mb-2 collapse"></div>
+        <div id="news-top" class="mb-1 collapse"></div>
       </div>
     </div>
   </div>
@@ -53,18 +53,18 @@
     </div>
 
     <div class="row">
-      <div class="col"><div id="news-left" class="p-2 collapse"></div></div>
+      <div class="col"><div class="news-container sticky-top py-1">
+        <div id="news-left" class="collapse"></div>
+        </div></div>
       <div class="col-md-6">
         <div id="posts" class="grid">
           <div class="grid-sizer col-md-12"></div>
         </div>
       </div><!--col-->
-      <div class="col">
-        <div id="news-right" class="p-2 collapse">
-          <div class="title mb-1">News</div>
-        </div>
+      <div class="col"><div class="news-container sticky-top py-1">
+        <div id="news-right" class="collapse"></div>
         <% include ../partials/footer.ejs %>
-      </div>
+      </div></div>
     </div><!--row-->
 
     <div id="posts-button" class="collapse text-center">
@@ -247,7 +247,7 @@
 
     var news = new News({
       "url": "<%= MASTER_NEWS %>",
-      //"url": "http://localhost:5000/news_test.json", // ANDBG
+      //"url": "http://localhost:5000/news_sample.json", // ANDBG
       "selector": "#news",
       "page": "dashboard"
     });

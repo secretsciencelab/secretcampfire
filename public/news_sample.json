@@ -1,0 +1,64 @@
+{ 
+  "news": [
+    {
+      "id": "1",
+      "date": "2019-01-28T08:26:47.486Z",
+      "position": "top",
+      "page": ["dashboard"],
+      "section": "Announcements",
+      "headline": "",
+      "subhead": "",
+      "body": "<div class='p-2 alert-primary'><h5>Upgrade today to version 10.3!</h5> What's new: upgraded transmogrification algorithms, inter-planetary teleportation bugfixes, better integration with singularity engine</div>"
+    },
+    {
+      "id": "2",
+      "date": "2019-01-28T08:26:47.486Z",
+      "position": "left",
+      "page": ["dashboard"],
+      "section": "Events",
+      "headline": "Apr 2043 - Mars potato potluck",
+      "subhead": "",
+      "body": ""
+    },
+    {
+      "id": "3",
+      "date": "2019-01-28T08:26:47.486Z",
+      "position": "right",
+      "page": ["dashboard"],
+      "section": "News",
+      "headline": "New candidate planet X-367 discovered",
+      "subhead": "",
+      "body": "<div><\/div><img src=\"https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500\"><\/div>Volunteers wanted for hazardous journey. Low wages, bitter cold, long hours of complete darkness. Safe return doubtful. Honor and recognition in event of success."
+    },
+    {
+      "id": "4",
+      "date": "2019-01-28T08:26:47.486Z",
+      "position": "right",
+      "page": ["dashboard"],
+      "section": "Recommended",
+      "headline": "Earth simulator 2.2",
+      "subhead": "Now open for Winter",
+      "body": "<div><\/div><img src=\"https:\/\/images.pexels.com\/photos\/248797\/pexels-photo-248797.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500\"><\/div>"
+    },
+    {
+      "id": "5",
+      "date": "2019-01-28T08:26:47.486Z",
+      "position": "left",
+      "page": ["dashboard"],
+      "section": "Events",
+      "headline": "Jun 2043 - Water recycling speed-dating",
+      "subhead": "",
+      "body": ""
+    },
+    {
+      "id": "6",
+      "date": "2019-01-28T08:26:47.486Z",
+      "position": "left",
+      "page": ["dashboard"],
+      "section": "Events",
+      "headline": "Jul 2043 - Solar derby",
+      "subhead": "",
+      "body": ""
+    }
+  ] 
+}

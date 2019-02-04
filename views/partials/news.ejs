@@ -42,14 +42,19 @@ News.prototype.init = function() {
 News.prototype.draw = function(post) {
   var container = $(this.selector+"-"+post.position);
 
-  var pos2Class = {
-    'top': '',
-    'right': '',
-    'left': ''
+  if (container.find('.section-' + post.section).length == 0)
+  {
+    var sectionClass = '';
+    if (post.position == 'left' || post.position == 'right')
+      sectionClass = 'mb-3';
+    container.append("<div class='p-3 section section-" + post.section 
+      + " " + sectionClass + "'>"
+      + "<div class='section-title mb-1'>" + post.section + "</div>");
   }
-  var xClass = pos2Class[post.position];
+  section = container.find('.section-' + post.section);
+
   var html = 
-    "<div class='news-post " + xClass + "' data-id='" + post.id + "'>"
+    "<div class='news-post' data-id='" + post.id + "'>"
     + "<button type='button' class='close collapse' aria-label='Close'>"
     + "<span aria-hidden='true' class='small'>&times;</span></button>"
     + "<div class='headline'>" + post.headline + "</div>"
@@ -58,7 +63,7 @@ News.prototype.draw = function(post) {
     + "</div>";
   var el = $(html);
   this.bindActions(el);
-  container.append(el);
+  section.append(el);
   container.show();
 }
 
