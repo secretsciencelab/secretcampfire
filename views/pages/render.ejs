@@ -114,6 +114,8 @@
           "selector": "#post-container"
         };
         renderer = new RenderPost(cfg);
+
+        Navbar.activateDeleteButton("<%= uri %>");
       }
 
       // add Follow button to navbar

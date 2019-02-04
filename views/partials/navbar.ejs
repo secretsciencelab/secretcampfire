@@ -9,7 +9,10 @@
       <li class="nav-item collapse" id="active-blog-url"></li>
     </ul>
     <form class="form-inline">
-      <button class="btn btn-primary" type="button" id="dashboard-button">
+      <button class="btn btn-primary collapse" type="button" id="navbar-delete-button">
+        <span class='oi oi-trash' title='Delete' aria-hidden='true'></span>
+      </button>
+      <button class="btn btn-primary" type="button" id="navbar-dashboard-button">
         <span class='oi oi-home' title='Dashboard' aria-hidden='true'></span>
       </button>
     </form>
@@ -58,7 +61,7 @@ var Navbar = new function() {
 
   this.bindDashButton = function() {
     var nb = this;
-    $("#dashboard-button").mouseup(function(e) {
+    $("#navbar-dashboard-button").mouseup(function(e) {
       var leftClick = e.which == 1;
       var middleClick = e.which == 2;
       if (!leftClick && !middleClick)
@@ -89,6 +92,38 @@ var Navbar = new function() {
       });
     });
   };
+
+  this.activateDeleteButton = function(uri) {
+    var nb = this;
+
+    if (!nb._isOwner)
+      return;
+
+    if (uri.indexOf('/post') != -1)
+    {
+      // delete post
+      var id = uri.split('/post/')[1];
+      $("#navbar-delete-button").click(function(e) {
+        var r = confirm("Delete this post?");
+        if (!r)
+          return;
+
+        $.post('/post/delete', { 
+            id: id
+          },
+          function(data, status, xhr) {
+            console.log(data);
+          },
+          'json')
+        .done(function() {
+        })
+        .fail(function(jqxhr, settines, ex) {
+        });
+        
+        return false;
+      }).show();
+    }
+  }
 
   this.addFollowButton = function(uri) {
     if (this._isOwner)

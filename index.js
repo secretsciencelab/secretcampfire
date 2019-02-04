@@ -264,6 +264,12 @@ app.post('/post', cel.ensureLoggedIn(), function(req, res) {
   // TODO: allow post to user's other blog on a diff server
 });
 
+app.post('/post/delete', cel.ensureLoggedIn(), function (req, res) {
+  db.delPost(req.body.id, function(err) {
+    res.status(200).json({'status': err});
+  });
+});
+
 app.get('/posts/:index?', cel.ensureLoggedIn(), function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;

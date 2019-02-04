@@ -91,6 +91,13 @@
       Post.findById(id, cb);
     }
 
+    module.exports.delPost = function(id, cb) {
+      Post.deleteOne({'id': id}, function(err) {
+        if (cb)
+          cb(err);
+      });
+    }
+
     /* 
      * feed
      */
