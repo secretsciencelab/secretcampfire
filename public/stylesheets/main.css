@@ -17,7 +17,8 @@
   pointer-events: none; /* allow click-through to page beneath */
 }
 .navbar a,
-.navbar button {
+.navbar button,
+.navbar .nav-item {
   pointer-events: auto;
 }
 .navbar-brand .logo {
