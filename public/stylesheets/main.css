@@ -13,6 +13,13 @@
 
 /* navbar */
 
+.navbar {
+  pointer-events: none; /* allow click-through to page beneath */
+}
+.navbar a,
+.navbar button {
+  pointer-events: auto;
+}
 .navbar-brand .logo {
   height: 35px;
 }
