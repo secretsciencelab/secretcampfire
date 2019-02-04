@@ -17,7 +17,7 @@ An immortal personal microblogging system that...
 
 1. Click [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-2. Make a new Heroku account if you don't have one yet (it's free). Sign in if you do.
+2. Make a new Heroku account if you don't have one yet (it's free). Sign in.
 
 3. Enter a name for your app. This name will become your blog's address. E.g. if you enter `secretcampfire`, your blog's address will be `secretcampfire.herokuapp.com`. Click `Deploy app`.
 
