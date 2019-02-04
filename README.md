@@ -25,7 +25,7 @@ An immortal personal microblogging system that...
 
 5. Click the `Resources` tab at the top.
 
-6. In the `Add-ons` search bar, type `mlab` and select `mLab MongoDB`. This database is to store your blog's content. Select the `Sandbox - Free` plan and click `Provision`.
+6. In the `Add-ons` search bar, type `mlab` and select `mLab MongoDB`. This database stores your blog's content. Select the `Sandbox - Free` plan and click `Provision`.
 
 7. Visit `your-app.herokuapp.com` in a browser (where `your-app` is the name you entered in step 3). 
 
