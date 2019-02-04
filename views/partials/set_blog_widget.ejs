@@ -85,15 +85,17 @@ var SetBlogWidget = new function() {
 
     // update list of all blogs
 
+    var sbw = this;
     SessionDatastore.getData(this._datastoreAllKey, function(key, urls) {
       if (!urls)
         urls = [];  
 
-      if (urls.indexOf(val) == -1)
-        urls.push(val);
+      if (urls.indexOf(val) != -1)
+        return;
 
-      SessionDatastore.setData(this._datastoreAllKey, urls);
-      console.log("[SetBlogWidget] updated blogset...");
+      urls.push(val);
+      SessionDatastore.setData(sbw._datastoreAllKey, urls);
+      console.log("[SetBlogWidget] updated allblogs...");
       console.log(urls);
     });
   };
