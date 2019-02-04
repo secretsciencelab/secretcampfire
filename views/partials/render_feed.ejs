@@ -5,6 +5,7 @@ function RenderFeed(cfg) {
   this.onNoPosts = cfg.onNoPosts;
   this.postImagePref = cfg.postImagePref;
   this.numPostsPerFetch = cfg.numPostsPerFetch;
+  this.skipOldPosts = cfg.skipOldPosts;
 
   if (!cfg.uris || cfg.uris.length == 0)
   {
@@ -96,6 +97,19 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       data = JSON.parse(resp);
       if (data.posts)
         fr._numPostsFetched += data.posts.length;
+    }
+
+    if (fr.skipOldPosts && data && data.posts && data.posts.length)
+    {
+      // check if posts are stale
+      var post = data.posts[0];
+      var now = new Date();
+      var postDate = new Date(post.date);
+      var diffTime = now.getTime() - postDate.getTime();
+      var oneDay = 24*60*60*1000;
+      var diffDays = Math.round(Math.abs(diffTime/oneDay));
+      if (diffDays > 30)
+        data.posts = [];
     }
 
     if (!data || !data.posts || !data.posts.length)
