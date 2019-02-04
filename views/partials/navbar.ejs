@@ -54,8 +54,10 @@ var Navbar = new function() {
             + ' data-url="' + urls[ui] + '">' + urls[ui]
             + '</div>';
 
-        var dropdownHtml 
-          = '<div class="dropdown d-inline-block">'
+        var dropdownHtml = "";
+        if (urls.length > 1)
+        {
+          dropdownHtml = '<div class="dropdown d-inline-block">'
           + '<button class="btn btn-outline-dark btn-sm dropdown-toggle"'
           + ' type="button" id="navbar-active-blog-dropdown"'
           + ' data-toggle="dropdown" aria-haspopup="true"'
@@ -64,6 +66,7 @@ var Navbar = new function() {
           + ' aria-labelledby="navbar-active-blog-dropdown">'
           + menuItemsHtml
           + '</div></div>';
+        }
         $("#active-blog-display").html("Viewing as <span id='active-blog' "
           + "style='cursor:pointer;font-weight:bold;'>"
           + urls[0]
