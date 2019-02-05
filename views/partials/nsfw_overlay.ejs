@@ -8,21 +8,6 @@
 
     <div class="row text-center">
       <div class="notice midbox col-lg-6 col-xl-4 pb-4 small collapse">
-        <h1>Adult content warning</h1>
-        <p>By clicking 'Enter' below, you are making the following statements:
-        <ol class="text-left">
-          <li>I am an adult, at least 18 years of age
-          <li>I have the legal right to possess adult material in my community.
-          <li>I will not permit any person(s) under 18 to have access to any materials contained within this site.
-          <li>I am voluntarily choosing to access this site.
-          <li>I do not find images or videos of nude adults, adults engaged in sexual acts, or other sexual material to be offensive or objectionable.
-          <li>I will exit this site immediately if I am offended in any way.
-          <li>I understand and agree to abide by the standards and laws of my community.
-          <li>I agree that I shall not hold the owners of the website or its employees responsible for any materials located on this site.
-          <li>If I use these services in violation of this agreement, I understand I may be in violation of local and/or federal laws and am solely responsible for my actions.
-          <li>By clicking on 'Enter' below and entering the site, I agree to abide by these terms.
-        </ol>
-        </p>
         <div><button class="btn btn-primary" type="button">Enter</button></div>
       </div><!--notice-->
     </div><!--row-->
@@ -30,6 +15,8 @@
 </div>
 
 <script>
+<% include ../partials/utils.ejs %>
+
 var NsfwOverlay = new function() {
   this.selector = "#nsfw-overlay";
   this._datastoreKey = 'nsfw_overlay';
@@ -67,6 +54,12 @@ var NsfwOverlay = new function() {
     });
   };
 
+  this.genNotice = function() {
+    return Base64.decode(
+      "ICAgICAgICA8aDE+QWR1bHQgY29udGVudCB3YXJuaW5nPC9oMT4KICAgICAgICA8cD5CeSBjbGlja2luZyAnRW50ZXInIGJlbG93LCB5b3UgYXJlIG1ha2luZyB0aGUgZm9sbG93aW5nIHN0YXRlbWVudHM6CiAgICAgICAgPG9sIGNsYXNzPSJ0ZXh0LWxlZnQiPgogICAgICAgICAgPGxpPkkgYW0gYW4gYWR1bHQsIGF0IGxlYXN0IDE4IHllYXJzIG9mIGFnZQogICAgICAgICAgPGxpPkkgaGF2ZSB0aGUgbGVnYWwgcmlnaHQgdG8gcG9zc2VzcyBhZHVsdCBtYXRlcmlhbCBpbiBteSBjb21tdW5pdHkuCiAgICAgICAgICA8bGk+SSB3aWxsIG5vdCBwZXJtaXQgYW55IHBlcnNvbihzKSB1bmRlciAxOCB0byBoYXZlIGFjY2VzcyB0byBhbnkgbWF0ZXJpYWxzIGNvbnRhaW5lZCB3aXRoaW4gdGhpcyBzaXRlLgogICAgICAgICAgPGxpPkkgYW0gdm9sdW50YXJpbHkgY2hvb3NpbmcgdG8gYWNjZXNzIHRoaXMgc2l0ZS4KICAgICAgICAgIDxsaT5JIGRvIG5vdCBmaW5kIGltYWdlcyBvciB2aWRlb3Mgb2YgbnVkZSBhZHVsdHMsIGFkdWx0cyBlbmdhZ2VkIGluIHNleHVhbCBhY3RzLCBvciBvdGhlciBzZXh1YWwgbWF0ZXJpYWwgdG8gYmUgb2ZmZW5zaXZlIG9yIG9iamVjdGlvbmFibGUuCiAgICAgICAgICA8bGk+SSB3aWxsIGV4aXQgdGhpcyBzaXRlIGltbWVkaWF0ZWx5IGlmIEkgYW0gb2ZmZW5kZWQgaW4gYW55IHdheS4KICAgICAgICAgIDxsaT5JIHVuZGVyc3RhbmQgYW5kIGFncmVlIHRvIGFiaWRlIGJ5IHRoZSBzdGFuZGFyZHMgYW5kIGxhd3Mgb2YgbXkgY29tbXVuaXR5LgogICAgICAgICAgPGxpPkkgYWdyZWUgdGhhdCBJIHNoYWxsIG5vdCBob2xkIHRoZSBvd25lcnMgb2YgdGhlIHdlYnNpdGUgb3IgaXRzIGVtcGxveWVlcyByZXNwb25zaWJsZSBmb3IgYW55IG1hdGVyaWFscyBsb2NhdGVkIG9uIHRoaXMgc2l0ZS4KICAgICAgICAgIDxsaT5JZiBJIHVzZSB0aGVzZSBzZXJ2aWNlcyBpbiB2aW9sYXRpb24gb2YgdGhpcyBhZ3JlZW1lbnQsIEkgdW5kZXJzdGFuZCBJIG1heSBiZSBpbiB2aW9sYXRpb24gb2YgbG9jYWwgYW5kL29yIGZlZGVyYWwgbGF3cyBhbmQgYW0gc29sZWx5IHJlc3BvbnNpYmxlIGZvciBteSBhY3Rpb25zLgogICAgICAgICAgPGxpPkJ5IGNsaWNraW5nIG9uICdFbnRlcicgYmVsb3cgYW5kIGVudGVyaW5nIHRoZSBzaXRlLCBJIGFncmVlIHRvIGFiaWRlIGJ5IHRoZXNlIHRlcm1zLgogICAgICAgIDwvb2w+CiAgICAgICAgPC9wPgo="
+    );
+  };
+
   this.open = function() {
     $(this.selector).show();
   };
@@ -82,7 +75,9 @@ var NsfwOverlay = new function() {
         nolay.close();
 
       $(nolay.selector + " .loading").hide();
-      $(nolay.selector + " .notice").show();
+      $(nolay.selector + " .notice")
+        .prepend(nolay.genNotice())
+        .show();
     });
   }
 };
