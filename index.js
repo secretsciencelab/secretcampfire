@@ -131,14 +131,6 @@ app.get('/logout', function(req, res) {
 });
 
 app.get('/feed/:index?', _nocache, function (req, res) {
-  if (req.query['test'])
-  {
-    // send sample feed
-    res.setHeader('Content-Type', 'application/json');
-    res.sendFile("test_feed.json", {root: 'public'});
-    return;
-  }
-
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
