@@ -35,19 +35,9 @@ var SetBlogWidget = new function() {
     return str.replace(/^\s+|\s+$/g, '');
   }
 
-  this.init = function (selector) {
-    this.selector = selector;
-
+  this.init = function (cfg) {
     var sbw = this;
-
-    // auto-set blog to current site if logged in
-    $.getJSON("/is_owner", function(data) {
-      if (!data.is_owner)
-        return;
-
-      var url = window.location.protocol + "//" + window.location.host;
-      sbw.setBlog(url);
-    });
+    this.selector = cfg.selector;
 
     $(this.selector+"-save-button").click(function(e) {
       e.preventDefault();
@@ -76,6 +66,9 @@ var SetBlogWidget = new function() {
     val = _trim(val);
     if (!val)
       return false;
+
+    if (val.indexOf("http") == -1)
+      val = window.location.protocol + "//" + val;
 
     $(this.selector+"-modal").modal("hide");
     if (this._callAfterBlogSet)
@@ -106,7 +99,8 @@ var SetBlogWidget = new function() {
 
   this.getBlog = function(cb, checkOnly) {
     var sbw = this;
-    SessionDatastore.getData(this._datastoreKey, function(key, urls) {
+
+    this.getBlogs(function(urls) { 
       if (urls && urls.length)
       {
         // blog URL already set
@@ -115,13 +109,14 @@ var SetBlogWidget = new function() {
         return;
       }
 
-      if (!checkOnly)
+      if (checkOnly)
       {
-        sbw._callAfterBlogSet = cb;
-        $(sbw.selector+"-modal").modal("show");
-      }
-      else
         cb(null);
+        return;
+      }
+
+      sbw._callAfterBlogSet = cb;
+      $(sbw.selector+"-modal").modal("show");
     });
   };
 
@@ -153,7 +148,23 @@ var SetBlogWidget = new function() {
       $(sbw.selector+"-modal").modal("show");
     });
   };
+
+  this.isOwner = function(cb) {
+    if (typeof this._isOwner !== 'undefined')
+    {
+      cb(this._isOwner);
+      return;
+    }
+
+    var sbw = this;
+    $.getJSON("/is_owner", function(data) {
+      sbw._isOwner = data.is_owner;
+      cb(sbw._isOwner);
+    });
+  };
 };
 
-SetBlogWidget.init("#set-blog");
+SetBlogWidget.init({
+  'selector': "#set-blog"
+});
 </script>

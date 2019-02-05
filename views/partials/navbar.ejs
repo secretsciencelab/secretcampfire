@@ -23,29 +23,19 @@
 <% include ../partials/set_blog_widget.ejs %>
 
 <script>
+<% if (locals.forceThisAsActiveBlog) { %>
+  SetBlogWidget.setBlog(
+    window.location.protocol + "//" + window.location.host);
+<% } %>
+
+<% include ../partials/utils.ejs %>
 var Navbar = new function() {
   this.init = function() {
-    var nb = this;
-
-    $.getJSON("/is_owner", function(data) {
-      nb._isOwner = data.is_owner;
-
-      nb.bindDashButton(); 
-      nb.drawActiveBlogWidget(); 
-    });
+    this.bindDashButton(); 
+    this.drawActiveBlogWidget(); 
   };
 
-  function _prettifyBlessedUrlForDisplay(url) {
-    var urlObj = new URL(url);
-    var displayUrl = urlObj.host; // strip away protocol
-    displayUrl = displayUrl.split(".herokuapp.com")[0]; // papa bless
-    return displayUrl;
-  }
-
   this.drawActiveBlogWidget = function() {
-    if (this._isOwner)
-      return;
-
     var t = setInterval(function() {
       SetBlogWidget.getBlogs(function(urls) {
         if (!urls)
@@ -76,7 +66,7 @@ var Navbar = new function() {
         }
         $("#active-blog-display").html("Viewing as <span id='active-blog' "
           + "style='cursor:pointer;font-weight:bold;'>"
-          + _prettifyBlessedUrlForDisplay(urls[0])
+          + Utils.prettifyBlessedHostUrlForDisplay(urls[0])
           + "</span> "
           + dropdownHtml).show();
         $("#active-blog").click(function() {
@@ -85,7 +75,7 @@ var Navbar = new function() {
         $("#active-blog-display .dropdown-item").click(function(e) {
           var url = $(this).data('url');
           SetBlogWidget.setBlog(url);
-          $("#active-blog").html(_prettifyBlessedUrlForDisplay(url));
+          $("#active-blog").html(Utils.prettifyBlessedHostUrlForDisplay(url));
         });
 
         clearInterval(t);
@@ -100,19 +90,6 @@ var Navbar = new function() {
       var middleClick = e.which == 2;
       if (!leftClick && !middleClick)
         return;
-
-      if (nb._isOwner)
-      {
-        var url = "/dashboard";
-        if (leftClick)
-          window.location.href = url;
-        else
-        {
-          var tab = window.open(url, '_blank');
-          tab.focus();
-        }
-        return;
-      }
 
       SetBlogWidget.getBlog(function(url) {
         url += "/dashboard";
@@ -130,76 +107,80 @@ var Navbar = new function() {
   this.activateDeleteButton = function(uri) {
     var nb = this;
 
-    if (!nb._isOwner)
-      return;
+    SetBlogWidget.isOwner(function(isOwner) {
+      if (!isOwner)
+        return;
 
-    if (uri.indexOf('/post') != -1)
-    {
-      // delete post
-      var id = uri.split('/post/')[1];
-      $("#navbar-delete-button").click(function(e) {
-        var r = confirm("Delete this post?");
-        if (!r)
-          return;
+      if (uri.indexOf('/post') != -1)
+      {
+        // delete post
+        var id = uri.split('/post/')[1];
+        $("#navbar-delete-button").click(function(e) {
+          var r = confirm("Delete this post?");
+          if (!r)
+            return;
 
-        $.post('/post/delete', { 
-            id: id
-          },
-          function(data, status, xhr) {
-            console.log(data);
-          },
-          'json')
-        .done(function() {
-        })
-        .fail(function(jqxhr, settines, ex) {
-        });
-        
-        return false;
-      }).show();
-    }
-  }
+          $.post('/post/delete', { 
+              id: id
+            },
+            function(data, status, xhr) {
+              console.log(data);
+            },
+            'json')
+          .done(function() {
+          })
+          .fail(function(jqxhr, settines, ex) {
+          });
+          
+          return false;
+        }).show();
+      }
+    });
+  };
 
   this.addFollowButton = function(uri) {
-    if (this._isOwner)
-      return;
-
-    var html = "<form class='form-inline my-2 my-lg-0'>"
-      + "<button type='button' id='follow-button' "
-      + " class='btn btn-primary my-2 my-sm-0'>"
-      + "<span class='oi oi-plus' title='Follow' aria-hidden='true'></span>"
-      + " <span class='label'>Follow</span></button>"
-      + "</form>";
-    $("#navbar-supported-content").append(html);
-
-    var followButtonConfig = {
-      "uri": uri,
-      "selector": "#follow-button"
-    }
-
-    // check if button is "Follow" or "Following"
-    var followButton = null;
-    SetBlogWidget.getBlog(function(blog) {
-      if (!blog)
-      {
-        followButton = new FollowButton(followButtonConfig);
+    SetBlogWidget.isOwner(function(isOwner) {
+      if (isOwner)
         return;
-      }
-    
-      var checkUrl = blog
-          + "/follow/check/"
-          + encodeURIComponent(followButtonConfig.uri);
 
-      $.getJSON(checkUrl, function(data) {
-        if (data.is_following)
+      var html = "<form class='form-inline my-2 my-lg-0'>"
+        + "<button type='button' id='follow-button' "
+        + " class='btn btn-primary my-2 my-sm-0'>"
+        + "<span class='oi oi-plus' title='Follow' aria-hidden='true'></span>"
+        + " <span class='label'>Follow</span></button>"
+        + "</form>";
+      $("#navbar-supported-content").append(html);
+
+      var followButtonConfig = {
+        "uri": uri,
+        "selector": "#follow-button"
+      }
+
+      // check if button is "Follow" or "Following"
+      var followButton = null;
+      SetBlogWidget.getBlog(function(blog) {
+        if (!blog)
         {
-          $("#follow-button .oi").removeClass("oi-plus").addClass("oi-eye");
-          $("#follow-button .label").html("Following");
-          followButtonConfig.isFollowing = true;
+          followButton = new FollowButton(followButtonConfig);
+          return;
         }
-  
-        followButton = new FollowButton(followButtonConfig);
-      });
-    }, /*checkOnly*/true);
+      
+        var checkUrl = blog
+            + "/follow/check/"
+            + encodeURIComponent(followButtonConfig.uri);
+
+        $.getJSON(checkUrl, function(data) {
+          if (data.is_following)
+          {
+            $("#follow-button .oi").removeClass("oi-plus").addClass("oi-eye");
+            $("#follow-button .label").html("Following");
+            followButtonConfig.isFollowing = true;
+          }
+    
+          followButton = new FollowButton(followButtonConfig);
+        });
+      }, /*checkOnly*/true);
+    });
   };
 };
 

@@ -1,3 +1,5 @@
+<% include ../partials/utils.ejs %>
+
 function RenderFeed(cfg) {
   this.selector = cfg.selector;
   this.selectorButton = cfg.selector+"-button";
@@ -52,12 +54,6 @@ RenderFeed.prototype.initMasonry = function() {
 
   // get Masonry instance
   this.msnry = this.msnryContainer.data('masonry');
-}
-
-RenderFeed.prototype._getShortSweetSiteHostname = function(hostname) {
-  var sweet = hostname.split('.herokuapp.')[0];
-  sweet = sweet.split('.appspot.')[0];
-  return sweet;
 }
 
 RenderFeed.prototype.initInfiniteScroll = function() {
@@ -182,7 +178,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
             'url(' + data.avatar_url + ')');
         newCard.find(".card-author-post-link").attr('href', postRenderUrl);
         newCard.find(".card-author").html(
-          fr._getShortSweetSiteHostname(urlObj.host));
+          Utils.prettifyBlessedHostUrlForDisplay(postUrlBase));
 
         if (post.re_url)
         {
@@ -193,7 +189,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
             .attr('href', reblogRenderUrl)
             .prepend("<div class='oi oi-loop' aria-hidden='true'></div>");
           newCard.find(".card-reblog-author").html(
-            fr._getShortSweetSiteHostname(reUrlObj.host));
+            Utils.prettifyBlessedHostUrlForDisplay(post.re_url));
         }
 
         newCard.find(".card-title").html(post.title);
