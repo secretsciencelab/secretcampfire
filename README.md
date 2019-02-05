@@ -13,7 +13,7 @@ An immortal personal microblogging system that...
 - can run on any platform you like, so you are never locked into one service
 - is *free* as in *free*dom
 
-## Quickstart (time needed: 5 minutes)
+## Quickstart instructions (time needed: 5 minutes)
 
 1. Click [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
