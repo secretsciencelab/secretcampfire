@@ -167,6 +167,9 @@ app.get('/feed/:index?', _nocache, function (req, res) {
       res.send(JSON.stringify(feed, null, 2));
     });
   });
+
+  if (index == 0)
+    db.addFollower(req.headers.referer);
 });
 
 app.get('/post/:id', function (req, res) {

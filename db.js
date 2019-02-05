@@ -36,8 +36,9 @@
     Post = mongoose.model('Post', PostSchema);
 
     // collections:
-    // - following
-    // - reblogged_from
+    // - follows
+    // - followers
+    // - rebloggedfroms
     const FollowSchema = new mongoose.Schema({
       id: String,
       date: { type: Date, default: Date.now },
@@ -47,6 +48,7 @@
       notes: String
     });
     Follow = mongoose.model('Follow', FollowSchema);
+    Follower = mongoose.model('Follower', FollowSchema);
 
     /* 
      * post
@@ -187,6 +189,34 @@
         if (cb)
           cb(err, follows);
       });
+    }
+
+    module.exports.addFollower = function(url, cb) {
+      if (url.indexOf('http') == -1)
+      {
+        if (cb)
+          cb(null, null);
+        return;
+      }
+
+      try {
+        var urlKey = _makeUrlKey(url);
+        
+        var newFollower = new Follower({
+          url_key: urlKey,
+          url: url
+        });
+        newFollower.id = newFollower._id;
+
+        newFollower.save(function (err) {
+          if (cb)
+            cb(err, newFollower);
+        });
+      }
+      catch(err) {
+        if (cb)
+          cb(err, {});
+      }
     }
 
     /*
