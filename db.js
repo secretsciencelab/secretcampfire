@@ -199,11 +199,11 @@
 
       try {
         var urlObj = new URL(url);
-        var host = urlObj.host;
+        var hostUrl = urlObj.protocol + "//" + urlObj.host;
 
         var newFollower = new Follower({
-          url_key: _makeUrlKey(host),
-          url: host,
+          url_key: _makeUrlKey(hostUrl),
+          url: hostUrl,
           notes: url
         });
         newFollower.id = newFollower._id;
