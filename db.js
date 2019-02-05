@@ -134,10 +134,8 @@
 
     module.exports.follow = function(url, cb) {
       try {
-        var urlKey = _makeUrlKey(url);
-        
         var newFollow = new Follow({
-          url_key: urlKey,
+          url_key: _makeUrlKey(url),
           url: url
         });
         newFollow.id = newFollow._id;
@@ -154,18 +152,18 @@
     }
 
     module.exports.unfollow = function(url, cb) {
-      var urlKey = _makeUrlKey(url);
-
-      Follow.deleteMany({'url_key': urlKey}, function(err) {
+      Follow.deleteMany({
+        'url_key': _makeUrlKey(url)
+      }, function(err) {
         if (cb)
           cb(err);
       });
     }
 
     module.exports.isFollowing = function(url, cb) {
-      var urlKey = _makeUrlKey(url);
-
-      Follow.findOne({'url_key': urlKey}, function(err, doc) {
+      Follow.findOne({
+        'url_key': _makeUrlKey(url)
+      }, function(err, doc) {
         if (cb)
           cb(err, doc);
       });
@@ -200,11 +198,13 @@
       }
 
       try {
-        var urlKey = _makeUrlKey(url);
-        
+        var urlObj = new URL(url);
+        var host = urlObj.host;
+
         var newFollower = new Follower({
-          url_key: urlKey,
-          url: url
+          url_key: _makeUrlKey(host),
+          url: host,
+          notes: url
         });
         newFollower.id = newFollower._id;
 
