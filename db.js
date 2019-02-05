@@ -200,18 +200,30 @@
       try {
         var urlObj = new URL(url);
         var hostUrl = urlObj.protocol + "//" + urlObj.host;
+        var hostUrlKey = _makeUrlKey(hostUrl);
 
-        var newFollower = new Follower({
-          url_key: _makeUrlKey(hostUrl),
-          url: hostUrl,
-          notes: url
-        });
-        newFollower.id = newFollower._id;
+        Follower.findOne({ 'url_key': hostUrlKey }, function(err, follower) {
+          if (follower)
+          {
+            follower.date = Date.now();
+            follower.notes = url;
+          }
+          else
+          {
+            follower = new Follower({
+              url_key: hostUrlKey,
+              url: hostUrl,
+              notes: url
+            });
+            follower.id = follower._id;
+          }
 
-        newFollower.save(function (err) {
-          if (cb)
-            cb(err, newFollower);
+          follower.save(function (err) {
+            if (cb)
+              cb(err, follower);
+          });
         });
+
       }
       catch(err) {
         if (cb)
