@@ -17,9 +17,21 @@
 
   <!-- feed view -->
 
-  <div class="container">
+  <div class="
+    <% if (fullscreen) { %>
+      container-fluid
+    <% } else { %>
+      container
+    <% } %>
+  ">
     <div id="feed-grid" class="grid">
-      <div class="grid-sizer col-md-4"></div>
+      <div class="grid-sizer 
+        <% if (fullscreen) { %>
+          col-md-3 col-lg-2 p-md-1 p-lg-2 mb-1
+        <% } else { %>
+          col-md-4 p-md-2 p-lg-3 mb-1
+        <% } %>
+      "></div>
     </div><!--feed-grid-->
   </div><!--container-->
 
@@ -28,7 +40,13 @@
   </div>
 
   <div id="feed-grid-template" class="d-none">
-    <div class="grid-item col-md-4">
+    <div class="grid-item 
+      <% if (fullscreen) { %>
+          col-md-3 col-lg-2 p-md-1 p-lg-2 mb-1
+      <% } else { %>
+        col-md-4 p-md-2 p-lg-3 mb-1
+      <% } %>
+    ">
     <div class="card grid-item-content">
       <div class="card-overlay collapse">
         <span class='card-reblog-button oi oi-loop' title='Reblog' aria-hidden='true'></span>

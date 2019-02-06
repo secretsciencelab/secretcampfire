@@ -94,7 +94,8 @@ function _render(req, res, myuri) {
   }
 
   res.render('pages/render', {
-    'uri': uri
+    'uri': uri,
+    'fullscreen': req.query['fullscreen']
   });
 }
 function _nocache(req, res, next) {
