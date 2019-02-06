@@ -216,7 +216,12 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       fr.msnryContainer.append(newCard);
     }
 
+    // setup new cards
     ReblogButton.activate(".card-reblog-button");
+    Utils.makeEmbedsResponsive([
+      ".card-text iframe", ".card-text embed",
+      ".card-text object", ".card-text video"
+    ]);
 
     newCards.imagesLoaded().progress(function(instance, image) {
       var id = $(image.img).data('iscroll-id');

@@ -33,6 +33,22 @@ if (typeof Utils === 'undefined')
       document.getElementsByTagName("head")[0].appendChild(stylesheet);
       window.___gcfg={parsetags:'onload'};
     }
+
+    this.makeEmbedsResponsive = function(selectors) {
+      // Ref: https://milanaryal.com.np/implementing-responsive-images-videos-and-tables-with-bootstrap/
+
+      for (var i=0; i < selectors.length; i++)
+        $(selectors[i]).each(function() {
+          if ($(this).data('make-embeds-responsive-done'))
+            return;
+
+          $(this)
+            .wrap('<div class="embed-responsive'
+                + ' embed-responsive-16by9"></div>')
+            .addClass('embed-responsive-item')
+            .data('make-embeds-responsive-done', true);
+        });
+    }
   };
 }
 
