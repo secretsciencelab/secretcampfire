@@ -223,6 +223,7 @@
     <% include ../partials/reblog_button.ejs %>
     <% include ../partials/render_feed.ejs %>
     <% include ../partials/news.ejs %>
+    <% include ../partials/utils.ejs %>
 
     Dashboard.init({
       "postSelector": "#create-post",
@@ -235,7 +236,7 @@
     if (renderUris.length == 1) {
       $.getJSON(renderUris[0], function(data) {
         if (data.style_url)
-          addCss(data.style_url);
+          Utils.addCss(data.style_url);
 
         if (data.name)
           $("title").prepend(data.name + " - Posts - ");
@@ -267,16 +268,6 @@
       "page": "dashboard"
     });
 
-    function addCss(cssPath) {
-      var stylesheet = document.createElement("link");
-      stylesheet.href=cssPath;
-      stylesheet.rel="stylesheet";
-      stylesheet.type = 'text/css';
-      document.getElementsByTagName("head")[0].appendChild(stylesheet);
-      window.___gcfg={parsetags:'onload'};
-    }
-
-    
     if (window.location.href.indexOf("posts") != -1)
       $("#back-to-dash-button").show();
 

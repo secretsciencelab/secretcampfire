@@ -105,12 +105,13 @@
     <% include ../partials/render_feed.ejs %>
     <% include ../partials/render_post.ejs %>
     <% include ../partials/follow_button.ejs %>
+    <% include ../partials/utils.ejs %>
   
     var renderer = null;
   
     $.getJSON("<%= uri %>", function(data) {
       if (data.style_url)
-        addCss(data.style_url);
+        Utils.addCss(data.style_url);
 
       if (data.posts)
       {
@@ -144,15 +145,6 @@
         followTarget = data.blog_url + "/feed";
       Navbar.addFollowButton(followTarget);
     });  
-
-    function addCss(cssPath) {
-      var stylesheet = document.createElement("link");
-      stylesheet.href=cssPath;
-      stylesheet.rel="stylesheet";
-      stylesheet.type = 'text/css';
-      document.getElementsByTagName("head")[0].appendChild(stylesheet);
-      window.___gcfg={parsetags:'onload'};
-    }
   </script>
 </body>
 </html>
