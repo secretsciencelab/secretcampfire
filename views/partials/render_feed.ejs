@@ -8,6 +8,7 @@ function RenderFeed(cfg) {
   this.postImagePref = cfg.postImagePref;
   this.numPostsPerFetch = cfg.numPostsPerFetch;
   this.skipOldPosts = cfg.skipOldPosts;
+  this.enforceMasonryOrder = cfg.enforceMasonryOrder;
 
   if (!cfg.uris || cfg.uris.length == 0)
   {
@@ -50,7 +51,7 @@ RenderFeed.prototype.initMasonry = function() {
     itemSelector: '.grid-item',
     columnWidth: '.grid-sizer',
     percentPosition: true,
-    horizontalOrder: true
+    horizontalOrder: (this.enforceMasonryOrder)? true : false
   });
 
   // get Masonry instance

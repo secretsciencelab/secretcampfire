@@ -258,7 +258,8 @@
           $("#no-posts-message").show();          
       },
       "postImagePref": ["images", "thumbs"],
-      "numPostsPerFetch": <%= NUM_POSTS_PER_FETCH %>
+      "numPostsPerFetch": <%= NUM_POSTS_PER_FETCH %>,
+      "enforceMasonryOrder": true
     });
 
     var news = new News({
