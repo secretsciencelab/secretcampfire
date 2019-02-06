@@ -71,6 +71,7 @@
         postData.thumbs = _makeArray(postData.thumbs);
         postData.images = _makeArray(postData.images);
         postData.urls = _makeArray(postData.urls);
+        postData.tags = postData.tags.replace(/[^A-Za-z0-9_, ]/g, '');
         postData.tags = postData.tags.split(/(?:,| )+/);
         
         var newPost = new Post(postData);

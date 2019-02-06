@@ -49,7 +49,8 @@ RenderFeed.prototype.initMasonry = function() {
   this.msnryContainer = $(this.selector).masonry({
     itemSelector: '.grid-item',
     columnWidth: '.grid-sizer',
-    percentPosition: true
+    percentPosition: true,
+    horizontalOrder: true
   });
 
   // get Masonry instance
