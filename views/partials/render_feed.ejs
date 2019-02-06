@@ -153,7 +153,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       if (fr._lastSeenPosts.indexOf(post.id) != -1)
         continue;
       fr._lastSeenPosts.unshift(post.id);
-      if (fr._lastSeenPosts.length > 20)
+      if (fr._lastSeenPosts.length > fr.numPostsPerFetch * 3)
         fr._lastSeenPosts.pop();
 
       var cardId = fr.infCardIdCounter++;
