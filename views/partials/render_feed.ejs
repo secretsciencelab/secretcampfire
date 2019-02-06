@@ -20,6 +20,10 @@ function RenderFeed(cfg) {
   this._mdConverter = new showdown.Converter();
   this._numPostsFetched = 0;
 
+  // keep small history of last seen posts to hide duplicates 
+  // (duplicates can come from the feed updating and page seams shifting)
+  this._lastSeenPosts = []; 
+
   this.initFeeds(cfg.uris);
   this.initMasonry();  
   this.initInfiniteScroll();
@@ -144,6 +148,14 @@ RenderFeed.prototype.initInfiniteScroll = function() {
     for (var i=0; i < data.posts.length; i++)
     {
       var post = data.posts[i];
+
+      // skip duplicates
+      if (fr._lastSeenPosts.indexOf(post.id) != -1)
+        continue;
+      fr._lastSeenPosts.unshift(post.id);
+      if (fr._lastSeenPosts.length > 20)
+        fr._lastSeenPosts.pop();
+
       var cardId = fr.infCardIdCounter++;
       
       var newCard = $("<div class='d-none' id='card-" + cardId + "'>"
