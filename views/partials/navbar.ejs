@@ -36,51 +36,52 @@ var Navbar = new function() {
   };
 
   this.drawActiveBlogWidget = function() {
-    var t = setInterval(function() {
-      SetBlogWidget.getBlogs(function(urls) {
-        if (!urls)
-        {
-          $("#active-blog-display").html("").hide();
-          return;
-        }
+    var nb = this;
 
-        var menuItemsHtml = "";
-        for (var ui=0; ui < urls.length; ui++)
-          menuItemsHtml += '<div class="dropdown-item"'
-            + ' style="cursor:pointer"'
-            + ' data-url="' + urls[ui] + '">' + urls[ui]
-            + '</div>';
+    SetBlogWidget.getBlogs(function(urls) {
+      if (!urls)
+      {
+        $("#active-blog-display").html("").hide();
+        setTimeout(function() {
+          nb.drawActiveBlogWidget();
+        }, 3000);
+        return;
+      }
 
-        var dropdownHtml = "";
-        if (urls.length > 1)
-        {
-          dropdownHtml = '<div class="dropdown d-inline-block">'
-          + '<button class="btn btn-outline-dark btn-sm dropdown-toggle"'
-          + ' type="button" id="navbar-active-blog-dropdown"'
-          + ' data-toggle="dropdown" aria-haspopup="true"'
-          + ' aria-expanded="false"></button>'
-          + '<div class="dropdown-menu"'
-          + ' aria-labelledby="navbar-active-blog-dropdown">'
-          + menuItemsHtml
-          + '</div></div>';
-        }
-        $("#active-blog-display").html("Viewing as <span id='active-blog' "
-          + "style='cursor:pointer;font-weight:bold;'>"
-          + Utils.prettifyBlessedHostUrlForDisplay(urls[0])
-          + "</span> "
-          + dropdownHtml).show();
-        $("#active-blog").click(function() {
-          SetBlogWidget.open();  
-        });
-        $("#active-blog-display .dropdown-item").click(function(e) {
-          var url = $(this).data('url');
-          SetBlogWidget.setBlog(url);
-          $("#active-blog").html(Utils.prettifyBlessedHostUrlForDisplay(url));
-        });
+      var menuItemsHtml = "";
+      for (var ui=0; ui < urls.length; ui++)
+        menuItemsHtml += '<div class="dropdown-item"'
+          + ' style="cursor:pointer"'
+          + ' data-url="' + urls[ui] + '">' + urls[ui]
+          + '</div>';
 
-        clearInterval(t);
+      var dropdownHtml = "";
+      if (urls.length > 1)
+      {
+        dropdownHtml = '<div class="dropdown d-inline-block">'
+        + '<button class="btn btn-outline-dark btn-sm dropdown-toggle"'
+        + ' type="button" id="navbar-active-blog-dropdown"'
+        + ' data-toggle="dropdown" aria-haspopup="true"'
+        + ' aria-expanded="false"></button>'
+        + '<div class="dropdown-menu"'
+        + ' aria-labelledby="navbar-active-blog-dropdown">'
+        + menuItemsHtml
+        + '</div></div>';
+      }
+      $("#active-blog-display").html("Viewing as <span id='active-blog' "
+        + "style='cursor:pointer;font-weight:bold;'>"
+        + Utils.prettifyBlessedHostUrlForDisplay(urls[0])
+        + "</span> "
+        + dropdownHtml).show();
+      $("#active-blog").click(function() {
+        SetBlogWidget.open();  
       });
-    }, 2000);
+      $("#active-blog-display .dropdown-item").click(function(e) {
+        var url = $(this).data('url');
+        SetBlogWidget.setBlog(url);
+        $("#active-blog").html(Utils.prettifyBlessedHostUrlForDisplay(url));
+      });
+    });
   };
 
   this.bindDashButton = function() {
