@@ -117,7 +117,9 @@ app.get('/', function(req, res) {
 });
 
 app.get('/login', function(req, res) {
-  res.render('pages/login', {});
+  res.render('pages/login', {
+    'uri': _getFeedUrl(req)
+  });
 });
 
 app.post('/login', passport.authenticate('local', { 
