@@ -174,6 +174,16 @@ app.get('/feed/:index?', _nocache, function (req, res) {
     db.addFollower(req.headers.referer);
 });
 
+app.get('/post/count', function (req, res) {
+  db.getPostCount(function(err, numPosts) {
+    ret = {
+      'n': numPosts
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
 app.get('/post/:id', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   db.getSettings(function(err, settings) {

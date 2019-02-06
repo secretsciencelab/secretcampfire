@@ -101,6 +101,13 @@
       });
     }
 
+    module.exports.getPostCount = function(cb) {
+      Post.count({}, function(err, count) {
+        if (cb)
+          cb(err, count);
+      });
+    }
+
     /* 
      * feed
      */
