@@ -35,6 +35,19 @@ var Masthead = new function() {
           NsfwOverlay.close();
       }
 
+      // set site info
+      if (data.name)
+        $("title").prepend(data.name + " - ");
+      $("head")
+        .append('<meta property="og:title" content="' + data.name + '">')
+        .append('<meta property="og:description" content="' 
+          + data.description + '">')
+        .append('<meta name="description" content="' 
+          + data.description + '">')
+        .append('<meta property="og:url" content="' + data.blog_url + '">')
+        .append('<meta property="og:image" content="' + data.avatar_url + '">')
+        .append('<meta property="og:type" content="website">');
+
       // set jumbotron
       if (data.header_url)
         $("#jumbotron").css('background-image', 

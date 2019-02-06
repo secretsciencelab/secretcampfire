@@ -91,8 +91,6 @@
     $.getJSON("<%= uri %>", function(data) {
       if (data.style_url)
         addCss(data.style_url);
-      if (data.name)
-        $("title").prepend(data.name + " - ");
 
       if (data.posts)
       {
