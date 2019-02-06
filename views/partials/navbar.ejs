@@ -82,12 +82,12 @@ var Navbar = new function() {
         "<span class='oi oi-fire' id='active-blog-tooltip'"
         + " style='cursor: pointer' aria-hidden='true'"
         + " data-url='" + urls[0] + "/dashboard'></span> "
-        + "<span id='active-blog' "
-        + "style='cursor:pointer;font-weight:bold;'>"
+        + "<span id='active-blog'"
+        + " title='Connected to " + displayUrl + "'"
+        + " style='cursor:pointer;font-weight:bold;'>"
         + displayUrl
         + "</span> "
-        + dropdownHtml)
-        .attr("title", "Connected to " + displayUrl).show();
+        + dropdownHtml).show()
       $("#active-blog").click(function() {
         SetBlogWidget.open();  
       });
