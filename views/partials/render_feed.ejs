@@ -148,20 +148,19 @@ RenderFeed.prototype.initInfiniteScroll = function() {
     for (var i=0; i < data.posts.length; i++)
     {
       var post = data.posts[i];
-
-      // skip duplicates
-      if (fr._lastSeenPosts.indexOf(post.id) != -1)
-        continue;
-      fr._lastSeenPosts.unshift(post.id);
-      if (fr._lastSeenPosts.length > fr.numPostsPerFetch * 5)
-        fr._lastSeenPosts.pop();
-
       var cardId = fr.infCardIdCounter++;
-      
+
       var newCard = $("<div class='d-none' id='card-" + cardId + "'>"
         + "<img data-iscroll-id='" + cardId + "' src=''></div>");
       if (post)
       {
+        // skip if duplicate
+        if (fr._lastSeenPosts.indexOf(post.id) != -1)
+          continue;
+        fr._lastSeenPosts.unshift(post.id);
+        if (fr._lastSeenPosts.length > fr.numPostsPerFetch * 5)
+          fr._lastSeenPosts.pop();
+
         newCard = $(fr.templateSelector + " > div").clone();
 
         var postRenderUrl = postUrlBase + "/render/" 
