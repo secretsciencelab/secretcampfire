@@ -136,7 +136,7 @@
         renderer = new RenderFeed(cfg);
 
         // activate top right menu buttons 
-        if (typeof URLSearchParams !== 'undefined')
+        if (data.posts.length > 0 && typeof URLSearchParams !== 'undefined')
         {
           var url = new URL(window.location.href);
           var params = new URLSearchParams(url.search);
