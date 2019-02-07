@@ -64,7 +64,7 @@ var Dashboard = new function() {
         },
         'json')
       .done(function() {
-        $(dash.postSelector+"-success-alert").fadeIn().delay(800)
+        $(dash.postSelector+"-success-alert").fadeIn().delay(500)
           .fadeOut(function() {
             $(dash.postSelector+"-modal").modal('hide');
           });
@@ -95,7 +95,7 @@ var Dashboard = new function() {
         },
         'json')
       .done(function() {
-        $(dash.followSelector+"-success-alert").fadeIn().delay(800)
+        $(dash.followSelector+"-success-alert").fadeIn().delay(500)
           .fadeOut(function() {
             $(dash.followSelector+"-modal").modal('hide');
           });
@@ -124,7 +124,7 @@ var Dashboard = new function() {
         },
         'json')
       .done(function() {
-        $(dash.unfollowSelector+"-success-alert").fadeIn().delay(800)
+        $(dash.unfollowSelector+"-success-alert").fadeIn().delay(500)
           .fadeOut(function() {
             $(dash.unfollowSelector+"-modal").modal('hide');
           });

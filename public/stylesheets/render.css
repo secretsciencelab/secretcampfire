@@ -32,6 +32,19 @@
  * feed view
  */
 
+#feed-view {
+  position: relative;
+}
+#feed-grid-top-right-menu {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  color: #aaa;
+}
+#feed-grid-top-right-menu .button {
+  cursor: pointer;
+}
+
 .grid-item {
 }
 .grid-item img {

@@ -17,19 +17,21 @@
 
   <!-- feed view -->
 
-  <div class="
+  <div id="feed-view" class="collapse 
     <% if (fullscreen) { %>
       container-fluid
     <% } else { %>
       container
     <% } %>
   ">
+    <div id="feed-grid-top-right-menu"></div>
+
     <div id="feed-grid" class="grid">
       <div class="grid-sizer 
         <% if (fullscreen) { %>
-          col-md-3 col-lg-2 p-md-1 p-lg-2 mb-1
+          col-md-3 col-lg-2 px-md-1 px-lg-2 mb-md-2 mb-lg-3
         <% } else { %>
-          col-md-4 p-md-2 p-lg-3 mb-1
+          col-md-4 px-md-2 px-lg-3 mb-md-3 mb-lg-4
         <% } %>
       "></div>
     </div><!--feed-grid-->
@@ -42,9 +44,9 @@
   <div id="feed-grid-template" class="d-none">
     <div class="grid-item 
       <% if (fullscreen) { %>
-          col-md-3 col-lg-2 p-md-1 p-lg-2 mb-1
+          col-md-3 col-lg-2 px-md-1 px-lg-2 mb-md-2 mb-lg-3
       <% } else { %>
-        col-md-4 p-md-2 p-lg-3 mb-1
+        col-md-4 px-md-2 px-lg-3 mb-md-3 mb-lg-4
       <% } %>
     ">
     <div class="card grid-item-content">
@@ -63,7 +65,7 @@
 
   <!-- single post view -->
 
-  <div class="container">
+  <div id="single-post-view" class="container collapse">
     <div class="row mb-4">
       <div class="col"></div>
       <div class="col-md-8 collapse" id="post-container">
@@ -115,6 +117,8 @@
 
       if (data.posts)
       {
+        // feed view
+        $("#feed-view").show();
         var cfg = {
           "uris": ["<%= uri %>"],
           "selector": "#feed-grid",
@@ -130,9 +134,40 @@
             <% } %>
         };
         renderer = new RenderFeed(cfg);
+
+        // activate top right menu buttons 
+        if (typeof URLSearchParams !== 'undefined')
+        {
+          var url = new URL(window.location.href);
+          var params = new URLSearchParams(url.search);
+          if (!params.has("fullscreen"))
+          {
+            $("#feed-grid-top-right-menu").append(
+              '<span id="fullscreen-button" class="button oi oi-grid-four-up"'
+              + ' title="Fullscreen" aria-hidden="true"></span>');
+            $("#fullscreen-button").click(function() {
+              params.set('fullscreen', '1');
+              url.search = params.toString();
+              window.location.href = url;
+            });
+          }
+          else
+          {
+            $("#feed-grid-top-right-menu").append(
+              '<span id="normscreen-button" class="button oi oi-grid-three-up"'
+              + ' title="Normal view" aria-hidden="true"></span>');
+            $("#normscreen-button").click(function() {
+              params.delete('fullscreen');
+              url.search = params.toString();
+              window.location.href = url;
+            });
+          }
+        }
       }
       else
       {
+        // single-post view
+        $("#single-post-view").show();
         var cfg = {
           "uri": "<%= uri %>",
           "selector": "#post-container"
