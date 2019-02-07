@@ -198,7 +198,7 @@
     }
 
     module.exports.addFollower = function(url, cb) {
-      if (url.indexOf('http') == -1)
+      if (!url || url.indexOf('http') == -1)
       {
         if (cb)
           cb(null, null);
