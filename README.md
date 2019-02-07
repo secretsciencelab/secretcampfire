@@ -1,4 +1,4 @@
-<img src="http://assets.innbetweenworlds.com/media/campfire/fireIconWhiteT.png" height="50">
+<img src="https://raw.githubusercontent.com/secretsciencelab/secretcampfire/master/public/media/logoLight.png" height="50">
 
 # secret campfire (version 1.0)
 
