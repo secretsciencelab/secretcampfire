@@ -45,4 +45,4 @@ To participate and play in the `secret campfire` network, your instance must imp
   - hosting: Heroku, Google Cloud Platform
   - media hosting: Gfycat, Imgur, ImageBam, YouTube, etc
 
-The architecture ingredients above are recommendations. Feel free to use your favorite technology to meet the 'handshake requirements' above.
+The architecture ingredients above are recommendations. Feel free to use your favorite technology to meet the `handshake requirements` above.
