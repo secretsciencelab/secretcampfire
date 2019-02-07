@@ -44,6 +44,6 @@ And so today, more than ever, our freedom is in danger.
 
 And I don't know about you, but I'm fed up of taking a chance and investing in yet another flavor-of-the-month platform... only to have them betray us and shut down later.
 
-This is why `secret campfire` was created on January 2019 -- to preserve our freedom on the Interwebs. Finally, you can set up your forever home online. It belongs to you and you alone and no one can tell you what you can or can't do with it. And no one can shut you down.
+That's why `secret campfire` was created on January 2019. Finally, you can set up your forever home online. It belongs to you and you alone and no one can tell you what you can or can't do with it. And no one can shut you down.
 
 Enjoy the 'fire and share the love: http://secretcampfire.com
