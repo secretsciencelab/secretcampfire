@@ -134,7 +134,7 @@ app.get('/logout', function(req, res) {
 });
 
 app.get('/feed/:index?', _nocache, function (req, res) {
-	var index = req.params['index'];
+  var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
   var numToFetch = app.locals.NUM_POSTS_PER_FETCH;
