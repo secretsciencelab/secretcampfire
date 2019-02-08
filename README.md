@@ -1,6 +1,7 @@
 <img src="public/media/logoLight.png" height="50">
 
-# secret campfire ![version](https://img.shields.io/badge/version-1.0-blue.svg?style=for-the-badge)
+# secret campfire 
+![version](https://img.shields.io/badge/version-1.0-blue.svg?style=for-the-badge)
 
 An immortal personal microblogging system that...
 - supports tumblr features like `reblog`, `follow` and an infinite-scroll `dashboard` feed
