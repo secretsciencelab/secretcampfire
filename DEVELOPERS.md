@@ -16,13 +16,14 @@ To participate and play in the `secret campfire` network, your instance must imp
           "nsfw": false,
           "posts": [
             {
+              "id": "5c5d40a0e96ba00004b9cde9",
               "title": "Title",
               "date": "2012-04-23T18:25:43.511Z",
               "thumbs": [],
               "urls": [],
               "text": "markdown",
               "tags": [],
-              "post_url": "http://instance/post/id",
+              "post_url": "/post/id",
               "re_url": "http://reblogged_from_instance/post/id"
             }
           ]
@@ -33,6 +34,31 @@ To participate and play in the `secret campfire` network, your instance must imp
       - single-post page
   - `/post/<id>`
     - returns JSON of post from DB
+    
+    - post JSON schema:
+    ```
+      {
+          "name": "Feed Name",
+          "description": "",
+          "avatar_url": "",
+          "header_url": "",
+          "blog_url": "http://instance",
+          "style_url": "http://instance/stylesheets/feed.css",
+          "nsfw": false,
+          "post":
+            {
+              "id": "5c5d40a0e96ba00004b9cde9",
+              "title": "Title",
+              "date": "2012-04-23T18:25:43.511Z",
+              "thumbs": [],
+              "urls": [],
+              "text": "markdown",
+              "tags": [],
+              "post_url": "/post/id",
+              "re_url": "http://reblogged_from_instance/post/id"
+            }
+       }
+    ```
   - `/render/<feed>` and `/render/<post>`
     - pulls `feed` JSON and renders infinite-scroll viewer
     - pulls `post` JSON and renders single-post page
