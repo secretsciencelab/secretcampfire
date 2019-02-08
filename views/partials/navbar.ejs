@@ -5,23 +5,23 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbar-supported-content">
-    <ul class="navbar-nav ml-auto mr-1">
+    <ul class="navbar-nav ml-auto">
       <li class="nav-item collapse" id="active-blog-display"></li>
     </ul>
 
-    <form class='form-inline'>
-      <button type='button' id='follow-button' title='Follow'
-        class='btn btn-primary mr-1 collapse'>
-      <span class='oi oi-plus' title='Follow' aria-hidden='true'></span>
-       <span class='label'>Follow</span></button>
-    </form>
-
     <form class="form-inline">
-      <button class="btn btn-primary mr-1 collapse" type="button" id="navbar-delete-button">
+      <button class="btn btn-primary mr-1 collapse" type="button" id="navbar-dashboard-button" title="Dashboard">
+        <span class='oi oi-home' title='Dashboard' aria-hidden='true'></span>
+      </button>
+      <button class="btn btn-primary collapse" type="button" id="navbar-delete-button">
         <span class='oi oi-trash' title='Delete' aria-hidden='true'></span>
       </button>
-      <button class="btn btn-primary" type="button" id="navbar-dashboard-button" title="Dashboard">
-        <span class='oi oi-home' title='Dashboard' aria-hidden='true'></span>
+      <button type='button' id='follow-button' title='Follow'
+        class='btn btn-primary collapse'>
+      <span class='oi oi-plus' title='Follow' aria-hidden='true'></span>
+       <span class='label'>Follow</span></button>
+      <button class="btn btn-primary collapse" type="button" id="navbar-login-button" title="Login">
+        <span class='oi oi-key' title='Login' aria-hidden='true'></span>
       </button>
     </form>
   </div>
@@ -39,7 +39,7 @@
 <% include ../partials/utils.ejs %>
 var Navbar = new function() {
   this.init = function() {
-    this.bindDashButton(); 
+    this.activateLoginButton(); 
     this.drawActiveBlogWidget(); 
   };
 
@@ -56,6 +56,8 @@ var Navbar = new function() {
         }, 3000);
         return;
       }
+
+      nb.activateDashButton(); 
 
       var menuItemsHtml = "";
       for (var ui=0; ui < urls.length; ui++)
@@ -105,10 +107,22 @@ var Navbar = new function() {
     });
   };
 
-  this.bindDashButton = function() {
-    var nb = this;
+  this.activateDashButton = function() {
     $("#navbar-dashboard-button").mouseup(function(e) {
-      Utils.handleClick(e, "/dashboard");
+      SetBlogWidget.getBlog(function(blog) {
+        Utils.handleClick(e, blog + "/dashboard");
+      });
+    }).show();
+  };
+
+  this.activateLoginButton = function() {
+    SetBlogWidget.isOwner(function(isOwner) {
+      if (isOwner)
+        return;
+
+      $("#navbar-login-button").mouseup(function(e) {
+        Utils.handleClick(e, "/dashboard");
+      }).show();
     });
   };
 
