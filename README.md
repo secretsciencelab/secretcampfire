@@ -40,11 +40,10 @@ An immortal personal microblogging system that...
 
 Once upon a time, most websites on the Internet were owned by the people. Humble individuals. Mom, pop, brother and sister. You and me. But that time is long gone. Today, most websites and publishing platforms lie in the fat claws of a few big corporations. 
 
-When someone else controls your data, they have power over you. They can hold you hostage, control what you say and strangle your voice anytime what you say does not agree with their business agenda.
-And so today, more than ever, our freedom is in danger.
+When someone else controls your data, they have power over you. They can hold you hostage, control what you say and strangle your voice anytime what you say does not agree with their business agenda. And so today, more than ever, our freedom is in danger.
 
-And I don't know about you, but I'm fed up of taking a chance and investing in yet another flavor-of-the-month platform... only to have them betray us and shut down later.
+That's why `secret campfire` was created on January 2019. Because as you've already noticed, there just aren't any good options out there. And we didn't want to roll the dice and invest in yet another *flavor-of-the-month* platform... only to have them betray us or crap out later.  
 
-That's why `secret campfire` was created on January 2019. Finally, you can set up your forever home online. It belongs to you and you alone and no one can tell you what you can or can't do with it. And no one can shut you down.
+With `secret campfire`, you can finally set up your forever home online. It belongs to you and you alone. No one can tell you what you can or can't do with it. And no one can shut you down. 
 
 Enjoy the 'fire and share the love: http://secretcampfire.com
