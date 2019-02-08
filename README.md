@@ -20,7 +20,7 @@ An immortal personal microblogging system that...
 
 2. Make a new Heroku account if you don't have one yet (it's free). Sign in.
 
-3. Enter a name for your app. This name will become your blog's address. E.g. if you enter `secretcampfire`, your blog's address will be `secretcampfire.herokuapp.com`. Click `Deploy app`.
+3. Enter a name for your app. This name will become your blog's address. E.g. if you enter `scampy`, your blog's address will be `scampy.herokuapp.com`. Click `Deploy app`.
 
 4. Go to [dashboard.heroku.com](https://dashboard.heroku.com) and select your app.
 
