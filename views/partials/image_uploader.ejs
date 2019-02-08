@@ -1,0 +1,61 @@
+function ImgurUploader(cfg) {
+  this.selector = cfg.selector;
+  this.key = cfg.key;
+  this.onUploadStart = cfg.onUploadStart;
+  this.onUploadDone = cfg.onUploadDone;
+
+  this.init();
+}
+
+ImgurUploader.prototype.init = function() {
+  var iu = this;
+  $(this.selector).on("change", function() {
+    var $files = $(this).get(0).files;
+    if ($files.length == 0)
+      return;
+
+    // Reject big files
+    var maxSize = $(this).data("max-size"); // KB
+    var maxSizeMB = parseFloat(maxSize) / 1000.
+    if ($files[0].size > $(this).data("max-size") * 1024) {
+      alert("Sorry, can't upload images larger than " + maxSizeMB + "MB");
+      return false;
+    }
+
+    // Begin file upload
+    console.log("Uploading to Imgur...");
+    if (iu.onUploadStart)
+      iu.onUploadStart();
+
+    // Replace ctrlq with your own API key
+    var apiUrl = 'https://api.imgur.com/3/image';
+    var apiKey = iu.key;
+
+    var settings = {
+      crossDomain: true,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      url: apiUrl,
+      headers: {
+        Authorization: 'Client-ID ' + apiKey,
+        Accept: 'application/json'
+      },
+      mimeType: 'multipart/form-data'
+    };
+
+    var formData = new FormData();
+    formData.append("image", $files[0]);
+    settings.data = formData;
+
+    // Response contains stringified JSON
+    // Image URL available at response.data.link
+    $.ajax(settings).done(function(response) {
+      var respj = $.parseJSON(response);
+      console.log(respj);
+
+      if (iu.onUploadDone && respj.data)
+        iu.onUploadDone(respj.data);
+    });
+  });
+}

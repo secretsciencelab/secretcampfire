@@ -308,6 +308,13 @@ app.get('/dashboard/:start_offset?', cel.ensureLoggedIn(), function(req, res) {
 
 app.get('/settings', cel.ensureLoggedIn(), function (req, res) {
   db.getSettings(function(err, settings) {
+    if (req.query['json'])
+    {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify(settings, null, 2));
+      return;
+    }
+
     res.render('pages/settings', {
       'uri': _getFeedUrl(req),
       'settings': settings

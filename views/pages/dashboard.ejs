@@ -111,16 +111,22 @@
           <input type="text" class="form-control form-control-sm form-post-title" 
             value="" placeholder="Title" autofocus />
         </div>
-        <div class="form-group">
-          <label>Thumbnail</label>
-          <input type="text" class="form-control form-control-sm form-post-thumb" 
-            value="" placeholder="Thumbnail URL" />
-        </div>
+
         <div class="form-group">
           <label>Image</label>
+          <input type="text" class="form-control form-control-sm form-post-thumb" 
+            value="" placeholder="Thumbnail URL" />
           <input type="text" class="form-control form-control-sm form-post-image" 
             value="" placeholder="Image URL" />
+
+          <div class="form-post-image-uploader-wraper collapse">
+            <div class="progress form-img-file-progress" style="height: 0px">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <input type="file" class="form-control-file form-control-sm form-img-file" accept="image/*" data-max-size="5000"/>
+          </div><!--form-post-image-uploader-wrapper-->
         </div>
+
         <div class="form-group">
           <label>URL</label>
           <input type="text" class="form-control form-control-sm form-post-url" 
@@ -128,10 +134,12 @@
         </div>
           <input type="hidden" class="form-control form-control-sm form-post-reblog-url" 
             value="">
+
         <div class="form-group">
           <label>Text</label>
           <textarea class="form-control form-control-sm form-post-text" rows="5" placeholder="Text"></textarea>
         </div>
+
         <div class="form-group">
           <label>Tags</label>
           <input type="text" class="form-control form-control-sm form-post-tags" 
@@ -228,13 +236,20 @@
     <% include ../partials/render_feed.ejs %>
     <% include ../partials/news.ejs %>
     <% include ../partials/utils.ejs %>
+    <% include ../partials/image_uploader.ejs %>
 
+    /* 
+     * Dashboard action handlers
+     */
     Dashboard.init({
       "postSelector": "#create-post",
       "followSelector": "#follow",
       "unfollowSelector": "#unfollow"
     });
 
+    /*
+     * Dashboard feed
+     */
     var renderUris = <%- JSON.stringify(render_uris) %>;
 
     if (renderUris.length == 1) {
@@ -278,6 +293,34 @@
       "page": "dashboard"
     });
 
+    /*
+     * Image uploader
+     */
+    var imgUploader = null;
+    $.getJSON("/settings?json=1", function(data) {
+      if (!data.imgur_key)
+        return;
+
+      $("#create-post-form .form-post-image-uploader-wraper").show();
+      imgUploader = new ImgurUploader({
+        selector: "#create-post-form .form-img-file",
+        key: data.imgur_key,
+        onUploadStart: function() {
+          $("#create-post-form .form-img-file-progress").css('height', '3px');
+        },
+        onUploadDone: function(data) {
+          $("#create-post-form .form-img-file-progress").css('height', '0px');
+          var imgUrl = data.link;
+          $("#create-post-form .form-post-image").val(imgUrl);
+          var thumbUrl = imgUrl.replace(/(.+)\.([^/.]+)$/, "$1m.$2");
+          $("#create-post-form .form-post-thumb").val(thumbUrl);
+        }
+      });
+    });
+
+    /*
+     * 'Back to Dashboard button'
+     */
     if (window.location.href.indexOf("posts") != -1)
       $("#back-to-dash-button").show();
 

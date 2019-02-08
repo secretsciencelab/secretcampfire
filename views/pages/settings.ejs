@@ -21,7 +21,7 @@
     <div class="row">
       <div class="col">
       </div>
-      <div class="col-md-5">
+      <div class="col-md-6">
         <form id="settings-form">
           <div class="form-group">
           <label>Blog name</label>
@@ -39,12 +39,24 @@
           <label>Avatar image URL</label>
           <input type="text" class="form-control form-control-sm form-avatar" 
             value="<%= settings.avatar_url %>" placeholder="Avatar image URL" />
+          <% if (settings.imgur_key) {%>
+          <div class="progress form-avatar-file-progress" style="height: 0px">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <input type="file" class="form-control-file form-control-sm form-avatar-file" accept="image/*" data-max-size="5000"/>
+          <% } %>
           </div>
 
           <div class="form-group">
           <label>Header image URL</label>
           <input type="text" class="form-control form-control-sm form-header" 
             value="<%= settings.header_url %>" placeholder="Header image URL" />
+          <% if (settings.imgur_key) {%>
+          <div class="progress form-header-file-progress" style="height: 0px">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <input type="file" class="form-control-file form-control-sm form-header-file" accept="image/*" data-max-size="5000"/>
+          <% } %>
           </div>
 
           <div class="form-group">
@@ -64,6 +76,12 @@
           </label>
           </div></div>
 
+          <div class="form-group">
+          <label>Imgur client ID</label>
+          <input type="text" class="form-control form-control-sm form-imgur-key" 
+           value="<%= settings.imgur_key %>" placeholder="Imgur client ID (to unlock image file uploads)" />
+          </div>
+
         </form>
         <div id="success-alert" 
           class="alert alert-success collapse" role="alert">Settings saved!</div>
@@ -78,6 +96,8 @@
   <% include ../partials/footer.ejs %>
 
   <script>
+    <% include ../partials/image_uploader.ejs %>
+
     $("#settings-save-button").click(function(e) {
       e.preventDefault();
 
@@ -88,6 +108,7 @@
       var header = form.find('.form-header').val();
       var password = form.find('.form-password').val();
       var nsfw = form.find('.form-nsfw').is(":checked");
+      var imgur = form.find('.form-imgur-key').val();
 
       $.post('/settings', { 
         name: name,
@@ -95,7 +116,8 @@
         avatar_url: avatar,
         header_url: header,
         password: password,
-        nsfw: nsfw
+        nsfw: nsfw,
+        imgur_key: imgur
       },
       function(data, status, xhr) {
         // success
@@ -110,6 +132,30 @@
       });
 
       return false;
+    });
+
+    var avatarUploader = new ImgurUploader({
+      selector: "#settings-form .form-avatar-file",
+      key: "<%= settings.imgur_key %>",
+      onUploadStart: function() {
+        $("#settings-form .form-avatar-file-progress").css('height', '3px');
+      },
+      onUploadDone: function(data) {
+        $("#settings-form .form-avatar-file-progress").css('height', '0px');
+        $("#settings-form .form-avatar").val(data.link);
+      }
+    });
+
+    var headerUploader = new ImgurUploader({
+      selector: "#settings-form .form-header-file",
+      key: "<%= settings.imgur_key %>",
+      onUploadStart: function() {
+        $("#settings-form .form-header-file-progress").css('height', '3px');
+      },
+      onUploadDone: function(data) {
+        $("#settings-form .form-header-file-progress").css('height', '0px');
+        $("#settings-form .form-header").val(data.link);
+      }
     });
   </script>
 </body>

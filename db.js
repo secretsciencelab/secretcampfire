@@ -17,7 +17,8 @@
       header_url: String,
       style_url: String,
       password: String,
-      nsfw: Boolean
+      nsfw: Boolean,
+      imgur_key: String
     });
     Settings = mongoose.model('Settings', SettingsSchema);
 
@@ -276,6 +277,7 @@
         settings.avatar_url = newSettings.avatar_url;  
         settings.header_url = newSettings.header_url;  
         settings.nsfw = newSettings.nsfw;
+        settings.imgur_key = newSettings.imgur_key;
         if (newSettings.password)
           settings.password = md5(newSettings.password);
         
