@@ -169,11 +169,11 @@ RenderFeed.prototype.initInfiniteScroll = function() {
         newCard.attr('id', "card-"+cardId);
         newCard.find("img").data('iscroll-id', newCard.attr('id'));
         newCard.find(".card-img-fold-link").attr("href", postRenderUrl);
+        var primaryClickUrl = postRenderUrl;
         if (post.urls && post.urls.length && post.urls[0])
-        {
-          newCard.find(".card-img-top-link").attr("href", post.urls[0]);
-          newCard.find(".card-title-link").attr("href", post.urls[0]);
-        }
+          primaryClickUrl = post.urls[0];
+        newCard.find(".card-img-top-link").attr("href", primaryClickUrl);
+        newCard.find(".card-title-link").attr("href", primaryClickUrl);
         newCard.find(".card-img-top").hide();
         for (var pi=0; pi < fr.postImagePref.length; pi++)
         {
