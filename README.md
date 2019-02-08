@@ -33,7 +33,7 @@ An immortal personal microblogging system that...
   
 ## 
 
-![secretcampfire](https://raw.githubusercontent.com/secretsciencelab/secretcampfire/master/public/media/glowingForest.jpg)
+![secretcampfire](public/media/glowingForest.jpg)
 
 ## Prologue
 
