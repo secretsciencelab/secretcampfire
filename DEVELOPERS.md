@@ -28,7 +28,7 @@ To participate and play in the `secret campfire` network, your instance must imp
           ]
         }
       ```
-    - the `style_url` field in the feed provides CSS to render:
+    - the `style_url` field in the feed provides custom CSS to render:
       - infinite-scroll viewer for entire feed
       - single-post page
   - `/post/<id>`
