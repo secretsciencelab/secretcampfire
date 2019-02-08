@@ -1,6 +1,9 @@
 ## `secret campfire` handshake requirements
 To participate and play in the `secret campfire` network, your instance must implement the following endpoints:
   - `/feed`
+    
+    `/feed/<offset>`
+    
     - feed JSON schema:
       ```
         {
@@ -33,7 +36,11 @@ To participate and play in the `secret campfire` network, your instance must imp
   - `/render/<feed>` and `/render/<post>`
     - pulls `feed` JSON and renders infinite-scroll viewer
     - pulls `post` JSON and renders single-post page
-  - `/dashboard` (private)
+  - `/dashboard` 
+  
+    `/dashboard/<offset>`
+    
+    - (private)
     - for owner to view live stream of followed blogs
     - for owner to add/manage posts
 
