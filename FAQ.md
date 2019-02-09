@@ -4,7 +4,7 @@ When you deploy your `secret campfire` blog on Heroku for free, they set you up 
 
 To prevent your blog from sleeping, you can set up a service like Pingdom or New Relic to periodically ping your site. But if you do that, your blog will run 24/7 and you'll blow through your free quota in 23 days. 
 
-To keep your blog running 24/7 forever, you'll have to add your credit card to Heroku. That upgrades your free tier to 1000 hours per month. Your card will not be charged as long as you stay on the free tier.
+To keep your blog running 24/7 forever, you'll have to add your credit card to Heroku. That upgrades you to 1000 free hours per month. Your card will not be charged as long as you stay on the free tier.
 
 --- 
 
