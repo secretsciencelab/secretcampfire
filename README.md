@@ -47,3 +47,11 @@ That's why `secret campfire` was created on January 2019. Because as you've alre
 With `secret campfire`, you can finally set up your forever home online. It belongs to you and you alone. No one can tell you what you can or can't do with it. And no one can shut you down. 
 
 Enjoy the 'fire and share the love: http://secretcampfire.com
+
+## Troubleshooting
+
+See [FAQ](FAQ.md)
+
+## For `scampy` veterans who want more goodies
+
+See [ADVANCED](ADVANCED.md)
