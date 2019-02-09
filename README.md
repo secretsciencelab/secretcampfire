@@ -48,10 +48,10 @@ With `secret campfire`, you can finally set up your forever home online. It belo
 
 Enjoy the 'fire and share the love: http://secretcampfire.com
 
-## Troubleshooting
+### Troubleshooting
 
 See [FAQ](FAQ.md)
 
-## For secret goodies and hidden features
+### For secret goodies and hidden features
 
 See [ADVANCED](ADVANCED.md)
