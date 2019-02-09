@@ -52,6 +52,6 @@ Enjoy the 'fire and share the love: http://secretcampfire.com
 
 See [FAQ](FAQ.md)
 
-## For `scampy` veterans who want more goodies
+## For secret goodies and hidden features
 
 See [ADVANCED](ADVANCED.md)
