@@ -26,7 +26,7 @@ You can email me at kalona@secretcampfire.com. I read every email but I can't gu
 
 --- 
 
-## Why do I need to provide my credit card info if it's 100% free?
+## Why do I need to provide my credit card if it's 100% free?
 
 Two things will make Heroku prompt you for your credit card, even though everything is 100% free:
 
