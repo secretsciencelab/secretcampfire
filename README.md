@@ -50,8 +50,8 @@ Enjoy the 'fire and share the love: http://secretcampfire.com
 
 ### Troubleshooting
 
-See [FAQ](FAQ.md)
+See [FAQ](docs/FAQ.md)
 
 ### For secret goodies and hidden features
 
-See [ADVANCED](ADVANCED.md)
+See [ADVANCED](docs/ADVANCED.md)
