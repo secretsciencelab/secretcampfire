@@ -39,7 +39,7 @@ Next, we will tell your Heroku app to use this database you just created:
 1. Sign in to https://dashboard.heroku.com
 2. Go to your blog/app and click `Settings`
 3. Click `Reveal Config Vars`
-4. Enter `MONGODB_URI` into the left box and the URL that looks like `mongodb://<dbuser>:<dbpassword>@ds127655.mlab.com:27655/<database_name>` into the right box. Replace `<dbuser>` and `<dbpassword` with the `username` and `password` you used in step 9. above. Replace `<database_name>` with the name you used in step 6. above.
+4. Enter `MONGODB_URI` into the left box and the URL that looks like `mongodb://<dbuser>:<dbpassword>@ds127655.mlab.com:27655/<database_name>` into the right box. Replace `<dbuser>` and `<dbpassword` with the `username` and `password` you used in Step 9. above. Replace `<database_name>` with the name you used in Step 6. above.
 
 You're all set! Only catch is without a credit card on Heroku, your free quota remains at 550 hours per month -- not enough to run your blog 24/7. It'll go to sleep whenever it's idle for 30 minutes and it'll take a couple of seconds to wake up whenever you get visitors.
 
