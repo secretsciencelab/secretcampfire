@@ -52,6 +52,6 @@ Enjoy the 'fire and share the love: http://secretcampfire.com
 
 See [FAQ](docs/FAQ.md)
 
-### For secret goodies and hidden features
+### Secret goodies and hidden features
 
 See [ADVANCED](docs/ADVANCED.md)
