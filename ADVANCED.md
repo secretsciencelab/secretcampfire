@@ -12,7 +12,7 @@ Once you do this, image file upload buttons will be unlocked throughout your blo
 
 --- 
 
-## How to set up without needing a credit card
+## How to set up without a credit card
 
 Two things will make Heroku prompt you for your credit card, even though everything is 100% free:
 
