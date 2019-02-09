@@ -25,3 +25,14 @@ In contrast, `secret campfire` will show you exactly how to run your own server 
 You can email me at kalona@secretcampfire.com. I read every email but I can't guarantee I can answer every one. Thousands of people have joined already and more keep flooding in since Tumblr died. I'm only human, unfortunately, and I just can't do everything. That said, I give highest priority to brilliant suggestions and serious problems. And because of my delicate ego, I will always welcome flattery and praise.
 
 --- 
+
+## Why do I need to provide my credit card info if it's 100% free?
+
+Two things will make Heroku prompt you for your credit card, even though everything is 100% free:
+
+1. to add the `mLab MongoDB` database
+2. to boost your monthly free quota from 550 hours to 1000 hours
+
+These extra features are free and your card will not be charged, but Heroku just wants to use them as an excuse to get your card on file.
+
+If you are opposed to this, you can still use `secret campfire` without a credit card. [See how here.](ADVANCED.md#how-to-set-up-without-a-credit-card)
