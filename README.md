@@ -48,7 +48,7 @@ With `secret campfire`, you can finally set up your forever home online. It belo
 
 Enjoy the 'fire and share the love: http://secretcampfire.com
 
-### Troubleshooting
+### Frequently asked questions
 
 See [FAQ](docs/FAQ.md)
 
