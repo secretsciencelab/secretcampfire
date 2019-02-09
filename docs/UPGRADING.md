@@ -36,4 +36,4 @@
 
   ![Merge](media/sync-3-merge.png)
 
-6. That's it! Because you set up your site to `Automatically deploys` in this respository earlier, it will do just that. Now sit back and relax. In a few minutes, your blog will be automatically upgraded to the latest code. Enjoy!
+6. That's it! Because you set up `Automatically deploys` in this respository earlier, it will do just that. Now sit back and relax. In a few minutes, your blog will be automatically upgraded to the latest code. Enjoy!
