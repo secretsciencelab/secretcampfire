@@ -35,7 +35,7 @@ If you are opposed to this, you can still use `secret campfire` without a credit
 
 ## I have a suggestion / I found a problem / Please halp / I want to contribute / I want to thank you from the bottom of my heart / I am a big fan
 
-You can email me at kalona@secretcampfire.com. I read every email but I can't guarantee I can answer every one. Thousands of people have joined already and more keep flooding in since Tumblr died. I'm only human, unfortunately, and I just can't do everything. That said, I give highest priority to brilliant suggestions and serious problems. And because of my delicate ego, I will always welcome flattery and praise.
+You can email me at kalona@secretcampfire.com. I read every email but I can't guarantee I'll answer every one. Thousands of people have joined already and more keep flooding in since Tumblr died. I'm only human, unfortunately, and I just can't do everything. That said, I give highest priority to brilliant suggestions and serious problems. And because of my delicate ego, I will always welcome flattery and praise.
 
 --- 
 
