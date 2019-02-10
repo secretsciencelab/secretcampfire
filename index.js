@@ -176,9 +176,9 @@ app.get('/feed/:index?', _nocache, function (req, res) {
 });
 
 app.get('/post/count', function (req, res) {
-  db.getPostCount(function(err, numPosts) {
+  db.getPostCount(function(err, num) {
     ret = {
-      'n': numPosts
+      'n': num
     }
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(ret, null, 2));
@@ -231,6 +231,52 @@ app.get('/follow/check/:uri?', function (req, res) {
       'is_following': isFollowing
     }
     res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
+app.get('/followers/count', function (req, res) {
+  db.getFollowersCount(function(err, num) {
+    ret = {
+      'n': num
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
+app.get('/followers/:index?', function (req, res) {
+	var index = req.params['index'];
+  index = (index)? parseInt(index) : 0;
+
+  db.getFollowers(index, 100, function(err, followers) {
+    res.setHeader('Content-Type', 'application/json');
+    ret = {
+      'followers': followers
+    }
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
+app.get('/following/count', function (req, res) {
+  db.getFollowingCount(function(err, num) {
+    ret = {
+      'n': num
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
+app.get('/following/:index?', function (req, res) {
+	var index = req.params['index'];
+  index = (index)? parseInt(index) : 0;
+
+  db.getFollowing(index, 100, function(err, follows) {
+    res.setHeader('Content-Type', 'application/json');
+    ret = {
+      'following': follows
+    }
     res.send(JSON.stringify(ret, null, 2));
   });
 });
@@ -342,19 +388,6 @@ app.post('/unfollow', cel.ensureLoggedIn(), function(req, res) {
 
   db.unfollow(url, function(err) {
     res.status(200).json({ });
-  });
-});
-
-app.get('/following/:index?', cel.ensureLoggedIn(), function (req, res) {
-	var index = req.params['index'];
-  index = (index)? parseInt(index) : 0;
-
-  db.getFollowing(index, 100, function(err, follows) {
-    res.setHeader('Content-Type', 'application/json');
-    ret = {
-      'following': follows
-    }
-    res.send(JSON.stringify(ret, null, 2));
   });
 });
 

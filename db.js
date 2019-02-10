@@ -188,6 +188,13 @@
           .exec(cb);
     }
 
+    module.exports.getFollowingCount = function(cb) {
+      Follow.count({}, function(err, count) {
+        if (cb)
+          cb(err, count);
+      });
+    }
+
     module.exports.getRandomFollowing = function(cb) {
       Follow.aggregate([{
         $sample: { size: 100 }
@@ -199,7 +206,9 @@
     }
 
     module.exports.addFollower = function(url, cb) {
-      if (!url || url.indexOf('http') == -1)
+      if (!url || url.indexOf('http') == -1
+        || url.indexOf('/dashboard') == -1) /* only count as follower if 
+                                             * fetch was from /dashboard */
       {
         if (cb)
           cb(null, null);
@@ -238,6 +247,23 @@
         if (cb)
           cb(err, {});
       }
+    }
+
+    module.exports.getFollowers = function(index, limit, cb) {
+        if (index == 0)
+          index = undefined;
+        Follower.find()
+          .skip(index)
+          .limit(limit)
+          .sort({'date': -1})
+          .exec(cb);
+    }
+
+    module.exports.getFollowersCount = function(cb) {
+      Follower.count({}, function(err, count) {
+        if (cb)
+          cb(err, count);
+      });
     }
 
     /*

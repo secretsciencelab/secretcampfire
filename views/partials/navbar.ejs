@@ -162,8 +162,9 @@ var Navbar = new function() {
 
   this.addFollowButton = function(uri) {
     SetBlogWidget.isOwner(function(isOwner) {
-      if (isOwner)
-        return;
+      // it's ok to let owner follow own blog(s)
+      //if (isOwner)
+      //  return;
 
       $("#follow-button").show();
 
@@ -180,6 +181,11 @@ var Navbar = new function() {
           followButton = new FollowButton(followButtonConfig);
           return;
         }
+
+        var urlObj = new URL(blog);
+        if (window.location.protocol == "https:" 
+          && urlObj.protocol == "http:")
+          blog = blog.replace(urlObj.protocol, window.location.protocol);
       
         var checkUrl = blog
             + "/follow/check/"
