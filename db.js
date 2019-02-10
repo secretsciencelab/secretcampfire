@@ -2,6 +2,7 @@
     const mongoose = require('mongoose');
     const normalizeUrl = require('normalize-url');
     const md5 = require('md5');
+    const URL = require('url').URL;
     const consts = require('./consts');
 
     mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser:true }, function (error) {
@@ -39,7 +40,7 @@
     // collections:
     // - follows
     // - followers
-    // - rebloggedfroms
+    // - postsources
     const FollowSchema = new mongoose.Schema({
       id: String,
       date: { type: Date, default: Date.now },
@@ -50,17 +51,58 @@
     });
     Follow = mongoose.model('Follow', FollowSchema);
     Follower = mongoose.model('Follower', FollowSchema);
+    PostSource = mongoose.model('PostSource', FollowSchema);
 
     /* 
      * post
      */
-    module.exports.getPostSchema = function() {
-      return PostSchema;
-    }
 
     function _makeArray(x) {
       return Array.isArray(x)? x : [x];
     }
+
+    function _makeUrlKey(url) {
+      // normalize url to make url_key
+      return normalizeUrl(url, {
+        stripHash: true,
+        stripProtocol: true
+      });
+    }
+
+    function _addPostSource(url) {
+      if (!url || url.indexOf('http') == -1)
+        return;
+
+      try {
+        var urlObj = new URL(url);
+        var hostUrl = urlObj.protocol + "//" + urlObj.host;
+        var hostUrlKey = _makeUrlKey(hostUrl);
+
+        PostSource.findOne({ 'url_key': hostUrlKey }, function(err, source) {
+          if (source)
+          {
+            source.date = Date.now();
+            source.notes = url;
+          }
+          else
+          {
+            source = new PostSource({
+              url_key: hostUrlKey,
+              url: hostUrl,
+              notes: url
+            });
+            source.id = source._id;
+          }
+
+          source.save(function (err) {
+          });
+        });
+      }
+      catch(err) {
+        console.log(err);
+      }
+    }
+
     module.exports.post = function(postData, cb) {
       try {
         // sanitize postData
@@ -83,6 +125,9 @@
           if (cb)
             cb(err, newPost);
         });
+
+        if (newPost.re_url && /\S/.test(newPost.re_url)) 
+          _addPostSource(newPost.re_url); 
       }
       catch(err) {
         console.log(err);
@@ -133,14 +178,6 @@
      * networking
      */
 
-    function _makeUrlKey(url) {
-      // normalize url to make url_key
-      return normalizeUrl(url, {
-        stripHash: true,
-        stripProtocol: true
-      });
-    }
-
     module.exports.follow = function(url, cb) {
       try {
         var newFollow = new Follow({
@@ -161,21 +198,33 @@
     }
 
     module.exports.unfollow = function(url, cb) {
-      Follow.deleteMany({
-        'url_key': _makeUrlKey(url)
-      }, function(err) {
+      try {
+        Follow.deleteMany({
+          'url_key': _makeUrlKey(url)
+        }, function(err) {
+          if (cb)
+            cb(err);
+        });
+      }
+      catch(err) {
         if (cb)
-          cb(err);
-      });
+          cb(err, {});
+      }
     }
 
     module.exports.isFollowing = function(url, cb) {
-      Follow.findOne({
-        'url_key': _makeUrlKey(url)
-      }, function(err, doc) {
+      try {
+        Follow.findOne({
+          'url_key': _makeUrlKey(url)
+        }, function(err, doc) {
+          if (cb)
+            cb(err, doc);
+        });
+      }
+      catch(err) {
         if (cb)
-          cb(err, doc);
-      });
+          cb(err, {});
+      }
     }
 
     module.exports.getFollowing = function(index, limit, cb) {
@@ -261,6 +310,23 @@
 
     module.exports.getFollowersCount = function(cb) {
       Follower.count({}, function(err, count) {
+        if (cb)
+          cb(err, count);
+      });
+    }
+
+    module.exports.getPostSources = function(index, limit, cb) {
+        if (index == 0)
+          index = undefined;
+        PostSource.find()
+          .skip(index)
+          .limit(limit)
+          .sort({'date': -1})
+          .exec(cb);
+    }
+
+    module.exports.getPostSourcesCount = function(cb) {
+      PostSource.count({}, function(err, count) {
         if (cb)
           cb(err, count);
       });

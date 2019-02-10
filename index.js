@@ -281,6 +281,29 @@ app.get('/following/:index?', function (req, res) {
   });
 });
 
+app.get('/sources/count', function (req, res) {
+  db.getPostSourcesCount(function(err, num) {
+    ret = {
+      'n': num
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
+app.get('/sources/:index?', function (req, res) {
+	var index = req.params['index'];
+  index = (index)? parseInt(index) : 0;
+
+  db.getPostSources(index, 100, function(err, sources) {
+    res.setHeader('Content-Type', 'application/json');
+    ret = {
+      'sources': sources
+    }
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
 app.get('/is_owner', function (req, res) {
   var isOwner = false;
   if (req.user)
