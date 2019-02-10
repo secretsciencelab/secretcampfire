@@ -49,4 +49,4 @@ When you click Deploy, a `snapshot` of the master code wooshes to your server an
 
 As time goes by, the master code will get updated to a newer version. But, your server does not automatically get updated and it will remain on the older `snapshot`. This is so that your blog doesn't change unless you say so.
 
-To upgrade your blog to the latest master code, please see [UPGRADING](UPGRADING.md).
+To upgrade your blog to the latest master code, please see [UPGRADING](UPGRADING.md). Upgrading does not touch any data you have stored your database. Your data is kept safe and unmolested.

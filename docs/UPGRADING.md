@@ -19,6 +19,8 @@
 
 ## Syncing your blog to the latest code
 
+(Note: Upgrading does not touch any data you have stored your database. Your data is kept safe and unmolested.)
+
 1. Whenever you want to upgrade, login to https://github.com and go to your fork of `secretcampfire`. The URL should look like `https://github.com/<yourname>/secretcampfire`.
   
 
