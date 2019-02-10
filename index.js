@@ -175,6 +175,29 @@ app.get('/feed/:index?', _nocache, function (req, res) {
     db.addFollower(req.headers.referer);
 });
 
+app.get('/post/sources/count', function (req, res) {
+  db.getPostSourcesCount(function(err, num) {
+    ret = {
+      'n': num
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
+app.get('/post/sources/:index?', function (req, res) {
+	var index = req.params['index'];
+  index = (index)? parseInt(index) : 0;
+
+  db.getPostSources(index, 100, function(err, sources) {
+    res.setHeader('Content-Type', 'application/json');
+    ret = {
+      'sources': sources
+    }
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
 app.get('/post/count', function (req, res) {
   db.getPostCount(function(err, num) {
     ret = {
@@ -276,29 +299,6 @@ app.get('/following/:index?', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     ret = {
       'following': follows
-    }
-    res.send(JSON.stringify(ret, null, 2));
-  });
-});
-
-app.get('/sources/count', function (req, res) {
-  db.getPostSourcesCount(function(err, num) {
-    ret = {
-      'n': num
-    }
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(ret, null, 2));
-  });
-});
-
-app.get('/sources/:index?', function (req, res) {
-	var index = req.params['index'];
-  index = (index)? parseInt(index) : 0;
-
-  db.getPostSources(index, 100, function(err, sources) {
-    res.setHeader('Content-Type', 'application/json');
-    ret = {
-      'sources': sources
     }
     res.send(JSON.stringify(ret, null, 2));
   });
