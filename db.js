@@ -47,7 +47,8 @@
       url_key: { type: String, unique: true },
       url: { type: String },
       name: String,
-      notes: String
+      notes: String,
+      count: { type: Number, default: 0 }
     });
     Follow = mongoose.model('Follow', FollowSchema);
     Follower = mongoose.model('Follower', FollowSchema);
@@ -83,6 +84,7 @@
           {
             source.date = Date.now();
             source.notes = url;
+            source.count += 1;
           }
           else
           {
