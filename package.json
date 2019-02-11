@@ -1,7 +1,7 @@
 {
   "name": "secretcampfire",
-  "version": "0.1.0",
-  "description": "secretcampfire",
+  "version": "1.0",
+  "description": "secret campfire - an immortal personal microblogging system built with 100% free services to replace tumblr",
   "engines": {
     "node": "10.x"
   },

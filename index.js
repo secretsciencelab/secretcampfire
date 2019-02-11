@@ -64,6 +64,19 @@ app
   .use(passport.initialize())
   .use(passport.session())
 
+// redirect to https if we know our environment supports it
+app.use((err, req, res, next) => {
+  if (process.env.NODE && process.env.NODE.indexOf("heroku") != -1
+    && process.env.NODE_ENV  == 'production')
+    if (req.headers['x-forwarded-proto'] != 'https') 
+    {
+      res.redirect(status, 'https://' + req.hostname + req.originalUrl);
+      return;
+    }
+
+  next();
+});
+
 // handle errors
 app.use((err, req, res, next) => {
   if (!err)
