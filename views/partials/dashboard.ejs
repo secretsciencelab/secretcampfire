@@ -6,6 +6,7 @@ var Dashboard = new function() {
 
     this.bindEvents();
     this.handleUrlParamActions();
+    this.loadSettings();
   }
 
   this.bindEvents = function() {
@@ -196,5 +197,45 @@ var Dashboard = new function() {
 
       $("#create-post-modal").modal('show');
     });
+  }
+
+  this.loadSettings = function() {
+    var dash = this;
+
+    dash._imgUploader = null;
+    $.getJSON("/settings?json=1", function(data) {
+
+      dash.activateImageUploader(data.imgur_key);
+      dash.drawModalAvatars(data.avatar_url);
+    });
+  }
+
+  this.activateImageUploader = function(key) {
+    if (!key)
+      return;
+
+    var dash = this;
+    $(dash.postSelector + "-form .form-post-image-uploader-wraper").show();
+
+    this._imgUploader = new ImgurUploader({
+      key: key,
+      selector: dash.postSelector + "-form .form-img-file",
+      onUploadStart: function() {
+        $(dash.postSelector + "-form .form-img-file-progress")
+          .css('height', '3px');
+      },
+      onUploadDone: function(data) {
+        $(dash.postSelector + "-form .form-img-file-progress")
+          .css('height', '0px');
+        var imgUrl = data.link;
+        $(dash.postSelector + "-form .form-post-image").val(imgUrl);
+        var thumbUrl = imgUrl.replace(/(.+)\.([^/.]+)$/, "$1m.$2");
+        $(dash.postSelector + "-form .form-post-thumb").val(thumbUrl);
+      }
+    });
+  }
+
+  this.drawModalAvatars = function(url) {
+    $(".modal .avatar").css('background-image', 'url(' + url + ')').show();
   }
 };

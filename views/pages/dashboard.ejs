@@ -100,6 +100,7 @@
   <div class="modal fade" tabindex="-1" role="dialog" id="create-post-modal">
     <div class="modal-dialog" role="document"><div class="modal-content">
       <div class="modal-header">
+        <div class="avatar collapse"></div>
         <h5 class="modal-title">New post</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -162,6 +163,7 @@
   <div class="modal fade" tabindex="-1" role="dialog" id="follow-modal">
     <div class="modal-dialog" role="document"><div class="modal-content">
       <div class="modal-header">
+        <div class="avatar collapse"></div>
         <h5 class="modal-title">Follow new blog</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -189,6 +191,7 @@
   <div class="modal fade" tabindex="-1" role="dialog" id="unfollow-modal">
     <div class="modal-dialog" role="document"><div class="modal-content">
       <div class="modal-header">
+        <div class="avatar collapse"></div>
         <h5 class="modal-title">Unfollow blog</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -291,31 +294,6 @@
       //"url": "http://localhost:5000/news_sample.json", // ANDBG
       "selector": "#news",
       "page": "dashboard"
-    });
-
-    /*
-     * Image uploader
-     */
-    var imgUploader = null;
-    $.getJSON("/settings?json=1", function(data) {
-      if (!data.imgur_key)
-        return;
-
-      $("#create-post-form .form-post-image-uploader-wraper").show();
-      imgUploader = new ImgurUploader({
-        selector: "#create-post-form .form-img-file",
-        key: data.imgur_key,
-        onUploadStart: function() {
-          $("#create-post-form .form-img-file-progress").css('height', '3px');
-        },
-        onUploadDone: function(data) {
-          $("#create-post-form .form-img-file-progress").css('height', '0px');
-          var imgUrl = data.link;
-          $("#create-post-form .form-post-image").val(imgUrl);
-          var thumbUrl = imgUrl.replace(/(.+)\.([^/.]+)$/, "$1m.$2");
-          $("#create-post-form .form-post-thumb").val(thumbUrl);
-        }
-      });
     });
 
     /*
