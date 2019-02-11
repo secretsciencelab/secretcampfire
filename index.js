@@ -65,7 +65,7 @@ app
   .use(passport.session())
 
 // redirect to https if we know our environment supports it
-app.use((err, req, res, next) => {
+app.use((req, res, next) => {
   console.log("ANDBG check https redirect");
   console.log(process.env.NODE);
   console.log(process.env.NODE_ENV);
@@ -73,7 +73,7 @@ app.use((err, req, res, next) => {
     && process.env.NODE_ENV  == 'production')
     if (req.headers['x-forwarded-proto'] != 'https') 
     {
-      res.redirect(status, 'https://' + req.hostname + req.originalUrl);
+      res.redirect(302, 'https://' + req.hostname + req.originalUrl);
       return;
     }
 
