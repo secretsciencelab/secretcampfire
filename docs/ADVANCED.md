@@ -47,6 +47,6 @@ You're all set! Only catch is without a credit card on Heroku, your free quota r
 
 When you clicked Deploy, a `snapshot` of the official master code wooshed to your server and got installed. 
 
-As time goes by, the master code will get updated. New features will be added and bugs will be fixed. But, your server does not automatically get updated. It stays on your older `snapshot`. This is so that your blog doesn't change unless you say so.
+As time goes by, the master code will get updated. New features will be added and bugs will be fixed. But, your server does not automatically get updated. It stays on your older `snapshot`. This is so that your blog is stable and doesn't change unless you say so.
 
 To upgrade your blog to the latest master code, please see [UPGRADING](UPGRADING.md). Upgrading does not touch any data you have stored your database. Your data is kept safe and unmolested.
