@@ -1,7 +1,9 @@
 CHANGELOG
 ================================================================================
-- v1.0
-  - release
+
+## Versions
+- 1.0
+  - 1st release
 
 ### Upcoming changes
 - suggest "related blogs"
