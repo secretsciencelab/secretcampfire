@@ -1,6 +1,6 @@
 ## One-time setup
 
-1. Go to the official `secret campfire` code repository https://github.com/secretsciencelab/secretcampfire and click `Fork`. This pulls a snapshot of the master code into your personal GitHub account.
+1. Go to the official `secret campfire` code repository https://github.com/secretsciencelab/secretcampfire and click `Fork`. This pulls a snapshot of the official code into your personal GitHub account.
 
   ![Fork](media/upgrade-1-fork.png)
 
@@ -17,16 +17,15 @@
   ![Enable automatic deploys](media/upgrade-4-auto-deploy.png)
 
 
-## Syncing your blog to the latest code
+## Syncing your blog to the latest official code
 
 (Note: Upgrading does not touch any data you have stored your database. Your data is kept safe and unmolested.)
 
 1. Whenever you want to upgrade, login to https://github.com and go to your fork of `secretcampfire`. The URL should look like `https://github.com/<yourname>/secretcampfire`.
-  
 
 2. In your browser's address bar, add `/compare/master...secretsciencelab:master` to the end of the URL. The URL should now look like `https://github.com/<yourname>/secretcampfire/compare/master...secretsciencelab:master`.
 
-3. Verify the changes you are about to sync from the master repository. Click `Create pull request`.
+3. Verify the changes you are about to sync from the official master repository. Click `Create pull request`.
 
   ![Pull](media/sync-1-pull.png)
 
