@@ -43,10 +43,10 @@ Next, we will tell your Heroku app to use this database you just created:
 
 You're all set! Only catch is without a credit card on Heroku, your free quota remains at 550 hours per month -- not enough to run your blog 24/7. It'll go to sleep whenever it's idle for 30 minutes and it'll take a couple of seconds to wake up whenever you get visitors.
 
-## How to upgrade to the latest `secret campfire` code
+## How to upgrade your `secret campfire` blog to the latest official version
 
-When you click Deploy, a `snapshot` of the master code wooshes to your server and gets run. 
+When you clicked Deploy, a `snapshot` of the official master code wooshed to your server and got installed. 
 
-As time goes by, the master code will get updated to a newer version. But, your server does not automatically get updated and it will remain on the older `snapshot`. This is so that your blog doesn't change unless you say so.
+As time goes by, the master code will get updated. New features will be added and bugs will be fixed. But, your server does not automatically get updated. It stays on your older `snapshot`. This is so that your blog doesn't change unless you say so.
 
 To upgrade your blog to the latest master code, please see [UPGRADING](UPGRADING.md). Upgrading does not touch any data you have stored your database. Your data is kept safe and unmolested.
