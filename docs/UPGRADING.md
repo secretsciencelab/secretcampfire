@@ -16,6 +16,7 @@
 
   ![Enable automatic deploys](media/upgrade-4-auto-deploy.png)
 
+---
 
 ## Syncing your blog to the latest official code
 
