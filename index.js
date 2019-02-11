@@ -66,16 +66,12 @@ app
 
 // redirect to https if we know our environment supports it
 app.use((req, res, next) => {
-  console.log("ANDBG check https redirect");
-  console.log(process.env.NODE);
-  console.log(process.env.NODE_ENV);
-  if (process.env.NODE && process.env.NODE.indexOf("heroku") != -1
-    && process.env.NODE_ENV  == 'production')
-    if (req.headers['x-forwarded-proto'] != 'https') 
-    {
-      res.redirect(302, 'https://' + req.hostname + req.originalUrl);
-      return;
-    }
+  if (process.env.NODE_ENV  == 'production'
+    && req.headers['x-forwarded-proto'] != 'https') 
+  {
+    res.redirect(302, 'https://' + req.hostname + req.originalUrl);
+    return;
+  }
 
   next();
 });
