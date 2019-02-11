@@ -6,7 +6,9 @@ To start, visit this page to *Register an Application*: https://api.imgur.com/oa
 
 Under *Authorization type*, make sure to select *Anonymous usage without user authentication*. Leave *Authorization callback URL* empty. You may enter anything you want in the remaining fields. Click *submit*.
 
-On the next page, you'll find your `Client ID` and your `Client secret`. Save both for your records, but what `secret campfire` needs is the `Client ID`. This is what you enter into your blog's `Settings` page.
+On the next page, you'll find your `Client ID` and your `Client secret`. Save both for your records, but what `secret campfire` needs is the `Client ID`. 
+
+Enter your Imgur `Client ID` into your blog's `Settings` page.
 
 Once you do this, image file upload buttons will be unlocked throughout your blog.
 
