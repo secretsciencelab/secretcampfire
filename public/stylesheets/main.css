@@ -30,6 +30,18 @@
 #active-blog-display .btn {
   border-color: transparent;
 }
+#active-blog-display .dropdown-item {
+  position: relative;
+}
+#active-blog-display .dropdown-item .x {
+  position: absolute;
+  width: 1rem;
+  text-align: center;
+  right: -1rem;
+  top: 0px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid #aaa;
+}
 .navbar-brand .logo, #active-blog-display {
 	background-color: rgba(255, 255, 255, 0.3);
 }

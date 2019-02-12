@@ -64,6 +64,7 @@ var Navbar = new function() {
         menuItemsHtml += '<div class="dropdown-item"'
           + ' style="cursor:pointer"'
           + ' data-url="' + urls[ui] + '">' + urls[ui]
+          + '<div class="x collapse">&times;</div>'
           + '</div>';
 
       var dropdownHtml = "";
@@ -100,6 +101,18 @@ var Navbar = new function() {
         $("#active-blog").html(displayUrl)
           .attr("title", "Connected to " + displayUrl);
         $("#active-blog-tooltip").data('url', url + "/dashboard");
+      });
+      $("#active-blog-display .dropdown-item").hover(function() {
+        $(this).find(".x").show();
+      }, function() {
+        $(this).find(".x").hide();
+      });
+      $("#active-blog-display .dropdown-item .x").click(function(e) {
+        e.preventDefault();
+        var url = $(this).parent().data('url');
+        $(this).parent().addClass('disabled').off("click");
+        SetBlogWidget.delBlog(url);
+        return false;
       });
       $("#active-blog-tooltip").mouseup(function(e) {
         Utils.handleClick(e, $(this).data('url'));

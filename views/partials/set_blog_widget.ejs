@@ -138,6 +138,22 @@ var SetBlogWidget = new function() {
     this.saveForm();
   }
 
+  this.delBlog = function(url) {
+    // remove blog from list
+    var sbw = this;
+    SessionDatastore.getData(this._datastoreKey, function(key, urls) {
+      if (!urls)
+        return;
+
+      var findIdx = urls.indexOf(url);
+      if (findIdx == -1)
+        return; // nothing to do
+
+      urls.splice(findIdx, 1); // delete entry
+      SessionDatastore.setData(sbw._datastoreKey, urls);
+    });
+  }
+
   this.open = function() {
     var sbw = this;
     SessionDatastore.getData(sbw._datastoreKey, function(key, urls) {
