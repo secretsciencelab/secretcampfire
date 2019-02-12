@@ -1,6 +1,6 @@
 ## How to unlock image file uploads
 
-To unlock image file uploads via Imgur on `secret campfire`, you'll need to provide your own Imgur key. This is so that `secret campfire` is authorized to upload files to Imgur on your behalf. Imgur will host your images for free and your blog will point to Imgur for images.
+To unlock image file uploads on `secret campfire` via Imgur, you'll need to provide your own Imgur key. This is so that `secret campfire` is authorized to upload files to Imgur on your behalf. Imgur will host your images for free and your blog will point to Imgur for images.
 
 To start, visit this page to *Register an Application*: https://api.imgur.com/oauth2/addclient 
 
