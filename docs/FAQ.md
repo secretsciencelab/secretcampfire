@@ -33,6 +33,12 @@ If you are opposed to this, you can still use `secret campfire` without a credit
 
 --- 
 
+## How do I unlock image file uploads?
+
+[See here.](ADVANCED.md#how-to-unlock-image-file-uploads)
+
+--- 
+
 ## How do I upgrade my `secret campfire` blog to the latest official version?
 
 [See here.](ADVANCED.md#how-to-upgrade-your-secret-campfire-blog-to-the-latest-official-version)
