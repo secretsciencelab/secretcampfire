@@ -161,7 +161,13 @@
     }
 
     module.exports.getPostCount = function(cb) {
-      Post.count({}, function(err, count) {
+      Post.count({ 'queued': { "$ne": true } }, function(err, count) {
+        if (cb)
+          cb(err, count);
+      });
+    }
+    module.exports.getQueuedCount = function(cb) {
+      Post.count({ 'queued': true }, function(err, count) {
         if (cb)
           cb(err, count);
       });
@@ -407,7 +413,7 @@
     }
 
     /*
-     * Cron
+     * cron
      */
     module.exports.addCronTask = function(name, cb) {
       try {

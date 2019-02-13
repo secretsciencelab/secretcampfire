@@ -94,6 +94,10 @@ function _getFeedUrl(req) {
   // default to own feed
   return _getReqProtocol(req) + '://' + req.headers.host + '/feed';
 }
+function _getQueueFeedUrl(req) {
+  // default to own feed
+  return _getReqProtocol(req) + '://' + req.headers.host + '/dashboard/qfeed';
+}
 function _render(req, res, myuri) {
   var uri = _getFeedUrl(req); // default to own feed
   if (myuri)
@@ -147,6 +151,34 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
+function _assembleFeed(req, posts, cb) {
+  db.getSettings(function(err, settings) {
+    var feed = {
+      'name': req.headers.host, 
+      'description': '',
+      'avatar_url': '',
+      'header_url': '',
+      'style_url': _getReqProtocol(req) 
+        + '://' + req.headers.host + '/stylesheets/feed.css',
+      'posts': posts,
+      'blog_url': _getReqProtocol(req) + "://" + req.headers.host,
+      'nsfw': false
+    };
+
+    if (settings)
+    {
+      feed.name = settings.name;
+      feed.description = settings.description;
+      feed.avatar_url = settings.avatar_url;
+      feed.header_url = settings.header_url;
+      if (settings.nsfw)
+        feed.nsfw = true;
+    }
+
+    cb(feed);
+  });
+}
+
 app.get('/feed/:index?', _nocache, function (req, res) {
   var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
@@ -155,31 +187,9 @@ app.get('/feed/:index?', _nocache, function (req, res) {
   if (req.query['n'])
     numToFetch = parseInt(req.query['n']);
 
-  db.getSettings(function(err, settings) {
-    db.fetchPosts(index, numToFetch, function(err, docs) {
-      // send page from DB
-      var feed = {
-        'name': req.headers.host, 
-        'description': '',
-        'avatar_url': '',
-        'header_url': '',
-        'style_url': _getReqProtocol(req) 
-          + '://' + req.headers.host + '/stylesheets/feed.css',
-        'posts': docs,
-        'blog_url': _getReqProtocol(req) + "://" + req.headers.host,
-        'nsfw': false
-      };
-
-      if (settings)
-      {
-        feed.name = settings.name;
-        feed.description = settings.description;
-        feed.avatar_url = settings.avatar_url;
-        feed.header_url = settings.header_url;
-        if (settings.nsfw)
-          feed.nsfw = true;
-      }
-
+  // send a page from DB
+  db.fetchPosts(index, numToFetch, function(err, posts) {
+    _assembleFeed(req, posts, function(feed) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(feed, null, 2));
     });
@@ -387,6 +397,43 @@ app.get('/dashboard/posts/:index?', cel.ensureLoggedIn(), function (req, res) {
     'uri': _getFeedUrl(req),
     'render_uris': [
       _getFeedUrl(req) + "/" + index
+    ]
+  });
+});
+
+app.get('/dashboard/qfeed/:index?', 
+  [_nocache, cel.ensureLoggedIn()], function (req, res) {
+  var index = req.params['index'];
+  index = (index)? parseInt(index) : 0;
+
+  // send a page from DB
+  var numToFetch = app.locals.NUM_POSTS_PER_FETCH;
+  db.fetchQueuedPosts(index, numToFetch, function(err, posts) {
+    _assembleFeed(req, posts, function(feed) {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify(feed, null, 2));
+    });
+  });
+});
+
+app.get('/dashboard/queue/count', cel.ensureLoggedIn(), function (req, res) {
+  db.getQueuedCount(function(err, num) {
+    ret = {
+      'n': num
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
+app.get('/dashboard/queue/:index?', cel.ensureLoggedIn(), function (req, res) {
+	var index = req.params['index'];
+  index = (index)? parseInt(index) : 0;
+
+  res.render('pages/dashboard', {
+    'uri': _getQueueFeedUrl(req),
+    'render_uris': [
+      _getQueueFeedUrl(req) + "/" + index
     ]
   });
 });
