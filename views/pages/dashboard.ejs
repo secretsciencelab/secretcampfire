@@ -286,7 +286,7 @@
       },
       "postImagePref": ["images", "thumbs"],
       "numPostsPerFetch": <%= NUM_POSTS_PER_FETCH %>,
-      "enforceMasonryOrder": true
+      "enforceMasonryOrder": (renderUris.length == 1)? true : false
     });
 
     var news = new News({
