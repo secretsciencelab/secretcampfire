@@ -223,6 +223,13 @@
     <% include ../partials/footer.ejs %>
   </div>
 
+  <div id="no-queued-message" class="mt-5 text-center collapse">
+    <img id="center-logo" src="/media/logoLight.png" class="mb-3"/>
+    <div>No queued posts</div>
+    <div class="mt-5"></div>
+    <% include ../partials/footer.ejs %>
+  </div>
+
   <div id="no-follows-message" class="mt-5 text-center collapse">
     <img id="center-logo" src="/media/logoLight.png" class="mb-3"/>
     <div>Nothing to see in your feed yet</div>
@@ -273,16 +280,13 @@
       "uris": renderUris,
       "selector": "#posts",
       "onNoPosts": function() {
-        if (window.location.href.indexOf("dashboard") != -1)
-        {
-          $("#dashboard-view").hide();
-          $("#no-follows-message").show();
-        }
+        $("#dashboard-view").hide();
+        if (window.location.href.indexOf("posts") != -1)
+          $("#no-posts-message").show();
+        else if (window.location.href.indexOf("queue") != -1)
+          $("#no-queued-message").show();          
         else
-        {
-          $("#dashboard-view").hide();
-          $("#no-posts-message").show();          
-        }
+          $("#no-follows-message").show();          
       },
       "postImagePref": ["images", "thumbs"],
       "numPostsPerFetch": <%= NUM_POSTS_PER_FETCH %>,
