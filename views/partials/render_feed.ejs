@@ -223,9 +223,11 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       ".card-text object", ".card-text video"
     ]);
 
-    newCards.imagesLoaded().progress(function(instance, image) {
-      var id = $(image.img).data('iscroll-id');
-      fr.msnryContainer.masonry('appended', $("#"+id));
+    newCards.imagesLoaded().always(function(instance) {
+      newCards.each(function() {
+        var id = $(this).find("img").data('iscroll-id');
+        fr.msnryContainer.masonry('appended', $("#"+id));
+      });
     });
   });
 

@@ -76,16 +76,33 @@
           </label>
           </div></div>
 
-          <div class="form-group">
-          <label>Imgur client ID</label>
-          <input type="text" class="form-control form-control-sm form-imgur-key" 
-           value="<%= settings.imgur_key %>" placeholder="Imgur client ID (to unlock image file uploads)" />
-          </div>
+          <a class="" data-toggle="collapse" href="#advanced-settings" role="button" aria-expanded="false" aria-controls="advanced-settings">
+            advanced settings
+          </a>
+          <div id="advanced-settings" class="collapse">
+            <div class="form-group">
+            <label>Imgur client ID</label>
+            <input type="text" class="form-control form-control-sm form-imgur-key" 
+             value="<%= settings.imgur_key %>" placeholder="Imgur client ID (to unlock image file uploads)" />
+            </div>
+
+            <div class="form-group">
+              <label>How frequently to post from your Queue<br/>
+                <div class="small">warning: using queued posts may prevent your blog from sleeping</div></label>
+            <input type="text" class="form-control form-control-sm form-queue-interval" 
+             <% if (settings.queue_interval) { %>
+              value="<%= settings.queue_interval %>"
+             <% } else { %>
+              value="" 
+             <% } %>
+             placeholder="E.g., enter '60' for 'every 60 minutes'" />
+            </div>
+          </div><!--advanced-settings-->
 
         </form>
         <div id="success-alert" 
           class="alert alert-success collapse" role="alert">Settings saved!</div>
-        <button type="button" class="mt-2 btn btn-primary" 
+        <button type="button" class="mt-3 btn btn-primary" 
           id="settings-save-button">Save settings</button>
       </div>
       <div class="col">
@@ -109,6 +126,9 @@
       var password = form.find('.form-password').val();
       var nsfw = form.find('.form-nsfw').is(":checked");
       var imgur = form.find('.form-imgur-key').val();
+      var queueInterval = form.find('.form-queue-interval').val();
+      if (!queueInterval)
+          queueInterval = 0;
 
       $.post('/settings', { 
         name: name,
@@ -117,7 +137,8 @@
         header_url: header,
         password: password,
         nsfw: nsfw,
-        imgur_key: imgur
+        imgur_key: imgur,
+        queue_interval: queueInterval
       },
       function(data, status, xhr) {
         // success

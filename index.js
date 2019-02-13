@@ -10,6 +10,8 @@ const LocalStrategy = require('passport-local').Strategy
 const session = require('express-session')
 const db = require('./db')
 const consts = require('./consts')
+const cron = require('./cron');
+
 const PORT = process.env.PORT || 5000
 
 /* 
@@ -331,11 +333,10 @@ app.get('/is_owner', function (req, res) {
 
 // catch-all route
 app.get('*', function (req, res, next) {
-  if (req.url.indexOf("/posts") != -1
-     || req.url.indexOf("/dashboard") != -1
-     || req.url.indexOf("/settings") != -1
-     || req.url.indexOf("/follow") != -1
-     || req.url.indexOf("/logout") != -1)
+  if (req.url.indexOf("/dashboard") != -1
+    || req.url.indexOf("/settings") != -1
+    || req.url.indexOf("/follow") != -1
+    || req.url.indexOf("/logout") != -1)
     return next();
 
   res.send("");
@@ -345,12 +346,31 @@ app.get('*', function (req, res, next) {
  * protected routes below
  */
 
+function _cronActivatePostQueue(interval) {
+  console.log("[cron] auto-posting from queue every " 
+    + interval + " minute(s)");
+
+  var intervalInMs = interval * 60 * 1000;
+  cron.addTask("post_from_queue", intervalInMs, function() {
+    db.fetchQueuedPosts(0, 1, function(err, posts) {
+      if (!posts)
+        return;
+      var post = posts[0];
+      post.queued = false;
+      post.date = Date.now();
+      post.save();
+    });
+  });
+}
+function _cronDeactivatePostQueue() {
+  console.log("[cron] auto-post queue disabled");
+  cron.delTask("post_from_queue");
+}
+
 app.post('/post', cel.ensureLoggedIn(), function(req, res) {
   db.post(req.body, function(err, newPost) {
     res.status(200).json(newPost);
   });
-
-  // TODO: allow post to user's other blog on a diff server
 });
 
 app.post('/post/delete', cel.ensureLoggedIn(), function (req, res) {
@@ -359,7 +379,7 @@ app.post('/post/delete', cel.ensureLoggedIn(), function (req, res) {
   });
 });
 
-app.get('/posts/:index?', cel.ensureLoggedIn(), function (req, res) {
+app.get('/dashboard/posts/:index?', cel.ensureLoggedIn(), function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
@@ -405,6 +425,11 @@ app.get('/settings', cel.ensureLoggedIn(), function (req, res) {
 
 app.post('/settings', cel.ensureLoggedIn(), function(req, res) {
   db.saveSettings(req.body, function(err, settings) {
+    if (settings && settings.queue_interval)
+      _cronActivatePostQueue(settings.queue_interval);
+    else
+      _cronDeactivatePostQueue();
+
     res.status(200).json(settings);
   });
 });
@@ -424,6 +449,14 @@ app.post('/unfollow', cel.ensureLoggedIn(), function(req, res) {
   db.unfollow(url, function(err) {
     res.status(200).json({ });
   });
+});
+
+/*
+ * add cron tasks
+ */
+db.getSettings(function(err, settings) {
+  if (settings.queue_interval)
+    _cronActivatePostQueue(settings.queue_interval);
 });
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));

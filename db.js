@@ -19,7 +19,8 @@
       style_url: String,
       password: String,
       nsfw: Boolean,
-      imgur_key: String
+      imgur_key: String,
+      queue_interval: { type: Number, default: 0 }
     });
     Settings = mongoose.model('Settings', SettingsSchema);
 
@@ -33,7 +34,8 @@
       text: String,
       tags: [String],
       post_url: String,
-      re_url: String
+      re_url: String,
+      queued: { type: Boolean, default: false }
     });
     Post = mongoose.model('Post', PostSchema);
 
@@ -53,6 +55,13 @@
     Follow = mongoose.model('Follow', FollowSchema);
     Follower = mongoose.model('Follower', FollowSchema);
     PostSource = mongoose.model('PostSource', FollowSchema);
+
+    const CronTaskSchema = new mongoose.Schema({
+      id: String,
+      name: { type: String, unique: true },
+      last_run: { type: Date, default: Date.now }
+    });
+    CronTask = mongoose.model('CronTask', CronTaskSchema);
 
     /* 
      * post
@@ -96,28 +105,30 @@
             source.id = source._id;
           }
 
-          source.save(function (err) {
-          });
+          source.save();
         });
       }
       catch(err) {
-        console.log(err);
+        console.error(err);
       }
     }
 
     module.exports.post = function(postData, cb) {
       try {
-        // sanitize postData
-        for (key in PostSchema.paths)
-          if (key.indexOf("_") != 0 
-            && key.indexOf("date") == -1
-            && typeof postData[key] === "undefined")
-            postData[key] = ""
-        postData.thumbs = _makeArray(postData.thumbs);
-        postData.images = _makeArray(postData.images);
-        postData.urls = _makeArray(postData.urls);
-        postData.tags = postData.tags.replace(/[^A-Za-z0-9_, ]/g, '');
-        postData.tags = postData.tags.split(/(?:,| )+/);
+        // sanitize inputs
+        if (postData.thumbs)
+          postData.thumbs = _makeArray(postData.thumbs);
+        if (postData.images)
+          postData.images = _makeArray(postData.images);
+        if (postData.urls)
+          postData.urls = _makeArray(postData.urls);
+        if (postData.tags)
+        {
+          postData.tags = postData.tags.replace(/[^A-Za-z0-9_, ]/g, '');
+          postData.tags = postData.tags.split(/(?:,| )+/);
+        }
+        if (postData.queued)
+          postData.queued = true;
         
         var newPost = new Post(postData);
         newPost.id = newPost._id;
@@ -132,7 +143,7 @@
           _addPostSource(newPost.re_url); 
       }
       catch(err) {
-        console.log(err);
+        console.error(err);
         if (cb)
           cb(err, {});
       }
@@ -160,20 +171,28 @@
      * feed
      */
 
-    module.exports.fetchPosts = function(index, limit, cb) {
+    function _fetchPosts(index, limit, filter, cb) {
       try {
         if (index == 0)
           index = undefined;
-        Post.find()
+        Post.find(filter)
           .skip(index)
           .limit(limit)
           .sort({'date': -1})
           .exec(cb);
       }
       catch(err) {
+        console.error(err);
         if (cb)
           cb(err, []);
       }
+    }
+
+    module.exports.fetchPosts = function(index, limit, cb) {
+      _fetchPosts(index, limit, { 'queued': { "$ne": true } }, cb);
+    }
+    module.exports.fetchQueuedPosts = function(index, limit, cb) {
+      _fetchPosts(index, limit, { 'queued': true }, cb);
     }
 
     /*
@@ -194,6 +213,7 @@
         });
       }
       catch(err) {
+        console.error(err);
         if (cb)
           cb(err, {});
       }
@@ -209,6 +229,7 @@
         });
       }
       catch(err) {
+        console.error(err);
         if (cb)
           cb(err, {});
       }
@@ -224,6 +245,7 @@
         });
       }
       catch(err) {
+        console.error(err);
         if (cb)
           cb(err, {});
       }
@@ -295,6 +317,7 @@
 
       }
       catch(err) {
+        console.error(err);
         if (cb)
           cb(err, {});
       }
@@ -372,6 +395,7 @@
         settings.header_url = newSettings.header_url;  
         settings.nsfw = newSettings.nsfw;
         settings.imgur_key = newSettings.imgur_key;
+        settings.queue_interval = newSettings.queue_interval;
         if (newSettings.password)
           settings.password = md5(newSettings.password);
         
@@ -379,6 +403,48 @@
           if (cb)
             cb(err, settings);
         });
+      });
+    }
+
+    /*
+     * Cron
+     */
+    module.exports.addCronTask = function(name, cb) {
+      try {
+        var newTask = new CronTask({
+          name: name
+        });
+        newTask.id = newTask._id;
+        newTask.save(function(err, task) {
+          if (cb)
+            cb(err, task);
+        });
+      }
+      catch(err) {
+        console.info(err);
+        if (cb)
+          cb(err, {});
+      }
+    }
+    module.exports.delCronTask = function(name, cb) {
+      CronTask.deleteOne({'name': name}, function(err) {
+        if (cb)
+          cb(err);
+      });
+    }
+    module.exports.getCronTask = function(name, cb) {
+      CronTask.findOne({ 'name': name }, function(err, task) {
+        if (cb)
+          cb(err, task);
+      });
+    }
+    module.exports.updateCronTaskLastRunTime = function(name) {
+      CronTask.findOne({ 'name': name }, function(err, task) {
+        if (!task)
+          return;
+
+        task.last_run = Date.now();
+        task.save();
       });
     }
 
