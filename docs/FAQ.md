@@ -14,7 +14,7 @@ Because you are now graduating from a *simple user of the Internet* to an __owne
 
 If you want things to be brain-dead simple, there are many other options available where someone else takes care of your blog for you. But as you know, the trade-off when someone runs your blog for you is that you don't really own anything. They own you.
 
-If you want the freedom of owning and keeping what you own, there will be a slight learning curve. But these are good things to know, because knowledge is power. For years, all these other sites have happily kept people ignorant, helpless and in the dark. Think about it -- they don't want you to know how to run your own site. They make more money if you don't know how to run your own site and are completely dependent on them. 
+If you want the freedom of owning and keeping what you own, there will be a slight learning curve. But these are good things to know, because knowledge is power. For years, all these other sites have happily kept people ignorant, helpless and in the dark. Think about it -- they **don't** want you to know how to run your own site. They make **more** money if you don't know how to run your own site and are completely dependent on them. 
 
 In contrast, `secret campfire` will show you exactly how to run your own server so you can finally be independent and free. But of course, our goal is to make it as simple as possible -- it's only as hard as it needs to be but no harder.
 
