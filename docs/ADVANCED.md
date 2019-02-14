@@ -20,7 +20,7 @@ The `Queue` helps keep your blog active by staggering posts over a period of hou
 
 To unlock this feature, go to your blog's `Settings` page. Click `advanced settings` at the bottom. Enter a number in the `Auto-publish queued posts` box. This number tells your blog how often (in minutes) to auto-post from your queue. E.g., if you enter `60` in the box, that tells your blog to post from your `Queue` every 60 minutes. 
 
-Once you do this, you will see an arrow button next to your "Post" button. To add a `Post` to your `Queue`, click this arrow and choose "Add to queue" from the menu. Then click "Queue."
+Once you do this, you will see an arrow button appear next to your "Post" button. To add a `Post` to your `Queue`, click this arrow and choose "Add to queue" from the menu. Then click "Queue."
 
 *Warning: activating your `Queue` may prevent your blog from sleeping. This will eat up your free hosting hours faster. [See here](FAQ.md#why-does-my-blog-go-to-sleep-after-a-while-and-why-does-it-take-a-long-time-to-start-back-up-again) for more details.*
 
