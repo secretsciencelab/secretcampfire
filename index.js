@@ -10,7 +10,7 @@ const LocalStrategy = require('passport-local').Strategy
 const session = require('express-session')
 const db = require('./db')
 const consts = require('./consts')
-const cron = require('./cron');
+const cron = require('./cron')
 
 const PORT = process.env.PORT || 5000
 
@@ -360,8 +360,7 @@ function _cronActivatePostQueue(interval) {
   console.log("[cron] auto-posting from queue every " 
     + interval + " minute(s)");
 
-  var intervalInMs = interval * 60 * 1000;
-  cron.addTask("post_from_queue", intervalInMs, function() {
+  cron.addTask("post_from_queue", interval, function() {
     db.fetchQueuedPosts(0, 1, function(err, posts) {
       if (!posts || posts.length == 0)
         return;

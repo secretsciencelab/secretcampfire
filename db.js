@@ -56,13 +56,6 @@
     Follower = mongoose.model('Follower', FollowSchema);
     PostSource = mongoose.model('PostSource', FollowSchema);
 
-    const CronTaskSchema = new mongoose.Schema({
-      id: String,
-      name: { type: String, unique: true },
-      last_run: { type: Date, default: Date.now }
-    });
-    CronTask = mongoose.model('CronTask', CronTaskSchema);
-
     /* 
      * post
      */
