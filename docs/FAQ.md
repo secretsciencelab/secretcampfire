@@ -37,7 +37,7 @@ If you are opposed to this, you can still use `secret campfire` without a credit
 
 First, repeat the steps in the [Quickstart](../README.md#quickstart-instructions-time-needed-5-minutes) for each new blog you want to create. 
 
-Then, as you sign in to each of your blogs, `secret campfire` remembers all the blogs you own. All your connected blogs appear in a handy menu at the top right of the screen. Select the blog you want to browse as, and all your `secret campfire` actions will be performed for your selected blog. E.g., if you select your *first blog* and then click a `Reblog` button on a post, the post will be reblogged to your *first blog*. 
+Then, as you sign in to each of your blogs, `secret campfire` remembers all the blogs you own. All your connected blogs appear in a handy menu at the top right of the screen. Select the blog you want to browse as, and all your `secret campfire` actions will be performed for your selected blog. E.g., if you select your *first blog* from the menu and then click a `Reblog` button on a post, the post will be reblogged to your *first blog*. 
 
 --- 
 
