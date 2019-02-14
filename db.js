@@ -177,14 +177,14 @@
      * feed
      */
 
-    function _fetchPosts(index, limit, filter, cb) {
+    function _fetchPosts(index, limit, filter, order, cb) {
       try {
         if (index == 0)
           index = undefined;
         Post.find(filter)
           .skip(index)
           .limit(limit)
-          .sort({'date': -1})
+          .sort({'date': order })
           .exec(cb);
       }
       catch(err) {
@@ -195,10 +195,10 @@
     }
 
     module.exports.fetchPosts = function(index, limit, cb) {
-      _fetchPosts(index, limit, { 'queued': { "$ne": true } }, cb);
+      _fetchPosts(index, limit, { 'queued': { "$ne": true } }, -1, cb);
     }
     module.exports.fetchQueuedPosts = function(index, limit, cb) {
-      _fetchPosts(index, limit, { 'queued': true }, cb);
+      _fetchPosts(index, limit, { 'queued': true }, 1, cb);
     }
 
     /*
