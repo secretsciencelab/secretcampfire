@@ -86,11 +86,15 @@ var Dashboard = new function() {
       if (mode == "queue")
       {
         $pform.find('.form-post-enqueue').val("1");
+        $(dash.postSelector+"-save-button .oi")
+          .removeClass('oi-pencil').addClass('oi-clock');
         $(dash.postSelector+"-save-button .label").text("Add to queue");
       }
       else
       {
         $pform.find('.form-post-enqueue').val("");
+        $(dash.postSelector+"-save-button .oi")
+          .removeClass('oi-clock').addClass('oi-pencil');
         $(dash.postSelector+"-save-button .label").text("Post");
       }
     });
