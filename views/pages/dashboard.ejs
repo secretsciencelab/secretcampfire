@@ -27,7 +27,7 @@
 
     <div class="row">
       <div class="col"></div>
-      <div class="col-md-6 text-center">
+      <div id="dashboard-menu" class="col-md-6 text-center">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-post-modal">
           <span class='oi oi-pencil' title='New post' aria-hidden='true'></span>
           New post
@@ -322,10 +322,14 @@
     });
 
     /*
-     * 'Back to Dashboard button'
+     * Dashboard top menu
      */
-    if (window.location.href.indexOf("posts") != -1)
+    if (window.location.href.indexOf("posts") != -1
+      || window.location.href.indexOf("queue") != -1)
+    {
       $("#back-to-dash-button").show();
+      $("#dashboard-menu").hide();
+    }
 
     console.log(JSON.stringify(new Date()));
   </script>
