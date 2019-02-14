@@ -22,7 +22,7 @@ To unlock this feature, go to your blog's `Settings` page. Click `advanced setti
 
 Once you do this, you will see an arrow button next to your "Post" button. To add a `Post` to your `Queue`, click this arrow and choose "Add to queue" from the menu. Then click "Queue."
 
-*Warning: activating your `Queue` may prevent your blog from sleeping. This will eat up your free hosting hours faster*
+*Warning: activating your `Queue` may prevent your blog from sleeping. This will eat up your free hosting hours faster. [See here](FAQ.md#why-does-my-blog-go-to-sleep-after-a-while-and-why-does-it-take-a-long-time-to-start-back-up-again) for more details.*
 
 --- 
 
