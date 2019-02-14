@@ -23,6 +23,8 @@ var Dashboard = new function() {
       $(this).find('form').get(0).reset(); // clear form
       // reset to 'new post' mode
       $(dash.postSelector+"-modal h5").html("New post");
+      $(dash.postSelector+"-save-button .oi")
+        .removeClass('oi-clock').addClass('oi-pencil');
       $(dash.postSelector+"-save-button .label").text("Post");
     });
     $(dash.followSelector+"-modal").on('shown.bs.modal', function() {
