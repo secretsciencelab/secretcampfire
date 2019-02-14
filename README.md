@@ -5,7 +5,7 @@
 
 An immortal personal microblogging system that...
 - supports tumblr features like `reblog`, `follow`, `queued posting` and an infinite-scroll `dashboard` feed
-- runs in the cloud using 100% free (but industry-grade) components
+- runs in the cloud using 100% free (but industry-grade) components, so:
   - it costs you nothing to run your blog 24/7 forever 
   - you don't even need a computer
 - can never be killed, because you own and control:
