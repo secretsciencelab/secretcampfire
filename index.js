@@ -363,7 +363,7 @@ function _cronActivatePostQueue(interval) {
   var intervalInMs = interval * 60 * 1000;
   cron.addTask("post_from_queue", intervalInMs, function() {
     db.fetchQueuedPosts(0, 1, function(err, posts) {
-      if (!posts)
+      if (!posts || posts.length == 0)
         return;
       var post = posts[0];
       post.queued = false;

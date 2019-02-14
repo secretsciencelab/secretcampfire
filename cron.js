@@ -1,8 +1,9 @@
 (function() {
+  const NanoTimer = require('nanotimer');
   const db = require('./db');
 
+  var _timer = new NanoTimer();
   var _interval = null;
-  var _timer = null;
   var _taskFuncs = {};
 
   function _runTasks() {
@@ -41,11 +42,9 @@
       if (_interval === null || _interval > 0 && interval < _interval)
       {
         // set timer to new interval
-        if (_timer)
-          clearInterval(_timer);
-  
+        _timer.clearInterval();
         _interval = interval;
-        _timer = setInterval(_runTasks, _interval);
+        _timer.setInterval(_runTasks, '', _interval + 'm');
       }
     });
   }
@@ -55,8 +54,7 @@
     if (!Object.keys(_taskFuncs).length)
     {
       // deactivate timer
-      if (_timer)
-        clearInterval(_timer);
+      _timer.clearInterval();
       _interval = null;
     }
     db.delCronTask(taskName);
