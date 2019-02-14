@@ -23,6 +23,7 @@ var Dashboard = new function() {
       $(this).find('form').get(0).reset(); // clear form
       // reset to 'new post' mode
       $(dash.postSelector+"-modal h5").html("New post");
+      $(dash.postSelector+"-save-button .label").text("Post");
     });
     $(dash.followSelector+"-modal").on('shown.bs.modal', function() {
       $(this).find('input:text')[0].focus();
@@ -48,6 +49,7 @@ var Dashboard = new function() {
       var reblogUrl = $pform.find('.form-post-reblog-url').val();
       var text = $pform.find('.form-post-text').val();
       var tags = $pform.find('.form-post-tags').val();
+      var enqueue = $pform.find('.form-post-enqueue').val();
 
       // post data to backend to save in DB
       $.post('/post', { 
@@ -57,7 +59,8 @@ var Dashboard = new function() {
           urls: url,
           re_url: reblogUrl,
           text: text,
-          tags: tags
+          tags: tags,
+          queued: enqueue
         },
         function(data, status, xhr) {
           // success
@@ -77,6 +80,19 @@ var Dashboard = new function() {
       });
 
       return false;
+    });
+    $(dash.postSelector+"-mode-dropdown .dropdown-item").click(function(e) {
+      var mode = $(this).data('mode');
+      if (mode == "queue")
+      {
+        $pform.find('.form-post-enqueue').val("1");
+        $(dash.postSelector+"-save-button .label").text("Add to queue");
+      }
+      else
+      {
+        $pform.find('.form-post-enqueue').val("");
+        $(dash.postSelector+"-save-button .label").text("Post");
+      }
     });
 
     var $fform = $(dash.followSelector+"-form");

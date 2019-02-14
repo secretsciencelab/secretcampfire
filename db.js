@@ -127,14 +127,15 @@
           postData.tags = postData.tags.replace(/[^A-Za-z0-9_, ]/g, '');
           postData.tags = postData.tags.split(/(?:,| )+/);
         }
-        if (postData.queued)
-          postData.queued = true;
+        postData.queued = (postData.queued)? true : false;
         
         var newPost = new Post(postData);
         newPost.id = newPost._id;
         newPost.post_url = "/post/" + newPost.id
 
         newPost.save(function (err) {
+          if (err)
+            console.error(err);
           if (cb)
             cb(err, newPost);
         });

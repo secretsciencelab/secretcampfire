@@ -133,8 +133,8 @@
           <input type="text" class="form-control form-control-sm form-post-url" 
             value="" placeholder="URL" />
         </div>
-          <input type="hidden" class="form-control form-control-sm form-post-reblog-url" 
-            value="">
+          <input type="hidden" class="form-control form-control-sm form-post-reblog-url" value="">
+          <input type="hidden" class="form-control form-control-sm form-post-enqueue" value="">
 
         <div class="form-group">
           <label>Text</label>
@@ -153,9 +153,25 @@
         <button type="button" class="btn btn-primary" 
           id="create-post-save-button">
           <span class='oi oi-pencil' title='Post' aria-hidden='true'></span>
-          Post
+          <span class='label'>Post</span>
         </button>
+
+        <div class="dropdown d-inline-block">
+          <button class="btn btn-outline-secondary btn-sm dropdown-toggle"
+            type="button" id="create-post-mode-dropdown-button"
+            data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false"></button>
+          <div id="create-post-mode-dropdown"
+            class="dropdown-menu dropdown-menu-right"
+            aria-labelledby="create-post-mode-dropdown-button">
+            <div class="dropdown-item" style="cursor:pointer" data-mode="queue">Add to queue</div>
+            <div class="dropdown-item" style="cursor:pointer" data-mode="post">Post now</div>
+          </div>
+        </div>
+
+        <!--
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        -->
       </div><!--footer-->
     </div></div><!--document-->
   </div><!--modal-->
@@ -183,7 +199,9 @@
           <span class='oi oi-plus' title='Follow' aria-hidden='true'></span>
           Follow
         </button>
+        <!--
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        -->
       </div><!--footer-->
     </div></div><!--document-->
   </div><!--modal-->
@@ -211,7 +229,9 @@
           <span class='oi oi-minus' title='Unfollow' aria-hidden='true'></span>
           Unfollow
         </button>
+        <!--
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        -->
       </div><!--footer-->
     </div></div><!--document-->
   </div><!--modal-->
