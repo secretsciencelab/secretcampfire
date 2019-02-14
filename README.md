@@ -4,7 +4,7 @@
 ![version](https://img.shields.io/badge/version-1.0-blue.svg?style=for-the-badge)
 
 An immortal personal microblogging system that...
-- supports tumblr features like `reblog`, `follow` and an infinite-scroll `dashboard` feed
+- supports tumblr features like `reblog`, `follow`, `queued posting` and an infinite-scroll `dashboard` feed
 - runs in the cloud using 100% free (but industry-grade) components, so it costs you nothing to run your blog 24/7 forever
 - can never be killed, because you own and control:
   - your blog

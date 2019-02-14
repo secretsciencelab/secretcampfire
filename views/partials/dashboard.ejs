@@ -228,6 +228,7 @@ var Dashboard = new function() {
     $.getJSON("/settings?json=1", function(data) {
 
       dash.activateImageUploader(data.imgur_key);
+      dash.activateQueuedPosting(data.queue_interval);
       dash.drawModalAvatars(data.avatar_url);
     });
   }
@@ -255,6 +256,13 @@ var Dashboard = new function() {
         $(dash.postSelector + "-form .form-post-thumb").val(thumbUrl);
       }
     });
+  }
+
+  this.activateQueuedPosting = function(interval) {
+    if (!interval)
+      return;
+
+    $(this.postSelector+"-mode-dropdown-button").show();
   }
 
   this.drawModalAvatars = function(url) {
