@@ -8,9 +8,21 @@ Under *Authorization type*, make sure to select *Anonymous usage without user au
 
 On the next page, you'll find your `Client ID` and your `Client secret`. Save both for your records, but what `secret campfire` needs is the `Client ID`. 
 
-Enter your Imgur `Client ID` into your blog's `Settings` page.
+Go to your blog's `Settings` page. Click `advanced settings` at the bottom. Enter your Imgur `Client ID` and save.
 
 Once you do this, image file upload buttons will be unlocked throughout your blog.
+
+--- 
+
+## How to unlock Queued Posting
+
+The `Queue` helps keep your blog active by staggering posts over a period of hours or days. 
+
+To unlock this feature, go to your blog's `Settings` page. Click `advanced settings` at the bottom. Enter a number in the `Auto-publish queued posts` box. This number tells your blog how often (in minutes) to auto-post from your queue. E.g., if you enter `60` in the box, that tells your blog to post from your `Queue` every 60 minutes. 
+
+Once you do this, you will see an arrow button next to your "Post" button. To add a `Post` to your `Queue`, click this arrow and choose "Add to queue" from the menu. Then click "Queue."
+
+*Warning: activating your `Queue` may prevent your blog from sleeping. This will eat up your free hosting hours faster*
 
 --- 
 
