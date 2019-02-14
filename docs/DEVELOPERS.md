@@ -76,7 +76,7 @@ To participate and play in the `secret campfire` network, your instance must imp
 - Separate platform from database (user is free to plug and play any database).
 - Separate platform from media -- don't host media (user is free to use any existing platform to host images and videos). 
 - Database only stores user's text data and links to external media.
-- For security, all user's actions must be redirected to execute on user's own Dashboard (e.g., Post, Reblog, Follow, Unfollow). 
+- For security, all user's actions must be redirected to execute on the user's own Dashboard (e.g., Post, Reblog, Follow, Unfollow). 
 - Don't reinvent the wheel. Use off-the-shelf components whenever possible.
 - Less is more and more is lazy.
 
