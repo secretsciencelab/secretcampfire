@@ -2,7 +2,7 @@
   const NanoTimer = require('nanotimer');
   const db = require('./db');
 
-  var _timer = new NanoTimer();
+  var _timer = null;
   var _interval = null;
   var _taskFuncs = {};
 
@@ -42,6 +42,8 @@
       if (_interval === null || _interval > 0 && interval < _interval)
       {
         // set timer to new interval
+        if (_timer === null)
+          _timer = new NanoTimer();
         _timer.clearInterval();
         _interval = interval;
         _timer.setInterval(_runTasks, '', _interval + 'm');
@@ -54,7 +56,9 @@
     if (!Object.keys(_taskFuncs).length)
     {
       // deactivate timer
-      _timer.clearInterval();
+      if (_timer)
+        _timer.clearInterval();
+      _timer = null;
       _interval = null;
     }
     db.delCronTask(taskName);
