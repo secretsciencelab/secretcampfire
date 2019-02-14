@@ -16,7 +16,7 @@ Once you do this, image file upload buttons will be unlocked throughout your blo
 
 ## How to unlock Queued Posting
 
-The `Queue` helps keep your blog active by staggering posts over a period of hours or days. 
+The `Queue` helps keep your blog active by staggering posts over a period of hours or days. You can store an unlimited number of posts in your `Queue`.
 
 To unlock this feature, go to your blog's `Settings` page. Click `advanced settings` at the bottom. Enter a number in the `Auto-publish queued posts` box. This number tells your blog how often (in minutes) to auto-post from your queue. E.g., if you enter `60` in the box, that tells your blog to post from your `Queue` every 60 minutes. 
 
