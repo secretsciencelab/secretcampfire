@@ -33,6 +33,14 @@ If you are opposed to this, you can still use `secret campfire` without a credit
 
 --- 
 
+## How can I have multiple blogs?
+
+First, repeat the steps in the [Quickstart](../README.md#quickstart-instructions-time-needed-5-minutes) for each new blog you want to create. 
+
+Then, as you sign in to each of your blogs, `secret campfire` remembers all the blogs you own. All your connected blogs appear in a handy menu at the top right of the screen. Select the blog you want to browse as, and all your `secret campfire` actions will be performed for your selected blog. E.g., if you select your first blog and then click a `Reblog` button, the post will be reblogged to your first blog. 
+
+--- 
+
 ## How do I unlock image file uploads?
 
 [See here.](ADVANCED.md#how-to-unlock-image-file-uploads)
@@ -53,6 +61,6 @@ If you are opposed to this, you can still use `secret campfire` without a credit
 
 ## I have a suggestion / I found a problem / Please halp / I want to contribute / I want to thank you from the bottom of my heart / I am a big fan
 
-You can email me at kalona@secretcampfire.com. I read every email but I can't guarantee I'll answer every one. Thousands of people have joined already and more keep flooding in since Tumblr died. I'm only human, unfortunately, and I just can't do everything. That said, I give highest priority to brilliant suggestions and serious problems. And because of my delicate ego, I will always welcome flattery and praise.
+You can email me at kalona@secretcampfire.com. I read every email but I can't guarantee I'll answer every one. Thousands of people have joined already and more keep flooding in since Tumblr died. I'm only human, unfortunately, and I just can't do everything. That said, I give highest priority to clever suggestions and serious problems. And because of my delicate ego, I will always welcome flattery and praise.
 
 --- 
