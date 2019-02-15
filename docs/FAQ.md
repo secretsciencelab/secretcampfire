@@ -1,3 +1,15 @@
+## How is it possible that `secret campfire` can run 24/7 for free?
+
+This wouldn't have been possible a few years ago. It's only possible now because we live an interesting time. What's interesting is that Internet has matured enough that the technology has become a commodity. 
+
+Like they said in *The Incredibles* movie, "When everyone is super, no one is." Now that the technology has become a commodity, there is little value in the technology itself. The value has shifted to *providing a service* on top of the technology.
+
+Think about the biggest Internet companies. Where do they get their profits from? Yup. By providing you some service. Google, Facebook, Twitter, Instagram, etc. They provide you a service and their goal is to get you hooked to their service. Then they make money off you later. E.g. by selling your data to advertisers and showing you ads, or by making you pay for premium features.
+
+Because there are so many companies fighting to get you hooked to their service, the current trend is to let you use their service for free. 
+
+And this is the key. Almost every online platform today gives you generous free quotas to run your web application. So, `secret campfire` was designed to take advantage of this. It's designed to be lightweight and modular, so that each of its components can live entirely within the free budgets of various platforms like Heroku, Google Cloud or Microsoft Azure. It's a win-win because we get a free ride while they get more people using their platform.
+
 ## Why does my blog go to sleep after a while, and why does it take a long time to start back up again? 
 
 When you deploy your `secret campfire` blog on Heroku for free, they set you up on their free `Dyno`. By default, that gives you 550 free hours per month. And if it receives no traffic for 30 minutes, your `Dyno` goes to sleep. If your blog gets visited while asleep, it will wake up again after a short delay. (https://devcenter.heroku.com/articles/free-dyno-hours).
