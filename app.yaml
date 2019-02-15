@@ -3,7 +3,7 @@ runtime: nodejs
 env: flex
 
 manual_scaling:
-  instances: 5
+  instances: 1
 
 env_variables:
   MONGODB_URI: ""
