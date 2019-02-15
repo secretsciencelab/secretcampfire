@@ -188,7 +188,7 @@ app.get('/feed/:index?', _nocache, function (req, res) {
     numToFetch = parseInt(req.query['n']);
 
   // send a page from DB
-  db.fetchPosts(index, numToFetch, function(err, posts) {
+  db.fetchPosts(index, numToFetch, {}, function(err, posts) {
     _assembleFeed(req, posts, function(feed) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(feed, null, 2));
@@ -361,7 +361,7 @@ function _cronActivatePostQueue(interval) {
     + interval + " minute(s)");
 
   cron.addTask("post_from_queue", interval, function() {
-    db.fetchQueuedPosts(0, 1, function(err, posts) {
+    db.fetchQueuedPosts(0, 1, {}, function(err, posts) {
       if (!posts || posts.length == 0)
         return;
       var post = posts[0];
@@ -413,7 +413,7 @@ app.get('/dashboard/qfeed/:index?',
 
   // send a page from DB
   var numToFetch = app.locals.NUM_POSTS_PER_FETCH;
-  db.fetchQueuedPosts(index, numToFetch, function(err, posts) {
+  db.fetchQueuedPosts(index, numToFetch, {}, function(err, posts) {
     _assembleFeed(req, posts, function(feed) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(feed, null, 2));
