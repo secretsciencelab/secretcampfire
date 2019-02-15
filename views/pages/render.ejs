@@ -11,7 +11,7 @@
 <body>
   <% include ../partials/navbar.ejs %>
   <% include ../partials/nsfw_overlay.ejs %>
-  <% include ../partials/masthead.ejs %>
+  <%- include('../partials/masthead.ejs', { uri: locals.uri }) %>
 
   <div class="mt-3">&nbsp;</div>
 

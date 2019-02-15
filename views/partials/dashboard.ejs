@@ -3,6 +3,7 @@ var Dashboard = new function() {
     this.postSelector = cfg.postSelector;
     this.followSelector = cfg.followSelector;
     this.unfollowSelector = cfg.unfollowSelector;
+    this.queuePageButtonSelector = cfg.queuePageButtonSelector;
 
     this.bindEvents();
     this.handleUrlParamActions();
@@ -90,7 +91,7 @@ var Dashboard = new function() {
         $pform.find('.form-post-enqueue').val("1");
         $(dash.postSelector+"-save-button .oi")
           .removeClass('oi-pencil').addClass('oi-clock');
-        $(dash.postSelector+"-save-button .label").text("Add to queue");
+        $(dash.postSelector+"-save-button .label").text("Queue");
       }
       else
       {
@@ -263,6 +264,7 @@ var Dashboard = new function() {
       return;
 
     $(this.postSelector+"-mode-dropdown-button").show();
+    $(this.queuePageButtonSelector).show();
   }
 
   this.drawModalAvatars = function(url) {
