@@ -154,6 +154,31 @@
       });
     }
 
+    module.exports.postNow = function(id, cb) {
+      Post.findById(id, function(err, post) {
+        if (!post)
+        {
+          if (cb)
+            cb(err, {});
+          return;
+        }
+
+        if (post.queued == false)
+        {
+          if (cb)
+            cb(err, post);
+          return;
+        }
+
+        post.queued = false;
+        post.date = Date.now();
+        post.save(function(err) {
+          if (cb)
+            cb(err, post);
+        });
+      });
+    }
+
     module.exports.getPostCount = function(cb) {
       Post.count({ 'queued': { "$ne": true } }, function(err, count) {
         if (cb)

@@ -210,6 +210,8 @@ RenderFeed.prototype.initInfiniteScroll = function() {
         newCard.find(".card-text").html(markdown);
         newCard.find(".card-reblog-button").data('reblog-url', 
           postUrlBase + post.post_url);
+        newCard.find(".card-post-now-button")
+          .data('post-id', post.id).data('card-id', cardId);
       }
 
       newCards = newCards.add(newCard);
@@ -218,6 +220,28 @@ RenderFeed.prototype.initInfiniteScroll = function() {
 
     // setup new cards
     ReblogButton.activate(".card-reblog-button");
+    $(".card-post-now-button").click(function(e) {
+      e.preventDefault();
+      var $button = $(this);
+      var postId = $button.data('post-id');
+      var cardId = $button.data('card-id');
+
+      $.post('/post/now', { 
+        id: postId
+      },
+      function(data, status, xhr) {
+        if (data && "queued" in data && data.queued == false)
+        {
+          // success
+          console.log(data);
+          $button.addClass('text-success')
+            .attr('title', 'Posted').off('click');
+        }
+      },
+      'json');
+
+      return false;
+    });
     Utils.makeEmbedsResponsive([
       ".card-text iframe", ".card-text embed",
       ".card-text object", ".card-text video"

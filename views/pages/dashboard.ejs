@@ -92,7 +92,8 @@
         <div class="card-action-bar p-1">
           <div class="row">
             <div class="col text-right">
-              <div class='card-reblog-button oi oi-loop action-bar-button' title='Reblog' aria-hidden='true'></div>
+              <div class='d-inline-block card-reblog-button oi oi-loop action-bar-button' title='Reblog' aria-hidden='true'></div>
+              <div class='collapse card-post-now-button oi oi-check action-bar-button' title='Post now' aria-hidden='true'></div>
             </div>
           </div><!--row-->
         </div><!--card-action-bar-->
@@ -283,14 +284,24 @@
       "queuePageButtonSelector": "#queue-page-button"
     });
 
-    /*
-     * Dashboard feed
-     */
     var _isPostsPage = window.location.pathname.indexOf("posts") != -1;
     var _isQueuePage = window.location.pathname.indexOf("queue") != -1;
 
+    /*
+     * Dashboard top menu
+     */
+    if (_isPostsPage || _isQueuePage)
+    {
+      $("#back-to-dash-button").show();
+      $("#dashboard-menu").hide();
+    }
+
+    /*
+     * Dashboard feed
+     */
     var renderUris = <%- JSON.stringify(render_uris) %>;
 
+    // apply style and modify title bar
     if (renderUris.length == 1 && (_isPostsPage || _isQueuePage))
     {
       $.getJSON(renderUris[0], function(data) {
@@ -310,6 +321,11 @@
     else
       $("title").prepend("Dashboard - ");
 
+    // enable 'post now' button if on Queue page
+    if (_isQueuePage)
+      $("#posts-template .card-post-now-button").addClass("d-inline-block");
+
+    // draw the feed
     var renderer = new RenderFeed({
       "uris": renderUris,
       "selector": "#posts",
@@ -327,21 +343,13 @@
       "enforceMasonryOrder": (renderUris.length == 1)? true : false
     });
 
+    // draw news panels
     var news = new News({
       "url": "<%= MASTER_NEWS %>",
       //"url": "http://localhost:5000/news_sample.json", // ANDBG
       "selector": "#news",
       "page": "dashboard"
     });
-
-    /*
-     * Dashboard top menu
-     */
-    if (_isPostsPage || _isQueuePage)
-    {
-      $("#back-to-dash-button").show();
-      $("#dashboard-menu").hide();
-    }
 
     console.log(JSON.stringify(new Date()));
   </script>
