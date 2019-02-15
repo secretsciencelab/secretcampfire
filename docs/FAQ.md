@@ -8,7 +8,7 @@ Think about the biggest Internet companies. Where do they get their profits from
 
 And because there are so many companies fighting to get you hooked to their service, the current trend is to let you use their service for free. This is the key.
 
-Almost every online platform today gives you generous free quotas to run your web application. So, `secret campfire` was designed to take advantage of this. It's designed to be lightweight and modular, so that each of its components can live entirely within the free budgets of various platforms like Heroku, Google Cloud or Microsoft Azure. It's a win-win because we get a free ride while they get more people using their platform.
+Almost every online platform today gives you generous free quotas to run your web application. So `secret campfire` was designed to take advantage of this. It's designed to be lightweight and modular, so that each of its components can live entirely within the free budgets of various platforms like Heroku, Google Cloud or Microsoft Azure. It's a win-win because we get a free ride while they get more people using their platform.
 
 ## Why does my blog go to sleep after a while, and why does it take a long time to start back up again? 
 
