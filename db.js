@@ -213,11 +213,15 @@
       }
     }
 
-    module.exports.fetchPosts = function(index, limit, cb) {
-      _fetchPosts(index, limit, { 'queued': { "$ne": true } }, -1, cb);
+    module.exports.fetchPosts = function(index, limit, filter, cb) {
+      var _filter = { 'queued': { "$ne": true } };
+      _filter = Object.assign(_filter, filter);
+      _fetchPosts(index, limit, _filter, -1, cb);
     }
-    module.exports.fetchQueuedPosts = function(index, limit, cb) {
-      _fetchPosts(index, limit, { 'queued': true }, 1, cb);
+    module.exports.fetchQueuedPosts = function(index, limit, filter, cb) {
+      var _filter = { 'queued': true };
+      _filter = Object.assign(_filter, filter);  
+      _fetchPosts(index, limit, _filter, 1, cb);
     }
 
     /*
