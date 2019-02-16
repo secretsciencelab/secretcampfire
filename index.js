@@ -135,22 +135,6 @@ app.get('/', function(req, res) {
   });
 });
 
-app.get('/login', function(req, res) {
-  res.render('pages/login', {
-    'uri': _getFeedUrl(req)
-  });
-});
-
-app.post('/login', passport.authenticate('local', { 
-  successReturnToOrRedirect: '/',
-  failureRedirect: '/login' 
-}));
-
-app.get('/logout', function(req, res) {
-  req.logout();
-  res.redirect('/');
-});
-
 function _assembleFeed(req, posts, cb) {
   db.getSettings(function(err, settings) {
     var feed = {
@@ -187,8 +171,12 @@ app.get('/feed/:index?', _nocache, function (req, res) {
   if (req.query['n'])
     numToFetch = parseInt(req.query['n']);
 
+  filter = {};
+  if (req.query['tag'])
+    filter['tags'] = req.query['tag'];
+
   // send a page from DB
-  db.fetchPosts(index, numToFetch, {}, function(err, posts) {
+  db.fetchPosts(index, numToFetch, filter, function(err, posts) {
     _assembleFeed(req, posts, function(feed) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(feed, null, 2));
@@ -197,6 +185,94 @@ app.get('/feed/:index?', _nocache, function (req, res) {
 
   if (index == 0)
     db.addFollower(req.headers.referer);
+});
+
+app.get('/follow/check/:uri?', function (req, res) {
+	var uri = req.params['uri'];
+  db.isFollowing(uri, function(err, doc) {
+    isFollowing = (doc)? true : false;
+    ret = {
+      'is_following': isFollowing
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
+app.get('/followers/count', function (req, res) {
+  db.getFollowersCount(function(err, num) {
+    ret = {
+      'n': num
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
+app.get('/followers/:index?', function (req, res) {
+	var index = req.params['index'];
+  index = (index)? parseInt(index) : 0;
+
+  db.getFollowers(index, 100, function(err, followers) {
+    res.setHeader('Content-Type', 'application/json');
+    ret = {
+      'followers': followers
+    }
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
+app.get('/following/count', function (req, res) {
+  db.getFollowingCount(function(err, num) {
+    ret = {
+      'n': num
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
+app.get('/following/:index?', function (req, res) {
+	var index = req.params['index'];
+  index = (index)? parseInt(index) : 0;
+
+  db.getFollowing(index, 100, function(err, follows) {
+    res.setHeader('Content-Type', 'application/json');
+    ret = {
+      'following': follows
+    }
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
+app.get('/is_owner', function (req, res) {
+  var isOwner = false;
+  if (req.user)
+    isOwner = true;
+
+  ret = {
+    'is_owner': isOwner
+  };
+
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify(ret, null, 2));
+});
+
+
+app.get('/login', function(req, res) {
+  res.render('pages/login', {
+    'uri': _getFeedUrl(req)
+  });
+});
+
+app.post('/login', passport.authenticate('local', { 
+  successReturnToOrRedirect: '/',
+  failureRedirect: '/login' 
+}));
+
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
 });
 
 app.get('/post/sources/count', function (req, res) {
@@ -270,75 +346,15 @@ app.get('/render/:uri?', function (req, res) {
   _render(req, res, req.params['uri']);
 });
 
-app.get('/follow/check/:uri?', function (req, res) {
-	var uri = req.params['uri'];
-  db.isFollowing(uri, function(err, doc) {
-    isFollowing = (doc)? true : false;
-    ret = {
-      'is_following': isFollowing
-    }
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(ret, null, 2));
-  });
-});
-
-app.get('/followers/count', function (req, res) {
-  db.getFollowersCount(function(err, num) {
-    ret = {
-      'n': num
-    }
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(ret, null, 2));
-  });
-});
-
-app.get('/followers/:index?', function (req, res) {
-	var index = req.params['index'];
+app.get('/tag/:tag/:index?', function (req, res) {
+  var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
-  db.getFollowers(index, 100, function(err, followers) {
-    res.setHeader('Content-Type', 'application/json');
-    ret = {
-      'followers': followers
-    }
-    res.send(JSON.stringify(ret, null, 2));
-  });
-});
+  uri = _getFeedUrl(req) 
+    + "/" + index
+    + "?tag=" + req.params['tag'];
 
-app.get('/following/count', function (req, res) {
-  db.getFollowingCount(function(err, num) {
-    ret = {
-      'n': num
-    }
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(ret, null, 2));
-  });
-});
-
-app.get('/following/:index?', function (req, res) {
-	var index = req.params['index'];
-  index = (index)? parseInt(index) : 0;
-
-  db.getFollowing(index, 100, function(err, follows) {
-    res.setHeader('Content-Type', 'application/json');
-    ret = {
-      'following': follows
-    }
-    res.send(JSON.stringify(ret, null, 2));
-  });
-});
-
-app.get('/is_owner', function (req, res) {
-  var isOwner = false;
-  if (req.user)
-    isOwner = true;
-
-  ret = {
-    'is_owner': isOwner
-  };
-
-  res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify(ret, null, 2));
+  _render(req, res, uri);
 });
 
 // catch-all route

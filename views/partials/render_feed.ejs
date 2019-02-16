@@ -38,15 +38,16 @@ RenderFeed.prototype.initFeeds = function(uris) {
   this.uriRoot2FeedIdx = {}; 
   for (var i=0; i < uris.length; i++)
   {
-    var rootAndIdx = this.getFeedRootAndPageIdx(uris[i]);
+    var feedParams = this.getFeedUriParams(uris[i]);
 
     this.feeds.push({
-      'root': rootAndIdx[0],
-      'start_offset': rootAndIdx[1],
+      'root': feedParams[0],
+      'start_offset': feedParams[1],
+      'params': feedParams[2],
       'has_more': true
     });
 
-    this.uriRoot2FeedIdx[rootAndIdx[0]] = i;
+    this.uriRoot2FeedIdx[feedParams[0]] = i;
   }
 }
 
@@ -74,10 +75,11 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       var pageIndex = this.pageIndex - 1; // -1 to make it 0-indexed
       var feedIdx = pageIndex % fr.feeds.length;
       var root = fr.feeds[feedIdx].root;
+      var params = fr.feeds[feedIdx].params;
       var offset = fr.feeds[feedIdx].start_offset
         + (parseInt(pageIndex / fr.feeds.length) * fr.numPostsPerFetch);
 
-      return root + "/" + offset + "?n=" + fr.numPostsPerFetch;
+      return root + "/" + offset + "?n=" + fr.numPostsPerFetch + "&" + params;
     },
     responseType: 'text',
     /*scrollThreshold: 1200,*/
@@ -94,7 +96,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
 
     if (path)
     {
-      var rootPath = fr.getFeedRootAndPageIdx(path)[0];
+      var rootPath = fr.getFeedUriParams(path)[0];
       feedIdx = fr.uriRoot2FeedIdx[rootPath];
       data = JSON.parse(resp);
       if (data.posts)
@@ -270,9 +272,18 @@ RenderFeed.prototype.syncProtocol = function(uri) {
   return window.location.protocol + "//" + urlObj.host + urlObj.pathname;
 }
 
-RenderFeed.prototype.getFeedRootAndPageIdx = function(uri) {
+// get feed's root, index and searchParams
+RenderFeed.prototype.getFeedUriParams = function(uri) {
   var root = uri;
   var idx = 0;
+  var sparams = "";
+
+  var arr = uri.match(/\?(.+)/);
+  if (arr != null) 
+  {
+    sparams = arr[1];
+    uri = uri.split("?")[0];
+  }
 
   var arr = uri.match(/(.+)\/(\d+).*$/);
   if (arr != null)
@@ -281,7 +292,7 @@ RenderFeed.prototype.getFeedRootAndPageIdx = function(uri) {
     idx = parseInt(arr[2]);
   }
 
-  return [root, idx];
+  return [root, idx, sparams];
 }
 
 RenderFeed.prototype.feedsHaveMore = function() {
