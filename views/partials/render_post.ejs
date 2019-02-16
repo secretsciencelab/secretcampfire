@@ -50,6 +50,9 @@ RenderPost.prototype.init = function() {
       var tagBaseUrl = urlObj.protocol + "//" + urlObj.host + "/tag";
       for (var ti=0; ti < post.tags.length; ti++)
       {
+        if (!post.tags[ti])
+          continue;
+
         $(pr.selector+" .tags").append('<a class="text-secondary mr-1" '
           + 'href="'
           + tagBaseUrl + "/" + post.tags[ti]
