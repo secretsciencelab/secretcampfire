@@ -65,6 +65,16 @@ Then, as you sign in to each of your blogs, `secret campfire` remembers all the 
 
 --- 
 
+## How do I reset my password?
+
+First, go to an online md5 hash generator like https://www.md5hashgenerator.com or http://onlinemd5.com . 
+
+Next, enter your new text password and generate an md5 hash from it. E.g., if you enter `password` as your password, you'll get an md5 hash of `5f4dcc3b5aa765d61d8327deb882cf99`. Save the md5 hash of your new password.
+
+Finally, open up your Database. Open your `settings` collection. Replace the old `password` hash with the new md5 hash you generated above and save.
+
+---
+
 ## How do I upgrade my `secret campfire` blog to the latest official version?
 
 [See here.](ADVANCED.md#how-to-upgrade-your-secret-campfire-blog-to-the-latest-official-version)
