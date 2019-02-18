@@ -65,7 +65,8 @@ var Navbar = new function() {
       for (var ui=0; ui < urls.length; ui++)
         menuItemsHtml += '<div class="dropdown-item"'
           + ' style="cursor:pointer"'
-          + ' data-url="' + urls[ui] + '">' + urls[ui]
+          + ' data-url="' + urls[ui] + '"><small>' 
+          + (ui+1) + "</small>. " + urls[ui]
           + '<div class="x collapse">&times;</div>'
           + '</div>';
 
@@ -118,6 +119,27 @@ var Navbar = new function() {
       });
       $("#active-blog-tooltip").mouseup(function(e) {
         Utils.handleClick(e, $(this).data('url'));
+      });
+
+      $(document).keydown(function(e) {
+        if (e.which == 192 && e.ctrlKey) {
+          e.preventDefault();
+          $("#navbar-active-blog-dropdown").click(); 
+          return false;
+        }
+      });
+      $("#active-blog-display .dropdown").keydown(function(e) {
+        // 1, 2, 3, 4, 5, 6, 7, 8, 9
+        if (e.which == 49 || e.which == 50 || e.which == 51
+          || e.which == 52 || e.which == 53 || e.which == 54
+          || e.which == 55 || e.which == 56 || e.which == 57) 
+        { 
+          e.preventDefault();
+          var idx = e.which - 49;
+          $(this).find(".dropdown-item").eq(idx).click();
+          $("#navbar-active-blog-dropdown").blur(); 
+          return false;
+        }
       });
     });
   };
