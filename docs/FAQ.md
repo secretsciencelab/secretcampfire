@@ -30,6 +30,8 @@ If you want the freedom of owning and keeping what you own, there will be a slig
 
 In contrast, `secret campfire` will show you exactly how to run your own server so you can finally be independent and free. But of course, our goal is to make it as simple as possible -- it's only as hard as it needs to be but no harder. In fact, it's so easy... you don't even need a computer.
 
+However, if you're not the DIY type and prefer to have your blogs set up for you, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com) and we'll take care of you. We'll help you set up 5 blogs for a one-time fee of $5. After they're set up, your blogs belong 100% to you and run free forever.
+
 --- 
 
 ## Why do I need to provide my credit card to Heroku if it's 100% free?
