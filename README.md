@@ -6,7 +6,7 @@
 `secret campfire` is a free tumblr replacement with a few twists:
 - Post anything you want
 - Your blogs belong 100% to you
-- No one can shut you down 
+- Your blogs live forever and no one can shut them down 
 
 ## Quickstart instructions (time needed: 5 minutes)
 
