@@ -14,7 +14,7 @@
 
 2. Make a new Heroku account if you don't have one yet (it's free). Sign in.
 
-3. Enter a name for your app. This name will become your blog's address. E.g., if you enter `scampy`, your blog's address will be `scampy.herokuapp.com`. Click `Deploy app`.
+3. Enter a name for your app. This name will become your blog's address. E.g., if you enter `scampy` your blog's address will be `scampy.herokuapp.com`. Click `Deploy app`.
 
 4. Go to <a href="https://dashboard.heroku.com" target="_blank">dashboard.heroku.com</a> and select your app.
 
