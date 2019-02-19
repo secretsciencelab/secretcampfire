@@ -216,6 +216,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
           .data('post-id', post.id).data('card-id', cardId);
       }
 
+      newCard.hide();
       newCards = newCards.add(newCard);
       fr.msnryContainer.append(newCard);
     }
@@ -253,13 +254,17 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       newCards.imagesLoaded().always(function(instance) {
         newCards.each(function() {
           var id = $(this).find("img").data('iscroll-id');
-          fr.msnryContainer.masonry('appended', $("#"+id));
+          var $card = $("#"+id);
+          $card.show();
+          fr.msnryContainer.masonry('appended', $card);
         });
       });
     else
       newCards.imagesLoaded().progress(function(instance, image) {
         var id = $(image.img).data('iscroll-id');
-        fr.msnryContainer.masonry('appended', $("#"+id));
+        var $card = $("#"+id);
+        $card.show();
+        fr.msnryContainer.masonry('appended', $card);
       });
   });
 
