@@ -3,18 +3,10 @@
 # secret campfire 
 ![version](https://img.shields.io/badge/version-1.1.0-blue.svg?style=for-the-badge)
 
-An immortal personal microblogging system that...
-- supports tumblr features like `reblog`, `follow`, `queued posting` and an infinite-scroll `dashboard` feed
-- runs in the cloud using 100% free (but industry-grade) components, so:
-  - it costs you nothing to run your blog 24/7 forever 
-  - you don't even need a computer to set it up or run it
-- can never be killed, because you own and control:
-  - your blog
-  - your blog's content 
-  - your blog's social network
-- is open-source, so you may customize it to your heart's content
-- can run on any platform you like, so you are never locked into one service
-- is *free* as in *free*dom
+is a free tumblr replacement with a few twists:
+- Post anything you want
+- Your blogs belong 100% to you
+- No one can shut you down 
 
 ## Quickstart instructions (time needed: 5 minutes)
 
@@ -53,6 +45,21 @@ That's why `secret campfire` was created on January 2019 to replace tumblr. Beca
 With `secret campfire`, you can finally set up your forever home online. It belongs to you and you alone. No one can tell you what you can or can't do with it. And no one can shut you down. 
 
 Enjoy the 'fire and share the love: http://secretcampfire.com
+
+## Features
+
+`secret campfire` is an immortal personal microblogging system that...
+- supports tumblr features like `reblog`, `follow`, `queued posting` and an infinite-scroll `dashboard` feed
+- runs in the cloud using 100% free (but industry-grade) components, so:
+  - it costs you nothing to run your blog 24/7 forever 
+  - you don't even need a computer to set it up or run it
+- can never be killed, because you own and control:
+  - your blog
+  - your blog's content 
+  - your blog's social network
+- is open-source, so you may customize it to your heart's content
+- can run on any platform you like, so you are never locked into one service
+- is *free* as in *free*dom
 
 ### Frequently asked questions
 
