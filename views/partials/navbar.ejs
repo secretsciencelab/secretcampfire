@@ -13,6 +13,9 @@
       <button class="btn btn-primary mr-1 collapse" type="button" id="navbar-dashboard-button" title="Dashboard">
         <span class='oi oi-home' title='Dashboard' aria-hidden='true'></span>
       </button>
+      <button class="btn btn-primary collapse" type="button" id="navbar-edit-button">
+        <span class='oi oi-pencil' title='Edit' aria-hidden='true'></span>
+      </button>
       <button class="btn btn-primary collapse" type="button" id="navbar-delete-button">
         <span class='oi oi-trash' title='Delete' aria-hidden='true'></span>
       </button>
@@ -160,6 +163,24 @@ var Navbar = new function() {
       $("#navbar-login-button").mouseup(function(e) {
         Utils.handleClick(e, "/dashboard");
       }).show();
+    });
+  };
+
+  this.activateEditButton = function(uri) {
+    var nb = this;
+
+    SetBlogWidget.isOwner(function(isOwner) {
+      if (!isOwner)
+        return;
+
+      if (uri.indexOf('/post') != -1)
+      {
+        var base = uri.split('/post/')[0];
+        var id = uri.split('/post/')[1];
+        $("#navbar-edit-button").mouseup(function(e) {
+          Utils.handleClick(e, base + "/dashboard?edit=" + id);
+        }).show();
+      }
     });
   };
 

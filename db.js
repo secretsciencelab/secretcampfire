@@ -121,20 +121,52 @@
           postData.tags = postData.tags.split(/(?:,| )+/);
         }
         postData.queued = (postData.queued)? true : false;
-        
-        var newPost = new Post(postData);
-        newPost.id = newPost._id;
-        newPost.post_url = "/post/" + newPost.id
 
-        newPost.save(function (err) {
-          if (err)
-            console.error(err);
-          if (cb)
-            cb(err, newPost);
-        });
+        if (postData.update_id) 
+        {
+          // update existing post
+          var id = postData.update_id;
+          delete postData.update_id;
+          if (postData.re_url)
+            delete postData.re_url; // don't allow this to change
 
-        if (newPost.re_url && /\S/.test(newPost.re_url)) 
-          _addPostSource(newPost.re_url); 
+          Post.findById(id, function(err, post) {
+            if (!post)
+            {
+              if (err)
+                console.error(err);
+              if (cb)
+                cb(err, {});
+              return;
+            }
+
+            for (k in postData)
+              post[k] = postData[k];
+
+            post.save(function(err) {
+              if (err)
+                console.error(err);
+              if (cb)
+                cb(err, post);
+            });
+          });
+        }
+        else
+        {
+          // new post
+          var newPost = new Post(postData);
+          newPost.id = newPost._id;
+          newPost.post_url = "/post/" + newPost.id
+          newPost.save(function(err) {
+            if (err)
+              console.error(err);
+            if (cb)
+              cb(err, newPost);
+          });
+
+          if (newPost.re_url && /\S/.test(newPost.re_url)) 
+            _addPostSource(newPost.re_url); 
+        }
       }
       catch(err) {
         console.error(err);

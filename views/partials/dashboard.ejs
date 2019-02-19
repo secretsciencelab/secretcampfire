@@ -53,6 +53,7 @@ var Dashboard = new function() {
       var text = $pform.find('.form-post-text').val();
       var tags = $pform.find('.form-post-tags').val();
       var enqueue = $pform.find('.form-post-enqueue').val();
+      var updateId = $pform.find('.form-post-update-id').val();
 
       // post data to backend to save in DB
       $.post('/post', { 
@@ -63,7 +64,8 @@ var Dashboard = new function() {
           re_url: reblogUrl,
           text: text,
           tags: tags,
-          queued: enqueue
+          queued: enqueue,
+          update_id: updateId
         },
         function(data, status, xhr) {
           // success
@@ -167,15 +169,16 @@ var Dashboard = new function() {
     var follow = url.searchParams.get("follow");
     var unfollow = url.searchParams.get("unfollow");
     var reblog = url.searchParams.get("reblog");
+    var edit = url.searchParams.get("edit");
 
     if (follow)
       this.doFollow(follow);
-
-    if (unfollow)
+    else if (unfollow)
       this.doUnfollow(unfollow);
-
-    if (reblog)
+    else if (reblog)
       this.doReblog(reblog);
+    else if (edit)
+      this.doEdit(edit);
   }
 
   this.doFollow = function(blog) {
@@ -217,6 +220,34 @@ var Dashboard = new function() {
         text += data.post.text.replace(/^/gm, "> ");
         $pform.find('.form-post-text').val(text);
       }
+
+      $("#create-post-modal").modal('show');
+    });
+  }
+
+  this.doEdit = function(id) {
+    var dash = this;
+    var uri = "/post/" + id;
+    $.getJSON(uri, function(data) {
+      console.log(data);
+      var $pform = $(dash.postSelector+"-form");
+      $(dash.postSelector+"-modal h5").html("Edit");
+
+      if (data.post.title)
+        $pform.find('.form-post-title').val(data.post.title);
+      if (data.post.thumbs)
+        $pform.find('.form-post-thumb').val(data.post.thumbs[0]);
+      if (data.post.images)
+        $pform.find('.form-post-image').val(data.post.images[0]);
+      if (data.post.urls)
+        $pform.find('.form-post-url').val(data.post.urls[0]);
+      if (data.post.re_url)
+        $pform.find('.form-post-reblog-url').val(data.post.re_url);
+      if (data.post.text)
+        $pform.find('.form-post-text').val(data.post.text);
+      if (data.post.tags)
+        $pform.find('.form-post-tags').val(data.post.tags.join(','));
+      $pform.find('.form-post-update-id').val(data.post.id);
 
       $("#create-post-modal").modal('show');
     });
