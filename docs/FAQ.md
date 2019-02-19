@@ -1,3 +1,17 @@
+## Why are there many extra things I have to manage on my `secret campfire` blog?
+
+Because you are now graduating from a *simple user of the Internet* to an __owner__. And just like with anything else, being an owner comes with responsibilities.
+
+If you want things to be brain-dead simple, there are many other options available where someone else takes care of your blog for you. But as you know, the trade-off when someone runs your blog for you is that you don't really own anything. They own you.
+
+If you want the freedom of owning and keeping what you own, there will be a slight learning curve. But these are good things to know, because knowledge is power. For years, all these other sites have happily kept people ignorant, helpless and in the dark. Think about it -- they **don't want you to know** how to run your own site. They make **more money** if you don't know how to run your own site and are completely dependent on them. 
+
+In contrast, `secret campfire` will show you exactly how to run your own server so you can finally be independent and free. But of course, our goal is to make it as simple as possible -- it's only as hard as it needs to be but no harder. In fact, it's so easy... you don't even need a computer.
+
+However, if you're not the DIY type and prefer to have your blogs set up for you, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com) and we'll take care of you. We'll help you set up 5 blogs for a one-time fee of $5. After they're set up, your blogs belong 100% to you and run free forever.
+
+--- 
+
 ## How is it possible that `secret campfire` can run 24/7 for free?
 
 This wouldn't have been possible a few years ago. It's only possible now because we live an interesting time. What's interesting is that Internet has matured enough that the technology has become a commodity. 
@@ -17,20 +31,6 @@ When you deploy your `secret campfire` blog on Heroku for free, they set you up 
 To prevent your blog from sleeping, you can set up a service like Pingdom or New Relic to periodically ping your site. But if you do that, your blog will run 24/7 and you'll blow through your free quota in 23 days. 
 
 To keep your blog running 24/7 forever, you'll have to add your credit card to Heroku. That upgrades you to 1000 free hours per month. Your card will not be charged as long as you stay on the free tier.
-
---- 
-
-## Why are there many extra things I have to manage on my `secret campfire` blog?
-
-Because you are now graduating from a *simple user of the Internet* to an __owner__. And just like with anything else, being an owner comes with responsibilities.
-
-If you want things to be brain-dead simple, there are many other options available where someone else takes care of your blog for you. But as you know, the trade-off when someone runs your blog for you is that you don't really own anything. They own you.
-
-If you want the freedom of owning and keeping what you own, there will be a slight learning curve. But these are good things to know, because knowledge is power. For years, all these other sites have happily kept people ignorant, helpless and in the dark. Think about it -- they **don't want you to know** how to run your own site. They make **more money** if you don't know how to run your own site and are completely dependent on them. 
-
-In contrast, `secret campfire` will show you exactly how to run your own server so you can finally be independent and free. But of course, our goal is to make it as simple as possible -- it's only as hard as it needs to be but no harder. In fact, it's so easy... you don't even need a computer.
-
-However, if you're not the DIY type and prefer to have your blogs set up for you, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com) and we'll take care of you. We'll help you set up 5 blogs for a one-time fee of $5. After they're set up, your blogs belong 100% to you and run free forever.
 
 --- 
 
