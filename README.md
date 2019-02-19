@@ -33,6 +33,8 @@ An immortal personal microblogging system that...
 7. Visit `your-app.herokuapp.com` in a browser (where `your-app` is the name you entered in Step 3). 
 
 8. If all went well, you'll see a welcome message that says "Congratulations! Your secret campfire blog is alive!" Follow the instructions there to set your password and secure your blog. 
+
+*If you're not the DIY type and prefer to have all this done for you, email getscampy@secretcampfire.com and someone on our team will take care of you. We'll install up to 10 blogs for a one-time fee of $5. After they're set up, your blogs belong 100% to you and run free forever.*
   
 ## 
 
