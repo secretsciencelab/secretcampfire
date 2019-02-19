@@ -18,13 +18,13 @@ An immortal personal microblogging system that...
 
 ## Quickstart instructions (time needed: 5 minutes)
 
-1. Click [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+1. Click <a href="https://heroku.com/deploy" target="_blank" title="Deploy"><img src="https://www.herokucdn.com/deploy/button.png"></a>
 
 2. Make a new Heroku account if you don't have one yet (it's free). Sign in.
 
 3. Enter a name for your app. This name will become your blog's address. E.g., if you enter `scampy`, your blog's address will be `scampy.herokuapp.com`. Click `Deploy app`.
 
-4. Go to [dashboard.heroku.com](https://dashboard.heroku.com) and select your app.
+4. Go to <a href="https://dashboard.heroku.com" target="_blank">dashboard.heroku.com</a> and select your app.
 
 5. Click the `Resources` tab at the top.
 
