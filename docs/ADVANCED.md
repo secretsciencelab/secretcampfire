@@ -38,24 +38,20 @@ These extra features are free and your card will not be charged, but Heroku just
 If you are opposed to this, you can still use `secret campfire` without a credit card by setting up your `mLab MongoDB` database manually:
 
 1. Instead of getting `mLab MongoDB` from Heroku, go directly to the `mlab` website: https://mlab.com
-2. Make a new account.
-3. Click `Create new` to make a new database.
-4. For `Cloud Provider` click `amazon web services` and for `Plan Type` click `SANDBOX (FREE)`. Click `CONTINUE`.
-5. Pick any region you like. Click `CONTINUE`.
-6. Enter a name for your database. Click `CONTINUE`.
-7. Click `SUBMIT ORDER`.
-8. Your new database will appear in the table. Click on it.
-9. Click on the `Users` tab and click `Add database user`. Enter any `username` and `password`. (Make sure you don't have the `@` symbol in your password.)
-10. Look at the top of the page for `To connect using a driver via the standard MongoDB URI`. Copy the URL that looks like: `mongodb://<dbuser>:<dbpassword>@ds127655.mlab.com:27655/<database_name>`
+2. Make a new MongDB Atlas account.
+3. At the bottom of the `Create New Cluster` page, confirm that it says `FREE` and click `Create Cluster`. 
+4. On the next page, you'll see a message saying `Your cluster is being created`. Find the `Get Started` checklist on the page and click `Create your first database user`. Follow the instructions. Enter any `username` and `password` and click `Add User`.
+5. Back at the `Get Started` checklist, click `Whitelist your IP address`. Follow the instructions. Click `ALLOW ACCESS FROM ANYWHERE` and click `Confirm`. 
+6. Back at the `Get Started` checklist, click `Connect to your cluster`. Click the `CONNECT` button. Choose `Connect your Application`. Select `Standard connection string` and copy the URI connection string. It looks like: `mongodb://<dbuser>:<dbpassword>@ds127655.mlab.com:27655/database_name`. Save this for the next step.
 
 Next, we will tell your Heroku app to use this database you just created:
 
 1. Sign in to https://dashboard.heroku.com
 2. Go to your blog/app and click `Settings`
 3. Click `Reveal Config Vars`
-4. Enter `MONGODB_URI` into the left box and the URL that looks like `mongodb://<dbuser>:<dbpassword>@ds127655.mlab.com:27655/<database_name>` into the right box. Replace `<dbuser>` and `<dbpassword` with the `username` and `password` you used in Step 9. above. Replace `<database_name>` with the name you used in Step 6. above.
+4. Enter `MONGODB_URI` into the left box and your database URL from above that looks like `mongodb://<dbuser>:<dbpassword>@ds127655.mlab.com:27655/database_name` into the right box. Replace `<dbuser>` and `<dbpassword>` with the `username` and `password` you used in Step 4. above.
 
-You're all set! Only catch is without a credit card on Heroku, your free quota remains at 550 hours per month -- not enough to run your blog 24/7. It'll go to sleep whenever it's idle for 30 minutes and it'll take a couple of seconds to wake up whenever you get visitors.
+You're all set! Only catch is without a credit card on Heroku, your free quota remains at 550 hours per month -- not enough to run your blog 24/7. It'll go to sleep whenever it's idle for 30 minutes and it takes a couple of seconds to wake up whenever you get visitors.
 
 --- 
 
