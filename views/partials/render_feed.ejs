@@ -3,6 +3,7 @@
 function RenderFeed(cfg) {
   this.selector = cfg.selector;
   this.selectorButton = cfg.selector+"-button";
+  this.selectorStatus = cfg.selector+"-status";
   this.templateSelector = this.selector + "-template";
   this.onNoPosts = cfg.onNoPosts;
   this.postImagePref = cfg.postImagePref;
@@ -84,6 +85,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
     responseType: 'text',
     /*scrollThreshold: 1200,*/
 		button: this.selectorButton,
+    status: this.selectorStatus,
     outlayer: this.msnry,
     history: false
   });
