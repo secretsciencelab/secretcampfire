@@ -14,17 +14,21 @@
 
 2. Make a new Heroku account if you don't have one yet (it's free). Sign in.
 
-3. Enter a name for your app. This name will become your blog's address. E.g., if you enter `scampy` your blog's address will be `scampy.herokuapp.com`. Click `Deploy app`.
+3. Enter a name for your app. This name will become your blog's address. E.g., if you enter `scampy` your blog's address will be `scampy.herokuapp.com`. Click `Deploy app`. Wait for it to finish. When it's done, you'll see `Your app was successfully deployed` at the bottom.
 
-4. Go to <a href="https://dashboard.heroku.com" target="_blank">dashboard.heroku.com</a> and select your app.
+4. Click on your account button at the top right of the page and go to `Account settings`. 
 
-5. Click the `Resources` tab at the top.
+5. Click the `Billing` tab and click `Add credit card` to add a credit card. This boosts your account's free quota to 1000 hours a month and allows you to one-click install your blog's database in the next steps. Don't worry, your card will not be charged ([more info here](docs/FAQ.md#why-do-i-need-to-provide-my-credit-card-to-heroku-if-its-100-free)).
 
-6. In the `Add-ons` search bar, type `mlab` and select `mLab MongoDB`. This database stores your blog's content. Select the `Sandbox - Free` plan and click `Provision`.
+6. Go back to <a href="https://dashboard.heroku.com" target="_blank">dashboard.heroku.com</a> and select your app.
 
-7. Visit `your-app.herokuapp.com` in a browser (where `your-app` is the name you entered in Step 3). 
+7. Click the `Resources` tab at the top.
 
-8. If all went well, you'll see a welcome message that says "Congratulations! Your secret campfire blog is alive!" Follow the instructions there to set your password and secure your blog. 
+8. In the `Add-ons` search bar, type `mlab` and select `mLab MongoDB`. This database stores your blog's content. Select the `Sandbox - Free` plan and click `Provision`.
+
+9. Visit `your-app.herokuapp.com` in a browser (where `your-app` is the name you entered in Step 3). 
+
+10. You'll see a welcome message that says "Congratulations! Your secret campfire blog is alive!" Follow the instructions there to set your password and secure your blog. 
 
 ## "Easy Mode" instructions  (time needed: 0 minutes)
 
