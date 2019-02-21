@@ -26,17 +26,31 @@
         </button>
       	</div>
 
-      	<div class="mt-5 mb-5 small text-secondary">
-          Get your 
+      	<div id="main-cta" class="mt-5 mb-5 small text-secondary">
+          Join the fun and say f- you to tumblr<br/>
+          get your own free 
+          <b><%= SITE_NAME %></b> blog 
+          <a href="<%= MASTER_URL %>">here</a>!
+        </div>
+      	<div id="error-cta" class="mt-5 mb-5 text-secondary alert alert-danger collapse">
+          Can't sign in? Are you sure this is your site?
+          It's not nice to try to sneak into someone else's site.
+          If you want to join the fun, get your own
           free 
           <b><%= SITE_NAME %></b> blog 
-          <a href="<%= MASTER_URL %>">here</a>
-
+          <a href="<%= MASTER_URL %>">here</a>!
         </div>
       </form>
     </div>
     <div class="col"></div>
   </div><!--row-->
 </div><!--container-->
+<script>
+if (window.location.href.indexOf("error") != -1)
+{
+  $("#main-cta").hide();
+  $("#error-cta").show();
+}
+</script>
 </body>
 </html>
