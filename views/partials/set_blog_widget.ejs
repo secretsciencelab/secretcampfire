@@ -9,16 +9,16 @@
     <div class="modal-body"><form id="set-blog-form">
       <div class="form-group">
         <input type="text" class="form-control form-blog-url" 
-          value="" placeholder="Enter your blog URL">
-        <p class='text-right small mt-2'><a href="<%= MASTER_URL %>">Don't have a <b><%= SITE_NAME %></b> blog yet? Get yours here</a></p>
+          value="" placeholder="Enter your <%= SITE_NAME %> blog URL">
+        <p class='text-right mt-2'>Don't have a <b><%= SITE_NAME %></b> blog yet? <a href="<%= MASTER_URL %>">Get yours here</a>. You need to set up your own blog first if you want to join the fun.</p>
       </div>
     </form></div><!--body-->
     <div id="set-blog-success-alert" 
-      class="alert alert-success collapse" role="alert">Saved!</div>
+      class="alert alert-success collapse" role="alert">Connected!</div>
     <div class="modal-footer">
       <button type="button" class="btn btn-primary" 
-        id="set-blog-save-button">Save</button>
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        id="set-blog-save-button">Connect</button>
+      <button type="button" class="collapse btn btn-secondary" data-dismiss="modal">Close</button>
     </div><!--footer-->
   </div></div><!--document-->
 </div><!--modal-->

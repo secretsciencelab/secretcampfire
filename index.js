@@ -266,8 +266,8 @@ app.get('/login', function(req, res) {
 });
 
 app.post('/login', passport.authenticate('local', { 
-  successReturnToOrRedirect: '/',
-  failureRedirect: '/login' 
+  successReturnToOrRedirect: '/dashboard',
+  failureRedirect: '/login?error=1' 
 }));
 
 app.get('/logout', function(req, res) {

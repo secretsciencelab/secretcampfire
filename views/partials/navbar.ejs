@@ -50,7 +50,7 @@ var Navbar = new function() {
     var nb = this;
 
     SetBlogWidget.getBlogs(function(urls) {
-      if (!urls)
+      if (!urls || !urls.length)
       {
         // try again later
         $("#active-blog-display").html("").hide();
@@ -113,10 +113,11 @@ var Navbar = new function() {
       }, function() {
         $(this).find(".x").hide();
       });
-      $("#active-blog-display .dropdown-item .x").click(function(e) {
+      $("#active-blog-display .dropdown-item .x").click(function(e) {	
         e.preventDefault();
         var url = $(this).parent().data('url');
-        $(this).parent().addClass('disabled').off("click");
+        $(this).parent().addClass('disabled').off("click")
+	      	.css('text-decoration', 'line-through');
         SetBlogWidget.delBlog(url);
         return false;
       });
