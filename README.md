@@ -50,6 +50,10 @@ With `secret campfire`, you can finally set up your forever home online. It belo
 
 Enjoy the 'fire and share the love: http://secretcampfire.com
 
+## How's secret campfire different?
+
+| ![Evil way](docs/media/old-way.png "Old way") | ![secret campfire way](docs/media/new-way.png "`secret campfire` way") |
+
 ## Features
 
 `secret campfire` is an immortal personal microblogging system that...
