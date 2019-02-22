@@ -50,7 +50,7 @@ With `secret campfire`, you can finally set up your forever home online. It belo
 
 Enjoy the 'fire and share the love: http://secretcampfire.com
 
-## How's secret campfire different?
+## How is secret campfire different?
 
 
 | <img src="docs/media/old-way.png" alt="Evil way">  | <img src="docs/media/new-way.png" alt="secret campfire way"> |
