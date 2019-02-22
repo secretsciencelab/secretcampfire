@@ -18,7 +18,7 @@
 
 4. Click on your account button at the top right of the page and go to `Account settings`. 
 
-5. Click the `Billing` tab and click `Add credit card` to add a credit card. This boosts your account's free quota to 1000 hours a month and allows you to one-click install your blog's database in the next steps. Don't worry, your card will not be charged ([more info here](docs/FAQ.md#why-do-i-need-to-provide-my-credit-card-to-heroku-if-its-100-free)).
+5. Click the `Billing` tab and click `Add credit card` to add a credit card. This boosts your account's free quota to 1000 hours a month and lets you one-click install your blog's database in the next steps. Don't worry, your card will not be charged ([more info here](docs/FAQ.md#why-do-i-need-to-provide-my-credit-card-to-heroku-if-its-100-free)).
 
 6. Go back to <a href="https://dashboard.heroku.com" target="_blank">dashboard.heroku.com</a> and select your app.
 
