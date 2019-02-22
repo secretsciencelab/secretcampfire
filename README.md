@@ -52,7 +52,13 @@ Enjoy the 'fire and share the love: http://secretcampfire.com
 
 ## How's secret campfire different?
 
-| ![Evil way](docs/media/old-way.png "Old way") | ![secret campfire way](docs/media/new-way.png "`secret campfire` way") |
+<img src="docs/media/old-way.png" width="500" alt="Evil way">
+
+Old way: you make an account on their site -- they own your site and you're locked in
+
+<img src="docs/media/new-way.png" width="500" alt="secret campfire way">
+
+`secret campfire` way: your `secret campfire` blog is 100% yours and you connect to other blogs in the `secret campfire` network
 
 ## Features
 
