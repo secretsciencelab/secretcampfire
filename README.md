@@ -8,7 +8,7 @@
 - Your blogs belong 100% to you
 - Your blogs live forever and no one can shut them down 
 
-## Quickstart instructions (time needed: 5 minutes)
+## Quickstart instructions (time needed: 10 minutes)
 
 1. Click <a href="https://heroku.com/deploy" target="_blank" title="Deploy"><img src="https://www.herokucdn.com/deploy/button.png"></a>
 
