@@ -1,4 +1,4 @@
-<img src="public/media/logoLight.png" height="50">
+<img src="public/media/logoLight.png" height="60">
 
 # secret campfire 
 ![version](https://img.shields.io/badge/version-1.1.0-blue.svg?style=for-the-badge)
