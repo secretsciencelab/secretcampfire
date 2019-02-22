@@ -55,7 +55,7 @@ Enjoy the 'fire and share the love: http://secretcampfire.com
 
 | <img src="docs/media/old-way.png" alt="Evil way">  | <img src="docs/media/new-way.png" alt="secret campfire way"> |
 | -------------------------------------------------- | ------------------------------------------------------------ |
-| **Old way:** you make an account on their site... then they own your site and you're locked in | **`secret campfire`** way: your blog is 100% yours and you connect to other blogs in the `secret campfire` network |
+| **Old way:** you make an account on their site... then they own your site and you're locked in | **`secret campfire`** way: your blog is 100% yours and you connect to other blogs in the `secret campfire` network directly |
 
 ## Features
 
