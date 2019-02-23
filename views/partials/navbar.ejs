@@ -248,7 +248,7 @@ var Navbar = new function() {
       
         var checkUrl = blog
             + "/follow/check/"
-            + encodeURIComponent(followButtonConfig.uri);
+            + Utils.encodeScampyUri(followButtonConfig.uri);
 
         $.getJSON(checkUrl, function(data) {
           if (data.is_following)

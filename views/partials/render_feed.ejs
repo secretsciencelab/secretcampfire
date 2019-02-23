@@ -168,7 +168,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
         newCard = $(fr.templateSelector + " > div").clone();
 
         var postRenderUrl = postUrlBase + "/render/" 
-          + encodeURIComponent(postUrlBase + post.post_url);
+          + Utils.encodeScampyUri(postUrlBase + post.post_url);
 
         newCard.attr('id', "card-"+cardId);
         newCard.find("img").data('iscroll-id', newCard.attr('id'));
@@ -201,7 +201,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
         {
           var reUrlObj = new URL(post.re_url);
           var reblogRenderUrl = reUrlObj.protocol + "//" + reUrlObj.host 
-            + "/render/" + encodeURIComponent(post.re_url);
+            + "/render/" + Utils.encodeScampyUri(post.re_url);
           newCard.find(".card-reblog-author-post-link")
             .attr('href', reblogRenderUrl)
             .prepend("<div class='oi oi-loop' aria-hidden='true'></div>");

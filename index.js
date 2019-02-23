@@ -88,6 +88,12 @@ app.use((err, req, res, next) => {
   res.send('500: Internal server error');
 });
 
+function _decodeScampyUri(uri) { 
+  if (!uri)
+    return uri;
+  return uri.replace(/\|/g, '/');
+}
+
 function _getReqProtocol(req) {
   return req.headers['x-forwarded-proto'] || req.protocol;
 }
@@ -111,6 +117,8 @@ function _render(req, res, myuri) {
     else
       uri = myuri;
   }
+
+  uri = _decodeScampyUri(uri);
 
   res.render('pages/render', {
     'uri': uri,
@@ -189,7 +197,7 @@ app.get('/feed/:index?', _nocache, function (req, res) {
 });
 
 app.get('/follow/check/:uri?', function (req, res) {
-	var uri = req.params['uri'];
+	var uri = _decodeScampyUri(req.params['uri']);
   db.isFollowing(uri, function(err, doc) {
     isFollowing = (doc)? true : false;
     ret = {

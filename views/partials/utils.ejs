@@ -9,6 +9,11 @@ if (typeof Utils === 'undefined')
       return displayUrl;
     }
 
+    this.encodeScampyUri = function(uri) {
+      uri = uri.replace(/\//g, '|');
+      return encodeURIComponent(uri);
+    }
+
     this.handleClick = function(e, url) {
       e.preventDefault();
 
