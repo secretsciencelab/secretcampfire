@@ -32,7 +32,7 @@
 
 ## "Easy Mode" instructions  (time needed: 0 minutes)
 
-If you're not the DIY type and prefer to have your blog set up for you, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com) and we'll take care of everything for you for a one-time fee of $5. Just tell us what blog name you want. After it's set up, your blog belongs 100% to you and runs free forever.
+If you're not the DIY type and prefer to have your blog set up for you, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com) and we'll take care of everything for you for a one-time fee of $5. In your email, tell us what blog name you want. After it's set up, your blog belongs 100% to you and runs free forever.
   
 ## 
 
