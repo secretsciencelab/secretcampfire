@@ -8,7 +8,11 @@
 - Your blogs belong 100% to you
 - Your blogs live forever and no one can shut them down 
 
-## Quickstart instructions (time needed: 10 minutes)
+## "Easy Mode" instructions  (time needed: 0 minutes)
+
+If you're not the DIY type and would like us to set up your blog for you, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com). We'll take care of everything for you for a one-time fee of $5. In your email, just tell us what blog name you want. After it's set up, your blog belongs 100% to you and runs free forever.
+
+## DIY instructions (time needed: 10 minutes)
 
 1. Click <a href="https://heroku.com/deploy" target="_blank" title="Deploy"><img src="https://www.herokucdn.com/deploy/button.png"></a>
 
@@ -29,10 +33,6 @@
 9. Visit `your-app.herokuapp.com` in a browser (where `your-app` is the name you entered in Step 3). 
 
 10. You'll see a welcome message that says "Congratulations! Your secret campfire blog is alive!" Follow the instructions there to set your password and secure your blog. 
-
-## "Easy Mode" instructions  (time needed: 0 minutes)
-
-If you're not the DIY type and prefer to have your blog set up for you, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com) and we'll take care of everything for you for a one-time fee of $5. In your email, tell us what blog name you want. After it's set up, your blog belongs 100% to you and runs free forever.
   
 ## 
 

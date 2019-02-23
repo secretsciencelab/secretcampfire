@@ -12,6 +12,18 @@ However, if you're not the DIY type and prefer to have your blogs set up for you
 
 --- 
 
+## How do I unlock image file uploads?
+
+[See here.](ADVANCED.md#how-to-unlock-image-file-uploads)
+
+--- 
+
+## How do I unlock Queued Posting?
+
+[See here.](ADVANCED.md#how-to-unlock-queued-posting)
+
+--- 
+
 ## How is it possible that `secret campfire` can run 24/7 for free?
 
 This wouldn't have been possible a few years ago. It's only possible now because we live an interesting time. What's interesting is that Internet has matured enough that the technology has become a commodity. 
@@ -26,7 +38,7 @@ Almost every cloud platform today gives you generous free quotas to run your web
 
 --- 
 
-## Why does my blog go to sleep after a while, and why does it take a long time to start back up again? 
+## Why does my Heroku blog go to sleep after a while, and why does it take a long time to start back up again? 
 
 When you deploy your `secret campfire` blog on Heroku for free, they set you up on their free `Dyno`. By default, that gives you 550 free hours per month. And if it receives no traffic for 30 minutes, your `Dyno` goes to sleep. If your blog gets visited while asleep, it will wake up again after a short delay. (https://devcenter.heroku.com/articles/free-dyno-hours).
 
@@ -51,21 +63,9 @@ If you are opposed to this, you can still use `secret campfire` without a credit
 
 ## How can I have multiple blogs?
 
-First, repeat the steps in the [Quickstart](../README.md#quickstart-instructions-time-needed-10-minutes) for each new blog you want to create. 
+First, repeat the steps in the [README](../README.md) for each new blog you want to create. 
 
 Then, as you sign in to each of your blogs, `secret campfire` remembers all the blogs you own. All your connected blogs appear in a handy menu at the top right of the screen. Select the blog you want to browse as, and all your `secret campfire` actions will be performed for your selected blog. E.g., if you select your *first blog* from the menu and then click a `Reblog` button on a post, the post will be reblogged to your *first blog*. 
-
---- 
-
-## How do I unlock image file uploads?
-
-[See here.](ADVANCED.md#how-to-unlock-image-file-uploads)
-
---- 
-
-## How do I unlock Queued Posting?
-
-[See here.](ADVANCED.md#how-to-unlock-queued-posting)
 
 --- 
 
