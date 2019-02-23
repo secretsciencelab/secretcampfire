@@ -5,6 +5,7 @@ if (typeof Utils === 'undefined')
       var urlObj = new URL(url);
       var displayUrl = urlObj.host; // strip away protocol
       displayUrl = displayUrl.split(".herokuapp.com")[0]; // papa bless
+      displayUrl = displayUrl.split(".secretcampfire.com")[0]; // papa bless
       return displayUrl;
     }
 
