@@ -1,5 +1,94 @@
 <% include ../partials/utils.ejs %>
 
+function _syncProtocol(uri) {
+  var urlObj = new URL(uri);
+  return window.location.protocol + "//" + urlObj.host + urlObj.pathname;
+}
+
+// get feed's root, index and searchParams
+function _getFeedUriParams(uri) {
+  var root = uri;
+  var idx = 0;
+  var sparams = "";
+
+  var arr = uri.match(/\?(.+)/);
+  if (arr != null) 
+  {
+    sparams = arr[1];
+    uri = uri.split("?")[0];
+  }
+
+  var arr = uri.match(/(.+)\/(\d+).*$/);
+  if (arr != null)
+  {
+    root = _syncProtocol(arr[1]);
+    idx = parseInt(arr[2]);
+  }
+
+  return [root, idx, sparams];
+}
+
+/*************************************************************************/
+
+function FeedMgr(cfg) {
+  this.pageSize = cfg.pageSize;
+  
+  this._feeds = [];
+  this._lastPageIdx = -1;
+  this._uriRoot2FeedIdx = {};
+}
+FeedMgr.prototype.add = function(uri) {
+  var feedParams = _getFeedUriParams(uri);
+
+  this._uriRoot2FeedIdx[feedParams[0]] = this._feeds.length;
+
+  this._feeds.push({
+    'root': feedParams[0],
+    'start_offset': feedParams[1],
+    'params': feedParams[2],
+    'has_more': true
+  });
+}
+FeedMgr.prototype.feedsHaveMore = function() {
+  var hasMore = false;
+  for (var fi=0; fi < this._feeds.length; fi++)
+    if (this._feeds[fi].has_more)
+    {
+      hasMore = true;
+      break;
+    }
+
+  return hasMore;
+}
+FeedMgr.prototype.next = function(pageIndex) {
+  var feedIdx = pageIndex % this._feeds.length;
+  var root = this._feeds[feedIdx].root;
+  var params = this._feeds[feedIdx].params;
+
+  if (pageIndex > this._lastPageIdx) 
+  {
+    // advance this feed
+    if (typeof this._feeds[feedIdx].offset === 'undefined')
+      this._feeds[feedIdx].offset = this._feeds[feedIdx].start_offset;
+    else
+      this._feeds[feedIdx].offset += this.pageSize;
+
+    this._lastPageIdx = pageIndex;
+  }
+  var offset = this._feeds[feedIdx].offset;
+
+  return root + "/" + offset + "?n=" + this.pageSize + "&" + params;
+}
+FeedMgr.prototype.markDone = function(rootPath) {
+  if (!(rootPath in this._uriRoot2FeedIdx))
+    return;
+
+  var feedIdx = this._uriRoot2FeedIdx[rootPath];
+  this._feeds[feedIdx].has_more = false;
+}
+
+/*************************************************************************/
+
 function RenderFeed(cfg) {
   this.selector = cfg.selector;
   this.selectorButton = cfg.selector+"-button";
@@ -26,30 +115,46 @@ function RenderFeed(cfg) {
   this._lastSeenPosts = []; 
 
   this.initFeeds(cfg.uris);
-  this.initMasonry();  
-  this.initInfiniteScroll();
 }
 
 RenderFeed.prototype.initFeeds = function(uris) {
   // uniquify
   uris = [...new Set(uris)];
 
-  // make 'feed' objects to store book-keeping
-  this.feeds = [];
-  this.uriRoot2FeedIdx = {}; 
+  this._feedMgr = new FeedMgr({
+    pageSize: this.numPostsPerFetch
+  });
+
+  var fr = this;
+  var numChecked = 0;
   for (var i=0; i < uris.length; i++)
-  {
-    var feedParams = this.getFeedUriParams(uris[i]);
+    $.ajax({
+      url: uris[i],
+      type: 'HEAD',
+      complete: function(xhr) {
+        numChecked++;
+        
+        if (xhr.status != 200)
+          return;
 
-    this.feeds.push({
-      'root': feedParams[0],
-      'start_offset': feedParams[1],
-      'params': feedParams[2],
-      'has_more': true
+        if (this.url.indexOf("http") == -1)
+          return; // reject relative paths
+
+        fr._feedMgr.add(this.url);
+        if (fr._feedMgr._feeds.length > 5 || numChecked >= uris.length)
+          fr.startDrawing();
+      }
     });
+}
 
-    this.uriRoot2FeedIdx[feedParams[0]] = i;
-  }
+RenderFeed.prototype.startDrawing = function() {
+  if (this._startedDrawing)
+    return;
+
+  this._startedDrawing = true;
+
+  this.initMasonry();
+  this.initInfiniteScroll();
 }
 
 RenderFeed.prototype.initMasonry = function() {
@@ -70,17 +175,11 @@ RenderFeed.prototype.initInfiniteScroll = function() {
   this.infCardIdCounter = 0;
   this.infScrollContainer = this.msnryContainer.infiniteScroll({
     path: function() {
-      if (!fr.feedsHaveMore())
+      if (!fr._feedMgr.feedsHaveMore())
         return; // returning nothing disables further loads
 
       var pageIndex = this.pageIndex - 1; // -1 to make it 0-indexed
-      var feedIdx = pageIndex % fr.feeds.length;
-      var root = fr.feeds[feedIdx].root;
-      var params = fr.feeds[feedIdx].params;
-      var offset = fr.feeds[feedIdx].start_offset
-        + (parseInt(pageIndex / fr.feeds.length) * fr.numPostsPerFetch);
-
-      return root + "/" + offset + "?n=" + fr.numPostsPerFetch + "&" + params;
+      return fr._feedMgr.next(pageIndex);
     },
     responseType: 'text',
     /*scrollThreshold: 1200,*/
@@ -94,12 +193,11 @@ RenderFeed.prototype.initInfiniteScroll = function() {
   // https://infinite-scroll.com/extras.html#loading-json
   this.infScrollContainer.on('load.infiniteScroll', function(ev, resp, path) {
     var data = null;
-    var feedIdx = 0;
+    var rootPath = "";
 
     if (path)
     {
-      var rootPath = fr.getFeedUriParams(path)[0];
-      feedIdx = fr.uriRoot2FeedIdx[rootPath];
+      rootPath = _getFeedUriParams(path)[0];
       data = JSON.parse(resp);
       if (data.posts)
         fr._numPostsFetched += data.posts.length;
@@ -121,9 +219,9 @@ RenderFeed.prototype.initInfiniteScroll = function() {
     if (!data || !data.posts || !data.posts.length)
     {
       // nothing more for this feed
-      fr.feeds[feedIdx].has_more = false;
+      fr._feedMgr.markDone(rootPath);
 
-      if (!fr.feedsHaveMore())
+      if (!fr._feedMgr.feedsHaveMore())
       {
         fr.allFeedsDone();
         return;
@@ -272,46 +370,6 @@ RenderFeed.prototype.initInfiniteScroll = function() {
 
   // load initial page
   this.infScrollContainer.infiniteScroll('loadNextPage');
-}
-
-RenderFeed.prototype.syncProtocol = function(uri) {
-  var urlObj = new URL(uri);
-  return window.location.protocol + "//" + urlObj.host + urlObj.pathname;
-}
-
-// get feed's root, index and searchParams
-RenderFeed.prototype.getFeedUriParams = function(uri) {
-  var root = uri;
-  var idx = 0;
-  var sparams = "";
-
-  var arr = uri.match(/\?(.+)/);
-  if (arr != null) 
-  {
-    sparams = arr[1];
-    uri = uri.split("?")[0];
-  }
-
-  var arr = uri.match(/(.+)\/(\d+).*$/);
-  if (arr != null)
-  {
-    root = this.syncProtocol(arr[1]);
-    idx = parseInt(arr[2]);
-  }
-
-  return [root, idx, sparams];
-}
-
-RenderFeed.prototype.feedsHaveMore = function() {
-  var hasMore = false;
-  for (var fi=0; fi < this.feeds.length; fi++)
-    if (this.feeds[fi].has_more)
-    {
-      hasMore = true;
-      break;
-    }
-
-  return hasMore;
 }
 
 RenderFeed.prototype.allFeedsDone = function() {
