@@ -179,7 +179,7 @@ function _assembleFeed(req, posts, cb) {
   });
 }
 
-app.get('/feed/:index?', _nocache, function (req, res) {
+app.get('/feed/:index?', function (req, res) {
   var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
