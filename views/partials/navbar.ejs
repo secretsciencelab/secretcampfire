@@ -106,7 +106,7 @@ var Navbar = new function() {
         var displayUrl = Utils.prettifyBlessedHostUrlForDisplay(url);
         $("#active-blog").html(displayUrl)
           .attr("title", "Connected to " + displayUrl);
-        $("#active-blog-tooltip").data('url', url + "/dashboard");
+        $("#active-blog-tooltip").data('url', url);
       });
       $("#active-blog-display .dropdown-item").hover(function() {
         $(this).find(".x").show();
