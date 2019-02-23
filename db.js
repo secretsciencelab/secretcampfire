@@ -292,7 +292,7 @@
       catch(err) {
         console.error(err);
         if (cb)
-          cb(err, {});
+          cb(err);
       }
     }
 
@@ -308,7 +308,7 @@
       catch(err) {
         console.error(err);
         if (cb)
-          cb(err, {});
+          cb(err, null);
       }
     }
 

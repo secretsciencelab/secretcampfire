@@ -204,7 +204,7 @@ app.get('/feed/:index?', _nocache, function (req, res) {
 });
 
 app.get('/follow/check/:uri?', function (req, res) {
-	var uri = _decodeScampyUri(req.params['uri']);
+  var uri = _decodeScampyUri(req.params['uri']);
   db.isFollowing(uri, function(err, doc) {
     isFollowing = (doc)? true : false;
     ret = {
