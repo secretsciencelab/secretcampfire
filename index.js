@@ -1,3 +1,4 @@
+require('dotenv').config()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const cel = require('connect-ensure-login')
