@@ -1,8 +1,8 @@
 var ReblogButton = new function() { 
-  this.activate = function(selector) {
+  this.activate = function(els) {
     var obj = this;
 
-    $(selector).each(function() {
+    els.each(function() {
       var rb = $(this);
 
       if (rb.data('reblog-action-bound'))
