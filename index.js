@@ -9,6 +9,7 @@ const path = require('path')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const session = require('express-session')
+const MongoStore = require('connect-mongo')(session);
 const db = require('./db')
 const consts = require('./consts')
 const cron = require('./cron')
@@ -16,7 +17,7 @@ const cron = require('./cron')
 const PORT = process.env.PORT || 5000
 
 /* 
- * setup passport for auth
+ * setup passport for authentication
  */
 
 passport.use(new LocalStrategy(function(username, password, cb) {
@@ -62,7 +63,13 @@ app
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({ extended: true }))
   .use(session({
-    secret: app.locals.SITE_NAME, resave: false, saveUninitialized: false 
+    secret: app.locals.SITE_NAME, 
+    resave: false, 
+    saveUninitialized: false,
+    store: new MongoStore({ 
+      url: process.env.MONGODB_URI,
+      touchAfter: 6 * 3600 // time period in seconds
+    })
   }))
   .use(passport.initialize())
   .use(passport.session())
