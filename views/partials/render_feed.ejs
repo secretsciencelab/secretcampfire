@@ -181,8 +181,8 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       return fr._feedMgr.next(pageIndex);
     },
     responseType: 'text',
-    /*scrollThreshold: 1200,*/
-		button: this.selectorButton,
+    scrollThreshold: window.innerHeight * 3,
+    button: this.selectorButton,
     status: this.selectorStatus,
     outlayer: this.msnry,
     history: false
