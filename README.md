@@ -10,11 +10,11 @@
 
 ## How to get an official *secret campfire* blog
 
-For an official `secret campfire` blog on `secretcampfire.com`, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com). We'll set up your blog and take care of everything for you for $5. After it's set up, your blog runs free forever.
+For an official blog on `secretcampfire.com`, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com). We'll set up your blog for $5 and take care of everything for you. After it's set up, your blog is free for life. Hurry before your favorite blog name gets taken by someone else.
 
 ## How to set up your own free *secret campfire* blog
 
-If you are the DIY type, you can follow the steps below to set up your own `secret campfire` blog for free:
+If you are the DIY type, you can follow the steps below to set up your free `secret campfire` blog by yourself:
 
 1. Click <a href="https://heroku.com/deploy" target="_blank" title="Deploy"><img src="https://www.herokucdn.com/deploy/button.png"></a>
 
