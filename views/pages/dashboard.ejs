@@ -63,19 +63,20 @@
         <div id="posts" class="grid">
           <div class="grid-sizer col-md-12"></div>
         </div>
+
+        <div id="posts-status" class="collapse text-center">
+          <% include ../partials/loading_spinner.ejs %>
+        </div>
+        <div id="posts-button" class="collapse text-center">
+          <div class="d-none button more-button">more</div>
+        </div>
+
       </div><!--col-->
       <div class="col"><div class="news-container sticky-top py-1">
         <div id="news-right" class="collapse"></div>
         <% include ../partials/footer.ejs %>
       </div></div>
     </div><!--row-->
-
-    <div id="posts-status" class="collapse text-center">
-      <% include ../partials/loading_spinner.ejs %>
-    </div>
-    <div id="posts-button" class="collapse text-center">
-      <div class="button more-button">more</div>
-    </div>
 
     <div id="posts-template" class="d-none">
       <div class="grid-item col-md-12">

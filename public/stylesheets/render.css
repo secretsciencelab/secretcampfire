@@ -103,9 +103,9 @@ a.card-title-link {
 .more-button {
   cursor: pointer;
   display: inline-block;
-  border: 1px solid #888;
+  border: 1px solid #aaa;
   padding: 5px 10px;
-  color: #888;
+  color: #aaa;
 }
 
 .card-text blockquote {
