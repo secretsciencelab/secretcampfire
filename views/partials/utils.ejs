@@ -4,8 +4,10 @@ if (typeof Utils === 'undefined')
     this.prettifyBlessedHostUrlForDisplay = function(url) {
       var urlObj = new URL(url);
       var displayUrl = urlObj.host; // strip away protocol
-      displayUrl = displayUrl.split(".herokuapp.com")[0]; // papa bless
-      displayUrl = displayUrl.split(".secretcampfire.com")[0]; // papa bless
+      <% for (var bi = 0; bi < BLESSED_SCAMPY_DOMAINS.length; bi++) { %>
+        displayUrl = displayUrl.split("." 
+          + "<%= BLESSED_SCAMPY_DOMAINS[bi] %>")[0]; // papa bless
+      <% } %>
       return displayUrl;
     }
 

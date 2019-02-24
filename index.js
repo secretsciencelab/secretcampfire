@@ -52,6 +52,7 @@ app.locals.MASTER_URL = consts.MASTER_URL;
 app.locals.MASTER_DOMAIN = consts.MASTER_DOMAIN;
 app.locals.MASTER_FEED = consts.MASTER_FEED;
 app.locals.MASTER_NEWS = consts.MASTER_NEWS;
+app.locals.BLESSED_SCAMPY_DOMAINS = consts.BLESSED_SCAMPY_DOMAINS;
 app.locals.NUM_POSTS_PER_FETCH = consts.NUM_POSTS_PER_FETCH;
 
 app
@@ -151,7 +152,7 @@ app.get('/', function(req, res) {
   });
 });
 
-function _assembleFeed(req, posts, cb) {
+function _assembleFeed(req, contents, cb) {
   db.getSettings(function(err, settings) {
     var feed = {
       'name': req.headers.host, 
@@ -160,7 +161,6 @@ function _assembleFeed(req, posts, cb) {
       'header_url': '',
       'style_url': _getReqProtocol(req) 
         + '://' + req.headers.host + '/stylesheets/feed.css',
-      'posts': posts,
       'blog_url': _getReqProtocol(req) + "://" + req.headers.host,
       'nsfw': false
     };
@@ -174,6 +174,9 @@ function _assembleFeed(req, posts, cb) {
       if (settings.nsfw)
         feed.nsfw = true;
     }
+
+    for (k in contents)
+      feed[k] = contents[k];
 
     cb(feed);
   });
@@ -193,7 +196,7 @@ app.get('/feed/:index?', function (req, res) {
 
   // send a page from DB
   db.fetchPosts(index, numToFetch, filter, function(err, posts) {
-    _assembleFeed(req, posts, function(feed) {
+    _assembleFeed(req, { 'posts': posts }, function(feed) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(feed, null, 2));
     });
@@ -325,35 +328,16 @@ app.get('/post/count', function (req, res) {
 });
 
 app.get('/post/:id', function (req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  db.getSettings(function(err, settings) {
-    db.getPost(req.params['id'], function(err, post) {
-      if (!post)
-      {
-        res.status(404).send("{}");
-        return;
-      }
+  db.getPost(req.params['id'], function(err, post) {
+    if (!post)
+    {
+      res.status(404).send("{}");
+      return;
+    }
 
-      var ret = {
-        'name': req.headers.host, 
-        'description': '',
-        'avatar_url': '',
-        'header_url': '',
-        'style_url': _getReqProtocol(req) 
-          + '://' + req.headers.host + '/stylesheets/feed.css',
-        'post': post,
-        'blog_url': _getReqProtocol(req) + "://" + req.headers.host
-      };
-
-      if (settings)
-      {
-        ret.name = settings.name;
-        ret.description = settings.description;
-        ret.avatar_url = settings.avatar_url;
-        ret.header_url = settings.header_url;
-      }
-
-      res.send(JSON.stringify(ret, null, 2));
+    _assembleFeed(req, { 'post': post }, function(feed) {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify(feed, null, 2));
     });
   });
 });
@@ -446,7 +430,7 @@ app.get('/dashboard/qfeed/:index?',
   // send a page from DB
   var numToFetch = app.locals.NUM_POSTS_PER_FETCH;
   db.fetchQueuedPosts(index, numToFetch, {}, function(err, posts) {
-    _assembleFeed(req, posts, function(feed) {
+    _assembleFeed(req, { 'posts' : posts }, function(feed) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(feed, null, 2));
     });
@@ -520,7 +504,6 @@ app.post('/settings', cel.ensureLoggedIn(), function(req, res) {
 
 app.post('/follow', cel.ensureLoggedIn(), function(req, res) {
   var url = req.body.url;
-  // TODO verify that 'url' points to valid feed
   
   db.follow(req.body.url, function(err, newFollow) {
     res.status(200).json(newFollow);

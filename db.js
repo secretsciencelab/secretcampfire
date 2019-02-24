@@ -5,10 +5,7 @@
     const URL = require('url').URL;
     const consts = require('./consts');
 
-    mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser:true }, function (error) {
-      if (error) console.error(error);
-      else console.log('DB connected');
-    });
+    /* Schema */
 
     const SettingsSchema = new mongoose.Schema({
       id: String,
@@ -22,7 +19,6 @@
       imgur_key: String,
       queue_interval: { type: Number, default: 0 }
     });
-    Settings = mongoose.model('Settings', SettingsSchema);
 
     const PostSchema = new mongoose.Schema({
       id: String,
@@ -37,7 +33,6 @@
       re_url: String,
       queued: { type: Boolean, default: false }
     });
-    Post = mongoose.model('Post', PostSchema);
 
     // collections:
     // - follows
@@ -52,9 +47,46 @@
       notes: String,
       count: { type: Number, default: 0 }
     });
-    Follow = mongoose.model('Follow', FollowSchema);
-    Follower = mongoose.model('Follower', FollowSchema);
-    PostSource = mongoose.model('PostSource', FollowSchema);
+
+    const _schema = {
+      'Settings': SettingsSchema,
+      'Post': PostSchema,
+      'Follow': FollowSchema,
+      'Follower': FollowSchema,
+      'PostSource': FollowSchema
+    };
+
+    /* 
+     * Connections 
+     */
+
+    var _dbs = {};
+
+    function _Model(modelName, dbName) {
+      const defaultName = "_default_";
+      if (!dbName)
+        dbName = defaultName;
+
+      if (!(dbName in _dbs))
+      {
+        // open new connection
+        var envKey = "MONGODB_URI";
+        if (dbName != defaultName)
+          envKey += "_" + dbName;
+
+        if (!(envKey in process.env))
+          return null;
+
+        var newConn = mongoose.createConnection(process.env[envKey],
+          { useNewUrlParser: true }, function (error) {
+            if (error) console.error(error);
+            else console.log('Connected DB ' + dbName);
+          });
+        _dbs[dbName] = newConn;
+      }
+
+      return _dbs[dbName].model(modelName, _schema[modelName]);
+    }
 
     /* 
      * post
@@ -81,7 +113,8 @@
         var hostUrl = urlObj.protocol + "//" + urlObj.host;
         var hostUrlKey = _makeUrlKey(hostUrl);
 
-        PostSource.findOne({ 'url_key': hostUrlKey }, function(err, source) {
+        _Model('PostSource')
+          .findOne({ 'url_key': hostUrlKey }, function(err, source) {
           if (source)
           {
             source.date = Date.now();
@@ -90,7 +123,7 @@
           }
           else
           {
-            source = new PostSource({
+            source = new _Model('PostSource')({
               url_key: hostUrlKey,
               url: hostUrl,
               notes: url
@@ -130,7 +163,7 @@
           if (postData.re_url)
             delete postData.re_url; // don't allow this to change
 
-          Post.findById(id, function(err, post) {
+          _Model('Post').findById(id, function(err, post) {
             if (!post)
             {
               if (err)
@@ -154,7 +187,7 @@
         else
         {
           // new post
-          var newPost = new Post(postData);
+          var newPost = new _Model('Post')(postData);
           newPost.id = newPost._id;
           newPost.post_url = "/post/" + newPost.id
           newPost.save(function(err) {
@@ -176,18 +209,18 @@
     }
 
     module.exports.getPost = function(id, cb) {
-      Post.findById(id, cb);
+      _Model('Post').findById(id, cb);
     }
 
     module.exports.delPost = function(id, cb) {
-      Post.deleteOne({'id': id}, function(err) {
+      _Model('Post').deleteOne({'id': id}, function(err) {
         if (cb)
           cb(err);
       });
     }
 
     module.exports.postNow = function(id, cb) {
-      Post.findById(id, function(err, post) {
+      _Model('Post').findById(id, function(err, post) {
         if (!post)
         {
           if (cb)
@@ -212,13 +245,13 @@
     }
 
     module.exports.getPostCount = function(cb) {
-      Post.count({ 'queued': { "$ne": true } }, function(err, count) {
+      _Model('Post').count({ 'queued': { "$ne": true } }, function(err, count) {
         if (cb)
           cb(err, count);
       });
     }
     module.exports.getQueuedCount = function(cb) {
-      Post.count({ 'queued': true }, function(err, count) {
+      _Model('Post').count({ 'queued': true }, function(err, count) {
         if (cb)
           cb(err, count);
       });
@@ -232,7 +265,7 @@
       try {
         if (index == 0)
           index = undefined;
-        Post.find(filter)
+        _Model('Post').find(filter)
           .skip(index)
           .limit(limit)
           .sort({'date': order })
@@ -262,7 +295,7 @@
 
     module.exports.follow = function(url, cb) {
       try {
-        var newFollow = new Follow({
+        var newFollow = new _Model('Follow')({
           url_key: _makeUrlKey(url),
           url: url
         });
@@ -282,7 +315,7 @@
 
     module.exports.unfollow = function(url, cb) {
       try {
-        Follow.deleteMany({
+        _Model('Follow').deleteMany({
           'url_key': _makeUrlKey(url)
         }, function(err) {
           if (cb)
@@ -298,7 +331,7 @@
 
     module.exports.isFollowing = function(url, cb) {
       try {
-        Follow.findOne({
+        _Model('Follow').findOne({
           'url_key': _makeUrlKey(url)
         }, function(err, doc) {
           if (cb)
@@ -315,7 +348,7 @@
     module.exports.getFollowing = function(index, limit, cb) {
         if (index == 0)
           index = undefined;
-        Follow.find()
+        _Model('Follow').find()
           .skip(index)
           .limit(limit)
           .sort({'date': -1})
@@ -323,14 +356,14 @@
     }
 
     module.exports.getFollowingCount = function(cb) {
-      Follow.count({}, function(err, count) {
+      _Model('Follow').count({}, function(err, count) {
         if (cb)
           cb(err, count);
       });
     }
 
     module.exports.getRandomFollowing = function(cb) {
-      Follow.aggregate([{
+      _Model('Follow').aggregate([{
         $sample: { size: 100 }
       }], 
       function(err, follows) {
@@ -354,7 +387,7 @@
         var hostUrl = urlObj.protocol + "//" + urlObj.host;
         var hostUrlKey = _makeUrlKey(hostUrl);
 
-        Follower.findOne({ 'url_key': hostUrlKey }, function(err, follower) {
+        _Model('Follower').findOne({ 'url_key': hostUrlKey }, function(err, follower) {
           if (follower)
           {
             follower.date = Date.now();
@@ -362,7 +395,7 @@
           }
           else
           {
-            follower = new Follower({
+            follower = new _Model('Follower')({
               url_key: hostUrlKey,
               url: hostUrl,
               notes: url
@@ -387,7 +420,7 @@
     module.exports.getFollowers = function(index, limit, cb) {
         if (index == 0)
           index = undefined;
-        Follower.find()
+        _Model('Follower').find()
           .skip(index)
           .limit(limit)
           .sort({'date': -1})
@@ -395,7 +428,7 @@
     }
 
     module.exports.getFollowersCount = function(cb) {
-      Follower.count({}, function(err, count) {
+      _Model('Follower').count({}, function(err, count) {
         if (cb)
           cb(err, count);
       });
@@ -404,7 +437,7 @@
     module.exports.getPostSources = function(index, limit, cb) {
         if (index == 0)
           index = undefined;
-        PostSource.find()
+        _Model('PostSource').find()
           .skip(index)
           .limit(limit)
           .sort({'date': -1})
@@ -412,7 +445,7 @@
     }
 
     module.exports.getPostSourcesCount = function(cb) {
-      PostSource.count({}, function(err, count) {
+      _Model('PostSource').count({}, function(err, count) {
         if (cb)
           cb(err, count);
       });
@@ -422,30 +455,37 @@
      * blog
      */
     module.exports.getSettings = function(cb) {
-      Settings.findOne().sort({created_at: -1})
-        .exec(function(err, settings) {
-          if (settings)
-          {
-            // return existing
-            if (cb)
-              cb(err, settings);
-            return;
-          }
+      try {
+        _Model('Settings').findOne().sort({created_at: -1})
+          .exec(function(err, settings) {
+            if (settings)
+            {
+              // return existing
+              if (cb)
+                cb(err, settings);
+              return;
+            }
 
-          // welcome new user! 
-          // make new Settings entry
-          settings = new Settings();
-          settings.id = settings._id;
-          settings.password = md5("password");
+            // welcome new user! 
+            // make new Settings entry
+            settings = new _Model('Settings')();
+            settings.id = settings._id;
+            settings.password = md5("password");
 
-          settings.save(function(err) {
-            if (cb)
-              cb(err, settings)
+            settings.save(function(err) {
+              if (cb)
+                cb(err, settings)
+            });
+
+            // follow "staff" blog to start
+            module.exports.follow(consts.MASTER_FEED, null);
           });
-
-          // follow "staff" blog to start
-          module.exports.follow(consts.MASTER_FEED, null);
-        });
+      } 
+      catch(err) {
+        console.error(err);
+        if (cb)
+          cb(err, {});
+      }
     }
 
     module.exports.saveSettings = function(newSettings, cb) {
