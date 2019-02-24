@@ -126,13 +126,13 @@ RenderFeed.prototype.initFeeds = function(uris) {
   });
 
   var fr = this;
-  var numChecked = 0;
+  fr._numFeedsToInit = uris.length;
   for (var i=0; i < uris.length; i++)
     $.ajax({
       url: uris[i],
       type: 'HEAD',
       complete: function(xhr) {
-        numChecked++;
+        fr._numFeedsToInit--;
         
         if (xhr.status != 200)
           return;
@@ -141,8 +141,7 @@ RenderFeed.prototype.initFeeds = function(uris) {
           return; // reject relative paths
 
         fr._feedMgr.add(this.url);
-        if (fr._feedMgr._feeds.length > 5 || numChecked >= uris.length)
-          fr.startDrawing();
+        fr.startDrawing();
       }
     });
 }
@@ -175,7 +174,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
   this.infCardIdCounter = 0;
   this.infScrollContainer = this.msnryContainer.infiniteScroll({
     path: function() {
-      if (!fr._feedMgr.feedsHaveMore())
+      if (!fr.feedsHaveMore())
         return; // returning nothing disables further loads
 
       var pageIndex = this.pageIndex - 1; // -1 to make it 0-indexed
@@ -221,9 +220,9 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       // nothing more for this feed
       fr._feedMgr.markDone(rootPath);
 
-      if (!fr._feedMgr.feedsHaveMore())
+      if (!fr.feedsHaveMore())
       {
-        fr.allFeedsDone();
+        fr.finish();
         return;
       }
 
@@ -372,7 +371,17 @@ RenderFeed.prototype.initInfiniteScroll = function() {
   this.infScrollContainer.infiniteScroll('loadNextPage');
 }
 
-RenderFeed.prototype.allFeedsDone = function() {
+RenderFeed.prototype.feedsHaveMore = function() {
+  if (this._numFeedsToInit && this._numFeedsToInit > 0)
+    return true;
+
+  if (this._feedMgr.feedsHaveMore())
+    return true;
+
+  return false;
+}
+
+RenderFeed.prototype.finish = function() {
   // hide 'more' button
   $(this.selectorButton).hide();
   
