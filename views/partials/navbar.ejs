@@ -44,6 +44,9 @@ var Navbar = new function() {
   this.init = function() {
     this.activateLoginButton(); 
     this.drawActiveBlogWidget(); 
+
+    $("#navbar-logo-link").popover(
+      Utils.makeBsTooltipCfg('Get your <b>secret campfire</b> blog'));
   };
 
   this.drawActiveBlogWidget = function() {
