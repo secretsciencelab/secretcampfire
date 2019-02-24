@@ -8,11 +8,13 @@
 - Your blogs belong 100% to you
 - Your blogs live forever and no one can shut them down 
 
-## "Easy Mode" instructions  (time needed: 0 minutes)
+## How to get an official *secret campfire* blog
 
-If you're not the DIY type and would like us to set up your blog for you, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com). We'll take care of everything for you for a one-time fee of $5. In your email, just tell us what blog name you want. After it's set up, your blog belongs 100% to you and runs free forever.
+For an official `secret campfire` blog on `secretcampfire.com`, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com). We'll set up your blog and take care of everything for you for $5. After it's set up, your blog runs free forever.
 
-## DIY instructions (time needed: 10 minutes)
+## How to set up your own free *secret campfire* blog
+
+If you are the DIY type, you can follow the steps below to set up your own `secret campfire` blog for free:
 
 1. Click <a href="https://heroku.com/deploy" target="_blank" title="Deploy"><img src="https://www.herokucdn.com/deploy/button.png"></a>
 
@@ -50,7 +52,7 @@ With `secret campfire`, you can finally set up your forever home online. It belo
 
 Enjoy the 'fire and share the love: http://secretcampfire.com
 
-## How is secret campfire different?
+## How is *secret campfire* different?
 
 
 | <img src="docs/media/old-way.png" alt="Evil way">  | <img src="docs/media/new-way.png" alt="secret campfire way"> |
