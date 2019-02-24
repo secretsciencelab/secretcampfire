@@ -126,11 +126,29 @@ footer .logo {
 #kalona img {
   width: 30px;
 }
-.kalona-popover {
+
+/* popovers / tooltips */
+.popover {
 	background-color: rgba(0, 0, 0, 0.8);
 }
-.kalona-popover .popover-header,
-.kalona-popover .popover-body {
+.bs-popover-auto[x-placement^=bottom] .arrow::after,
+.bs-popover-bottom .arrow::after {
+  border-bottom-color: rgba(0, 0, 0, 0.8);
+}
+.bs-popover-auto[x-placement^=top] .arrow::after,
+.bs-popover-top .arrow::after {
+  border-top-color: rgba(0, 0, 0, 0.8);
+}
+.bs-popover-auto[x-placement^=right] .arrow::after,
+.bs-popover-right .arrow::after {
+  border-right-color: rgba(0, 0, 0, 0.8);
+}
+.bs-popover-auto[x-placement^=left] .arrow::after,
+.bs-popover-left .arrow::after {
+  border-left-color: rgba(0, 0, 0, 0.8);
+}
+.popover .popover-header,
+.popover .popover-body {
   color: #ddd;
 }
 

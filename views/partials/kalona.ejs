@@ -1,3 +1,4 @@
+
 <div id="kalona" class="d-none d-md-block">
   <a id="kalona-button" tabindex="0" role="button" data-toggle="popover">
     <img src="/media/kalona.png"/>
@@ -5,12 +6,7 @@
 </div>
 
 <script>
-  $("#kalona-button").popover({
-    container: 'body',
-    html: true,
-    placement: 'auto',
-    content: "Hello :)",
-    trigger: 'focus',
-    template: '<div class="popover kalona-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
-  });
+  <% include utils.ejs %>
+  var tooltipCfg = Utils.makeBsTooltipCfg('Hello :)');
+  $("#kalona-button").popover(tooltipCfg);
 </script>

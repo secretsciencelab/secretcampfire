@@ -55,6 +55,16 @@ if (typeof Utils === 'undefined')
             .data('make-embeds-responsive-done', true);
         });
     }
+
+    this.makeBsTooltipCfg = function(content) {
+      return {
+        container: 'body',
+        html: true,
+        placement: 'auto',
+        content: content,
+        trigger: 'hover'
+      };
+    }
   };
 }
 
