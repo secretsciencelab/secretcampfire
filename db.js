@@ -546,14 +546,4 @@
         task.save();
       });
     }
-
-    //module.exports.useDb = function(dbName, func) {
-    //  var args = Array.prototype.slice.call(arguments, 2);
-    //  return function() {
-    //    var allArgs = args.concat(Array.prototype.slice.call(arguments));
-    //    this._DB_NAME = dbName;
-    //    return func.apply(this, allArgs);
-    //  };
-    //}
-
 }());
