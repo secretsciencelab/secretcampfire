@@ -37,7 +37,7 @@ These extra features are free and your card will not be charged, but Heroku just
 
 If you are opposed to this, you can still use `secret campfire` without a credit card by setting up your `mLab MongoDB` database manually:
 
-1. Instead of getting `mLab MongoDB` from Heroku, go directly to the `mlab` website: https://mlab.com
+1. Instead of getting `mLab MongoDB` from Heroku, go directly to the `MongoDB` website: https://www.mongodb.com/cloud/atlas
 2. Make a new `MongoDB Atlas` account.
 3. At the bottom of the `Create New Cluster` page, confirm that it says `FREE` and click `Create Cluster`. 
 4. On the next page, you'll see a message saying `Your cluster is being created`. Find the `Get Started` checklist on the page and click `Create your first database user`. Follow the instructions. Enter any `username` and `password` and click `Add User`.
