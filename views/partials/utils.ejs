@@ -11,7 +11,7 @@ if (typeof Utils === 'undefined')
       return displayUrl;
     }
 
-    this.encodeScampyUri = function(uri) {
+    this.encodeScampyUriParam = function(uri) {
       uri = uri.replace(/\//g, '|');
       return encodeURIComponent(uri);
     }

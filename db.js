@@ -78,7 +78,7 @@
           return null;
 
         var newConn = mongoose.createConnection(process.env[envKey],
-          { useNewUrlParser: true }, function (error) {
+          { useNewUrlParser: true, useCreateIndex: true }, function (error) {
             if (error) console.error(error);
             else console.log('Connected DB ' + dbName);
           });
@@ -261,11 +261,14 @@
      * feed
      */
 
-    function _fetchPosts(index, limit, filter, order, cb) {
+    function _fetchPosts(options, cb, dbName) {
       try {
-        if (index == 0)
-          index = undefined;
-        _Model('Post').find(filter)
+        const index = (options.index == 0)? undefined : options.index;
+        const limit = options.limit; 
+        const filter = options.filter;
+        const order = options.order;
+
+        _Model('Post', dbName).find(filter)
           .skip(index)
           .limit(limit)
           .sort({'date': order })
@@ -278,15 +281,17 @@
       }
     }
 
-    module.exports.fetchPosts = function(index, limit, filter, cb) {
+    module.exports.fetchPosts = function(options, cb, dbName) {
       var _filter = { 'queued': { "$ne": true } };
-      _filter = Object.assign(_filter, filter);
-      _fetchPosts(index, limit, _filter, -1, cb);
+      options.filter = Object.assign(options.filter, _filter);
+      options.order = -1;
+      _fetchPosts(options, cb, dbName);
     }
-    module.exports.fetchQueuedPosts = function(index, limit, filter, cb) {
+    module.exports.fetchQueuedPosts = function(options, cb) {
       var _filter = { 'queued': true };
-      _filter = Object.assign(_filter, filter);  
-      _fetchPosts(index, limit, _filter, 1, cb);
+      options.filter = Object.assign(options.filter, _filter);
+      options.order = 1;
+      _fetchPosts(options, cb);
     }
 
     /*
@@ -372,22 +377,19 @@
       });
     }
 
-    module.exports.addFollower = function(url, cb) {
+    module.exports.addFollower = function(url, dbName) {
       if (!url || url.indexOf('http') == -1
         || url.indexOf('/dashboard') == -1) /* only count as follower if 
                                              * fetch was from /dashboard */
-      {
-        if (cb)
-          cb(null, null);
         return;
-      }
 
       try {
         var urlObj = new URL(url);
         var hostUrl = urlObj.protocol + "//" + urlObj.host;
         var hostUrlKey = _makeUrlKey(hostUrl);
 
-        _Model('Follower').findOne({ 'url_key': hostUrlKey }, function(err, follower) {
+        _Model('Follower', dbName)
+          .findOne({ 'url_key': hostUrlKey }, function(err, follower) {
           if (follower)
           {
             follower.date = Date.now();
@@ -404,16 +406,12 @@
           }
 
           follower.save(function (err) {
-            if (cb)
-              cb(err, follower);
           });
         });
 
       }
       catch(err) {
         console.error(err);
-        if (cb)
-          cb(err, {});
       }
     }
 
@@ -454,9 +452,9 @@
     /*
      * blog
      */
-    module.exports.getSettings = function(cb) {
+    module.exports.getSettings = function(cb, dbName) {
       try {
-        _Model('Settings').findOne().sort({created_at: -1})
+        _Model('Settings', dbName).findOne().sort({created_at: -1})
           .exec(function(err, settings) {
             if (settings)
             {
@@ -548,5 +546,14 @@
         task.save();
       });
     }
+
+    //module.exports.useDb = function(dbName, func) {
+    //  var args = Array.prototype.slice.call(arguments, 2);
+    //  return function() {
+    //    var allArgs = args.concat(Array.prototype.slice.call(arguments));
+    //    this._DB_NAME = dbName;
+    //    return func.apply(this, allArgs);
+    //  };
+    //}
 
 }());

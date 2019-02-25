@@ -10,6 +10,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session);
+const URL = require('url').URL;
 const db = require('./db')
 const consts = require('./consts')
 const cron = require('./cron')
@@ -96,10 +97,18 @@ app.use((err, req, res, next) => {
   res.send('500: Internal server error');
 });
 
-function _decodeScampyUri(uri) { 
+function _decodeScampyUriParam(uri) { 
   if (!uri)
     return uri;
   return uri.replace(/\|/g, '/');
+}
+
+function _getDbNameFromHostUrl(host) {
+  if (!host)
+    return "";
+
+  var urlObj = new URL(host);
+  return urlObj.host.split('.')[0];
 }
 
 function _getReqProtocol(req) {
@@ -126,7 +135,7 @@ function _render(req, res, myuri) {
       uri = myuri;
   }
 
-  uri = _decodeScampyUri(uri);
+  uri = _decodeScampyUriParam(uri);
 
   res.render('pages/render', {
     'uri': uri,
@@ -152,16 +161,26 @@ app.get('/', function(req, res) {
   });
 });
 
-function _assembleFeed(req, contents, cb) {
+function _assembleFeed(req, contents, cb, hostUrl) {
+  var host = req.headers.host;
+  var dbName = "";
+
+  if (hostUrl)
+  {
+    dbName = _getDbNameFromHostUrl(hostUrl);
+    var urlObj = new URL(hostUrl);
+    host = urlObj.host;
+  }
+
   db.getSettings(function(err, settings) {
     var feed = {
-      'name': req.headers.host, 
+      'name': host, 
       'description': '',
       'avatar_url': '',
       'header_url': '',
-      'style_url': _getReqProtocol(req) 
-        + '://' + req.headers.host + '/stylesheets/feed.css',
-      'blog_url': _getReqProtocol(req) + "://" + req.headers.host,
+      'style_url': _getReqProtocol(req) + '://' + host 
+                      + '/stylesheets/feed.css',
+      'blog_url': _getReqProtocol(req) + "://" + host,
       'nsfw': false
     };
 
@@ -179,7 +198,7 @@ function _assembleFeed(req, contents, cb) {
       feed[k] = contents[k];
 
     cb(feed);
-  });
+  }, dbName);
 }
 
 app.get('/feed/:index?', function (req, res) {
@@ -194,20 +213,35 @@ app.get('/feed/:index?', function (req, res) {
   if (req.query['tag'])
     filter['tags'] = req.query['tag'];
 
+  /*
+   * 'host' param can be optionally passed to ask this server to
+   * return the feed of the specified host. This server will connect
+   * directly to the host's DB using credentials in .env
+   * For use in a multi-tenant scenario, e.g. if this server is functioning 
+   * as a proxy server for various hosts.
+   */
+  const dbName = _getDbNameFromHostUrl(req.query['host']);
+
   // send a page from DB
-  db.fetchPosts(index, numToFetch, filter, function(err, posts) {
+  var options = {
+    'index': index,
+    'limit': numToFetch,
+    'filter': filter
+  };
+
+  db.fetchPosts(options, function(err, posts) {
     _assembleFeed(req, { 'posts': posts }, function(feed) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(feed, null, 2));
-    });
-  });
+    }, req.query['host']);
+  }, dbName);
 
   if (index == 0)
-    db.addFollower(req.headers.referer);
+    db.addFollower(req.headers.referer, dbName);
 });
 
 app.get('/follow/check/:uri?', function (req, res) {
-  var uri = _decodeScampyUri(req.params['uri']);
+  var uri = _decodeScampyUriParam(req.params['uri']);
   db.isFollowing(uri, function(err, doc) {
     isFollowing = (doc)? true : false;
     ret = {
@@ -377,7 +411,12 @@ function _cronActivatePostQueue(interval) {
     + interval + " minute(s)");
 
   cron.addTask("post_from_queue", interval, function() {
-    db.fetchQueuedPosts(0, 1, {}, function(err, posts) {
+    var options = {
+      'index': 0,
+      'limit': 1,
+      'filter': {}
+    };
+    db.fetchQueuedPosts(options, function(err, posts) {
       if (!posts || posts.length == 0)
         return;
       var post = posts[0];
@@ -428,8 +467,12 @@ app.get('/dashboard/qfeed/:index?',
   index = (index)? parseInt(index) : 0;
 
   // send a page from DB
-  var numToFetch = app.locals.NUM_POSTS_PER_FETCH;
-  db.fetchQueuedPosts(index, numToFetch, {}, function(err, posts) {
+  var options = {
+    'index': index,
+    'limit': app.locals.NUM_POSTS_PER_FETCH,
+    'filter': {}
+  };
+  db.fetchQueuedPosts(options, function(err, posts) {
     _assembleFeed(req, { 'posts' : posts }, function(feed) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(feed, null, 2));
@@ -466,7 +509,18 @@ app.get('/dashboard/:start_offset?', cel.ensureLoggedIn(), function(req, res) {
   db.getRandomFollowing(function(err, follows) {
     followUris = []
     for (var i=0; i < follows.length; i++)
-      followUris.push(follows[i].url + "/" + startOffset);
+    {
+      var url = follows[i].url + "/" + startOffset;
+
+      if (url.indexOf(consts.MASTER_DOMAIN) != -1)
+      {
+        // reroute official blogs to proxy feed server for performance
+        url = consts.MASTER_FEED_PROXY + "/feed/" + startOffset
+          + "?host=" + encodeURIComponent(url);
+      }
+
+      followUris.push(url);
+    }
 
     res.render('pages/dashboard', {
       'uri': _getFeedUrl(req),
