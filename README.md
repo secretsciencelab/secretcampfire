@@ -10,7 +10,7 @@
 
 ## How to get an official *secret campfire* blog
 
-For an official blog on `secretcampfire.com`, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com). As a special introductory offer, we'll set up your blog for you and give you free lifetime hosting for just $5. Hurry before your favorite blog name gets taken by someone else.
+For an official blog on `secretcampfire.com`, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com). As a special introductory offer, we'll set up your blog and give you free lifetime hosting for just $5. Hurry before your favorite blog name gets taken by someone else.
 
 ## How to set up your own free *secret campfire* blog
 
