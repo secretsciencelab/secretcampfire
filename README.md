@@ -55,9 +55,9 @@ Enjoy the 'fire and share the love: http://secretcampfire.com
 ## How is *secret campfire* different?
 
 
-| <img src="docs/media/old-way.png" alt="Evil way">  | <img src="docs/media/new-way.png" alt="secret campfire way"> |
+| <img src="docs/media/new-way.png" alt="secret campfire way"> | <img src="docs/media/old-way.png" alt="Evil way">  |
 | -------------------------------------------------- | ------------------------------------------------------------ |
-| **Old way:** you make an account on their site... then they own your account and you're locked in. Which means they can shut you down and delete your account anytime they feel like it. | **`secret campfire`** way: your blog is 100% yours and you connect to other blogs in the `secret campfire` network directly. You're free to express yourself, your blogs live forever and no one can shut you down. |
+| **`secret campfire`** way: your blog is 100% yours and you connect to other blogs in the `secret campfire` network directly. You're free to express yourself, your blogs live forever and no one can shut you down. | **Old way:** you make an account on their site... then they own your account and you're locked in. Which means they can shut you down and delete your account anytime they feel like it. | **Old way:** you make an account on their site... then they own your account and you're locked in. Which means they can shut you down and delete your account anytime they feel like it. |
 
 ## Features
 
