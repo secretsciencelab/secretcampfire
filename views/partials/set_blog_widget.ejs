@@ -1,25 +1,41 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="set-blog-modal">
   <div class="modal-dialog" role="document"><div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title">Connect your <b><%= SITE_NAME %></b></h5>
+      <h5 class="modal-title">Get your <b><%= SITE_NAME %></b></h5>
+      <h5 class="modal-title d-none">Connect your <b><%= SITE_NAME %></b></h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div><!--header-->
-    <div class="modal-body"><form id="set-blog-form">
-      <div class="form-group">
-        <input type="text" class="form-control form-blog-url" 
-          value="" placeholder="Enter your <%= SITE_NAME %> blog URL">
-        <p class='text-right mt-2'>Don't have a <b><%= SITE_NAME %></b> yet? <a href="<%= MASTER_URL %>">Get yours here</a>!</p>
-      </div>
-    </form></div><!--body-->
-    <div id="set-blog-success-alert" 
-      class="alert alert-success collapse" role="alert">Connected!</div>
+
+    <div class="modal-body">
+      To perform that action, 
+        you first need to sign in to your <b><%= SITE_NAME %></b>.
+        Don't have one yet?
+       Why not get yours today so you can join the fun!
+    </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-primary" 
-        id="set-blog-save-button">Connect</button>
-      <button type="button" class="collapse btn btn-secondary" data-dismiss="modal">Close</button>
-    </div><!--footer-->
+      <a href="<%= MASTER_URL %>" role="button" class="btn btn-info">Get your <b><%= SITE_NAME %></b> here</a> 
+    </div>
+
+    <div class="d-none">
+      <div class="modal-body"><form id="set-blog-form">
+        <div class="form-group">
+          <input type="text" class="form-control form-blog-url" 
+            value="" placeholder="Enter your <%= SITE_NAME %> blog URL">
+          <p class='text-right mt-2'>Don't have a <b><%= SITE_NAME %></b> yet? <a href="<%= MASTER_URL %>">Get yours here</a>!</p>
+        </div>
+      </form></div><!--body-->
+      <div id="set-blog-success-alert" 
+        class="alert alert-success collapse" role="alert">Connected!</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" 
+          id="set-blog-save-button">Connect</button>
+        <button type="button" class="collapse btn btn-secondary" data-dismiss="modal">Close</button>
+      </div><!--footer-->
+    </div><!--d-none-->
+
+
   </div></div><!--document-->
 </div><!--modal-->
 
