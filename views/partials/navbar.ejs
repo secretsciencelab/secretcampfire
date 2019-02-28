@@ -71,6 +71,10 @@ var Navbar = new function() {
       $("#navbar-get-scampy-button").hide();
       nb.activateDashButton(); 
 
+      var activeUrl = urls[0]; // pick up the active url before sorting
+
+      urls.sort(); // sort to keep the menu list consistent
+
       var menuItemsHtml = "";
       for (var ui=0; ui < urls.length; ui++)
         menuItemsHtml += '<div class="dropdown-item"'
@@ -93,11 +97,11 @@ var Navbar = new function() {
         + menuItemsHtml
         + '</div></div>';
       }
-      var displayUrl = Utils.prettifyBlessedHostUrlForDisplay(urls[0]);
+      var displayUrl = Utils.prettifyBlessedHostUrlForDisplay(activeUrl);
       $("#active-blog-display").html(
         "<span class='oi oi-fire' id='active-blog-visit-button'"
         + " style='cursor: pointer' aria-hidden='true'"
-        + " data-url='" + urls[0] + "'></span> "
+        + " data-url='" + activeUrl + "'></span> "
         + "<span id='active-blog'"
         + " style='cursor:pointer;font-weight:bold;'>"
         + displayUrl
