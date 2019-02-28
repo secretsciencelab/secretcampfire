@@ -2,11 +2,13 @@
 <div class="jumbotron jumbotron-fluid" id="jumbotron"></div>
 <div id="masthead" class="collapse">
   <div class="text-center">
-    <a href="/"><div class="d-inline-block avatar collapse"></div></a>
+    <a class="link-to-site" href="/">
+      <div class="d-inline-block avatar collapse"></div>
+    </a>
   </div>
   <div class="text-center">
     <div class="d-inline-block">
-      <a href="/"><h1 class="collapse"></h1></a>
+      <a class="link-to-site" href="/"><h1 class="collapse"></h1></a>
     </div>
   </div>
   <p class="lead collapse"></p>
@@ -16,6 +18,7 @@
 var Masthead = new function() {
   this.init = function(uri) {
     this.uri = uri;
+    this._mdConverter = new showdown.Converter();
 
     this.update();
   };
@@ -24,6 +27,7 @@ var Masthead = new function() {
     if (typeof NsfwOverlay !== 'undefined')
       NsfwOverlay.open();
 
+    var mh = this;
     $.getJSON(this.uri, function(data) {
       if (typeof NsfwOverlay !== 'undefined')
       {
@@ -72,14 +76,17 @@ var Masthead = new function() {
           $("#masthead h1").html("").hide();
 
         if (data.description)
-          $("#masthead .lead").html(data.description).show();
+        {
+          var markdown = mh._mdConverter.makeHtml(data.description);
+          $("#masthead .lead").html(markdown).show();
+        }
         else
           $("#masthead .lead").html("").hide();
 
         if (data.blog_url)
-          $("#masthead a").attr('href', data.blog_url);
+          $("#masthead a.link-to-site").attr('href', data.blog_url);
         else
-          $("#masthead a").attr('href', "/");
+          $("#masthead a.link-to-site").attr('href', "/");
       }
       else
         $("#masthead").hide();
