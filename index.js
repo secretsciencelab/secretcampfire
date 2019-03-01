@@ -217,7 +217,7 @@ app.get('/feed/:index?', function (req, res) {
 
   filter = {};
   if (req.query['tag'])
-    filter['tags'] = req.query['tag'];
+    filter['tags'] = { '$regex': req.query['tag'], '$options': 'i' };
 
   /*
    * 'host' param can be optionally passed to ask this server to
