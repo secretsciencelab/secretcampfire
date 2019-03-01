@@ -131,6 +131,8 @@ var Masthead = new function() {
       pageLabel = "Dashboard - Queue - ";
     else if (window.location.pathname.indexOf("/dashboard") != -1)
       pageLabel = "Dashboard - ";
+    else if (window.location.pathname.indexOf("/settings") != -1)
+      pageLabel = "Settings - ";
 
     $("title").prepend(pageLabel);
 
