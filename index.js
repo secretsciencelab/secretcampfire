@@ -108,7 +108,11 @@ function _getDbNameFromHostUrl(host) {
     return "";
 
   var urlObj = new URL(host);
-  return urlObj.host.split('.')[0];
+  var name = urlObj.host.split('.')[0];
+  name = name.toLowerCase();
+  name = name.replace(/-/g, '_');
+
+  return name;
 }
 
 function _getReqProtocol(req) {
