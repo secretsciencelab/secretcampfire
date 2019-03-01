@@ -165,12 +165,13 @@ app.get('/', function(req, res) {
   });
 });
 
-function _assembleFeed(req, contents, cb, hostUrl) {
-  var host = req.headers.host;
+function _assembleFeed(req, contents, cb) {
   var dbName = "";
+  var host = req.headers.host;
 
-  if (hostUrl)
+  if (req.query['host'])
   {
+    const hostUrl = req.query['host'];
     dbName = _getDbNameFromHostUrl(hostUrl);
     var urlObj = new URL(hostUrl);
     host = urlObj.host;
@@ -237,7 +238,7 @@ app.get('/feed/:index?', function (req, res) {
     _assembleFeed(req, { 'posts': posts }, function(feed) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(feed, null, 2));
-    }, req.query['host']);
+    });
   }, dbName);
 
   if (index == 0)

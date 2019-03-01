@@ -17,7 +17,8 @@
       password: String,
       nsfw: Boolean,
       imgur_key: String,
-      queue_interval: { type: Number, default: 0 }
+      queue_interval: { type: Number, default: 0 },
+      custom_head: String
     });
 
     const PostSchema = new mongoose.Schema({
