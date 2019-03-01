@@ -197,6 +197,7 @@ function _assembleFeed(req, contents, cb) {
       feed.header_url = settings.header_url;
       if (settings.nsfw)
         feed.nsfw = true;
+      feed.custom_head = (settings.custom_head)? settings.custom_head : "";
     }
 
     for (k in contents)

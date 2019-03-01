@@ -101,6 +101,13 @@
              <% } %>
              placeholder="E.g., enter '60' for 'every 60 minutes'" />
             </div>
+
+            <div class="form-group">
+            <label>&lt;head&gt; custom code</label>
+            <textarea class="form-control form-control-sm form-custom-head" 
+              placeholder="Custom code to inject into <head>" rows=1><%= settings.custom_head %></textarea>
+            </div>
+
           </div><!--advanced-settings-->
 
         </form>
@@ -133,6 +140,7 @@
       var queueInterval = form.find('.form-queue-interval').val();
       if (!queueInterval)
           queueInterval = 0;
+      var customHead = form.find('.form-custom-head').val();
 
       $.post('/settings', { 
         name: name,
@@ -142,7 +150,8 @@
         password: password,
         nsfw: nsfw,
         imgur_key: imgur,
-        queue_interval: queueInterval
+        queue_interval: queueInterval,
+        custom_head: customHead
       },
       function(data, status, xhr) {
         // success

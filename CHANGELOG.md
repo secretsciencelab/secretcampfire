@@ -10,7 +10,7 @@ CHANGELOG
   - `Edit post` 
   - Imgur image file upload support
   - added tag support and browsing a blog by tags
-  - added views/partial/custom.ejs for user to insert custom css/js overrides
+  - added way to insert custom code into `<head>` in advanced settings
   - fixes to run as an official subdomain on secretcampfire.com 
   - persistent auth sessions with DB store
 

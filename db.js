@@ -496,6 +496,7 @@
         settings.nsfw = newSettings.nsfw;
         settings.imgur_key = newSettings.imgur_key;
         settings.queue_interval = newSettings.queue_interval;
+        settings.custom_head = newSettings.custom_head;
         if (newSettings.password)
           settings.password = md5(newSettings.password);
         
