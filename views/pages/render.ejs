@@ -111,14 +111,10 @@
     <% include ../partials/render_feed.ejs %>
     <% include ../partials/render_post.ejs %>
     <% include ../partials/follow_button.ejs %>
-    <% include ../partials/utils.ejs %>
   
     var renderer = null;
   
     $.getJSON("<%= uri %>", function(data) {
-      if (data.style_url)
-        Utils.addCss(data.style_url);
-
       if (data.posts)
       {
         // feed view

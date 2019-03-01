@@ -277,7 +277,6 @@
     <% include ../partials/reblog_button.ejs %>
     <% include ../partials/render_feed.ejs %>
     <% include ../partials/news.ejs %>
-    <% include ../partials/utils.ejs %>
     <% include ../partials/image_uploader.ejs %>
 
     /* 
@@ -306,26 +305,6 @@
      * Dashboard feed
      */
     var renderUris = <%- JSON.stringify(render_uris) %>;
-
-    // apply style and modify title bar
-    if (renderUris.length == 1 && (_isPostsPage || _isQueuePage))
-    {
-      $.getJSON(renderUris[0], function(data) {
-        if (data.style_url)
-          Utils.addCss(data.style_url);
-
-        var pageLabel = "";
-        if (_isPostsPage) pageLabel = " - Posts - ";
-        if (_isQueuePage) pageLabel = " - Queue - ";
-
-        if (data.name && (_isPostsPage || _isQueuePage))
-          $("title").prepend(data.name + pageLabel);
-        else
-          $("title").prepend("Dashboard - Posts - ");
-      });  
-    }
-    else
-      $("title").prepend("Dashboard - ");
 
     // enable 'post now' button if on Queue page
     if (_isQueuePage)
