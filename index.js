@@ -304,19 +304,17 @@ app.get('/following/:index?', function (req, res) {
   });
 });
 
-app.get('/is_owner', function (req, res) {
-  var isOwner = false;
+app.get(['/is_connected', '/is_owner'], function (req, res) {
+  var isConnected = false;
   if (req.user)
-    isOwner = true;
-
+    isConnected = true;
   ret = {
-    'is_owner': isOwner
+    'is_owner': isConnected,
+    'is_connected' : isConnected
   };
-
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(ret, null, 2));
 });
-
 
 app.get('/login', function(req, res) {
   res.render('pages/login', {
@@ -400,9 +398,10 @@ app.get('/tag/:tag/:index?', function (req, res) {
 // catch-all route
 app.get('*', function (req, res, next) {
   if (req.url.indexOf("/dashboard") != -1
-    || req.url.indexOf("/settings") != -1
     || req.url.indexOf("/follow") != -1
-    || req.url.indexOf("/logout") != -1)
+    || req.url.indexOf("/like") != -1
+    || req.url.indexOf("/logout") != -1
+    || req.url.indexOf("/settings") != -1)
     return next();
 
   res.send("");
@@ -559,6 +558,14 @@ app.post('/settings', cel.ensureLoggedIn(), function(req, res) {
       _cronDeactivatePostQueue();
 
     res.status(200).json(settings);
+  });
+});
+
+app.post('/like', cel.ensureLoggedIn(), function(req, res) {
+  var url = req.body.url;
+  
+  db.addToLikes(req.body.url, function(err, newLike) {
+    res.status(200).json(newLike);
   });
 });
 

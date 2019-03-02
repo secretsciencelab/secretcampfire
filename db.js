@@ -35,10 +35,6 @@
       queued: { type: Boolean, default: false }
     });
 
-    // collections:
-    // - follows
-    // - followers
-    // - postsources
     const FollowSchema = new mongoose.Schema({
       id: String,
       date: { type: Date, default: Date.now },
@@ -49,12 +45,23 @@
       count: { type: Number, default: 0 }
     });
 
+    const NoteSchema = new mongoose.Schema({
+      id: String,
+      date: { type: Date, default: Date.now },
+      type: { type: String, enum: ['like', 'reblog'] },
+      url_key: { type: String, unique: true },
+      url: { type: String }, // relative if local, full url if remote
+      visitor: { type: String }
+    });
+
     const _schema = {
       'Settings': SettingsSchema,
       'Post': PostSchema,
       'Follow': FollowSchema,
       'Follower': FollowSchema,
-      'PostSource': FollowSchema
+      'PostSource': FollowSchema,
+      'Likes': NoteSchema,
+      'Notes': NoteSchema
     };
 
     /* 
@@ -448,6 +455,14 @@
         if (cb)
           cb(err, count);
       });
+    }
+
+    /*
+     * notes
+     */
+    module.exports.addToLikes = function(url, cb) {
+      if (cb)
+        cb(null, null);
     }
 
     /*
