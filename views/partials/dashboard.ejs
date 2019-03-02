@@ -23,7 +23,7 @@ var Dashboard = new function() {
     $(dash.postSelector+"-modal").on('hidden.bs.modal', function() {
       $(this).find('form').get(0).reset(); // clear form
       // reset to 'new post' mode
-      $(dash.postSelector+"-modal h5").html("New post");
+      $(dash.postSelector+"-modal .modal-title .action").html("New post");
       $(dash.postSelector+"-save-button .oi")
         .removeClass('oi-clock').addClass('oi-pencil');
       $(dash.postSelector+"-save-button .label").text("Post");
@@ -202,7 +202,7 @@ var Dashboard = new function() {
     $.getJSON(url, function(data) {
       console.log(data);
       var $pform = $(dash.postSelector+"-form");
-      $(dash.postSelector+"-modal h5").html("Reblog");
+      $(dash.postSelector+"-modal .modal-title .action").html("Reblog");
 
       if (data.post.thumbs)
         $pform.find('.form-post-thumb').val(data.post.thumbs[0]);
@@ -231,7 +231,7 @@ var Dashboard = new function() {
     $.getJSON(uri, function(data) {
       console.log(data);
       var $pform = $(dash.postSelector+"-form");
-      $(dash.postSelector+"-modal h5").html("Edit");
+      $(dash.postSelector+"-modal .modal-title .action").html("Edit");
 
       if (data.post.title)
         $pform.find('.form-post-title').val(data.post.title);
@@ -262,6 +262,7 @@ var Dashboard = new function() {
       dash.activateImageUploader(data.imgur_key);
       dash.activateQueuedPosting(data.queue_interval);
       dash.drawModalAvatars(data.avatar_url);
+      dash.drawModalTargetName(data.name);
     });
   }
 
@@ -300,5 +301,14 @@ var Dashboard = new function() {
 
   this.drawModalAvatars = function(url) {
     $(".modal .avatar").css('background-image', 'url(' + url + ')').show();
+  }
+
+  this.drawModalTargetName = function(name) {
+    if (!name)
+      name = window.location.host;
+
+    $(".modal .modal-title .target-name").html(
+      "<small> <span class='small text-muted oi oi-chevron-right' aria-hidden='true'></span> "
+      + name + "</small>");
   }
 };
