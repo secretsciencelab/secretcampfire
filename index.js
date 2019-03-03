@@ -65,6 +65,7 @@ const corsOptions = {
 
 app
   .use(cors(corsOptions))
+  .options('*', cors(corsOptions))
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
