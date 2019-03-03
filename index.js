@@ -56,13 +56,20 @@ app.locals.MASTER_NEWS = consts.MASTER_NEWS;
 app.locals.BLESSED_SCAMPY_DOMAINS = consts.BLESSED_SCAMPY_DOMAINS;
 app.locals.NUM_POSTS_PER_FETCH = consts.NUM_POSTS_PER_FETCH;
 
+const corsWhitelist = [/\.com$/];
 const corsOptions = {
-  credentials: true
+  credentials: true,
+  origin: function (origin, callback) {
+    if (corsWhitelist.indexOf(origin) !== -1 || !origin)
+      callback(null, true)
+    else
+      callback(new Error('Not allowed by CORS'))
+  }
 };
 
 app
   .use(cors(corsOptions))
-  .options('*', cors(corsOptions))
+  //.options('*', cors(corsOptions))
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
