@@ -56,7 +56,7 @@ app.locals.MASTER_NEWS = consts.MASTER_NEWS;
 app.locals.BLESSED_SCAMPY_DOMAINS = consts.BLESSED_SCAMPY_DOMAINS;
 app.locals.NUM_POSTS_PER_FETCH = consts.NUM_POSTS_PER_FETCH;
 
-const corsWhitelist = [/\.com$/];
+const corsWhitelist = [/\.com$/, /localhost/];
 const corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
