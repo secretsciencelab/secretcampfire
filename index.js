@@ -316,6 +316,18 @@ app.get(['/is_connected', '/is_owner'], function (req, res) {
   res.send(JSON.stringify(ret, null, 2));
 });
 
+app.get('/like/check/:uri?', function (req, res) {
+  var uri = _decodeScampyUriParam(req.params['uri']);
+  db.isLiked(uri, function(err, doc) {
+    isLiked = (doc)? true : false;
+    ret = {
+      'is_liked': isLiked
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(ret, null, 2));
+  });
+});
+
 app.get('/login', function(req, res) {
   res.render('pages/login', {
     'uri': _getFeedUrl(req)
@@ -563,9 +575,27 @@ app.post('/settings', cel.ensureLoggedIn(), function(req, res) {
 
 app.post('/like', cel.ensureLoggedIn(), function(req, res) {
   var url = req.body.url;
+  if (url.indexOf('/post/') == -1)
+  {
+    res.status(500).send("{}");
+    return;
+  }
   
-  db.addToLikes(req.body.url, function(err, newLike) {
+  db.addToLikes(url, function(err, newLike) {
     res.status(200).json(newLike);
+  });
+});
+
+app.post('/like/delete', cel.ensureLoggedIn(), function(req, res) {
+  var url = req.body.url;
+  if (url.indexOf('/post/') == -1)
+  {
+    res.status(500).send("{}");
+    return;
+  }
+  
+  db.delFromLikes(url, function(err) {
+    res.status(200).json({});
   });
 });
 

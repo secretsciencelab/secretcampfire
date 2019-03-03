@@ -64,6 +64,10 @@ RenderPost.prototype.init = function() {
     $(reblogButtonSelector).data('reblog-url', pr.uri);
     ReblogButton.activate($(reblogButtonSelector));
 
+    var likeButtonSelector = pr.selector+" .like-button";
+    $(likeButtonSelector).data('like-url', pr.uri);
+    LikeButton.activate($(likeButtonSelector));
+
     Utils.makeEmbedsResponsive([
       pr.selector + " iframe",
       pr.selector + " embed",

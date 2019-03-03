@@ -51,7 +51,7 @@
       type: { type: String, enum: ['like', 'reblog'] },
       url_key: { type: String, unique: true },
       url: { type: String }, // relative if local, full url if remote
-      visitor: { type: String }
+      visitor: { type: String, default: "" }
     });
 
     const _schema = {
@@ -60,8 +60,8 @@
       'Follow': FollowSchema,
       'Follower': FollowSchema,
       'PostSource': FollowSchema,
-      'Likes': NoteSchema,
-      'Notes': NoteSchema
+      'Like': NoteSchema,
+      'Note': NoteSchema
     };
 
     /* 
@@ -460,9 +460,59 @@
     /*
      * notes
      */
+
+    module.exports.isLiked = function(url, cb) {
+      try {
+        _Model('Like').findOne({
+          'url_key': _makeUrlKey(url)
+        }, function(err, doc) {
+          if (cb)
+            cb(err, doc);
+        });
+      }
+      catch(err) {
+        console.error(err);
+        if (cb)
+          cb(err, null);
+      }
+    }
+
     module.exports.addToLikes = function(url, cb) {
-      if (cb)
-        cb(null, null);
+      try {
+        var urlKey = _makeUrlKey(url);
+
+        like = new _Model('Like')({
+          type: 'like',
+          url_key: urlKey,
+          url: url
+        });
+        like.id = like._id;
+
+        like.save(function(err) {
+          if (cb)
+            cb(err, like);
+        });
+      }
+      catch(err) {
+        console.error(err);
+        if (cb)
+          cb(err, {});
+      }
+    }
+
+    module.exports.delFromLikes = function(url, cb) {
+      try {
+        var urlKey = _makeUrlKey(url);
+        _Model('Like').deleteOne({'url_key': urlKey}, function(err) {
+          if (cb)
+            cb(err);
+        });
+      }
+      catch(err) {
+        console.error(err);
+        if (cb)
+          cb(err);
+      }
     }
 
     /*

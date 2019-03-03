@@ -28,6 +28,11 @@
   padding-bottom: 75%;
 }
 
+.card-like-button.liked,
+.like-button.liked {
+  color: red !important;
+}
+
 /*
  * feed view
  */
@@ -154,13 +159,11 @@ a.card-title-link {
 #post-container .action-bar .action-bar-button {
   padding: 5px;
   border-radius: 50%;
-  border: 1px solid #ccc;
+  border: 1px solid transparent;
+  cursor: pointer;
 }
 #post-container .action-bar .action-bar-button:hover {
   color: #ccc;
   background-color: #333;
   border: 1px solid #ccc;
-}
-#post-container .action-bar .reblog-button {
-  cursor: pointer;
 }

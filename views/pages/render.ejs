@@ -84,6 +84,7 @@
               <div class="date small"></div>
             </div>
             <div class="col text-right">
+              <div class='like-button oi oi-heart action-bar-button' title='Like' aria-hidden='true'></div>
               <div class='reblog-button oi oi-loop action-bar-button' title='Reblog' aria-hidden='true'></div>
             </div>
           </div><!--row-->
@@ -108,6 +109,7 @@
 
   <script>
     <% include ../partials/reblog_button.ejs %>
+    <% include ../partials/like_button.ejs %>
     <% include ../partials/render_feed.ejs %>
     <% include ../partials/render_post.ejs %>
     <% include ../partials/follow_button.ejs %>

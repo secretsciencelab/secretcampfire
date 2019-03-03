@@ -14,6 +14,9 @@ CHANGELOG
   - fixes to run as an official subdomain on secretcampfire.com 
   - persistent auth sessions with DB store
 
+- 1.2
+  - Like/Heart button to add to personal 'Likes' list
+
 ### Future changes
 - suggest "related blogs"
 - keyboard shortcuts

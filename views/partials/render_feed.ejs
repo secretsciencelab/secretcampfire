@@ -309,6 +309,8 @@ RenderFeed.prototype.initInfiniteScroll = function() {
         newCard.find(".card-title").html(post.title);
         var markdown = fr._mdConverter.makeHtml(post.text);
         newCard.find(".card-text").html(markdown);
+        newCard.find(".card-like-button").data('like-url', 
+          postUrlBase + post.post_url);
         newCard.find(".card-reblog-button").data('reblog-url', 
           postUrlBase + post.post_url);
         newCard.find(".card-post-now-button")
@@ -322,6 +324,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
 
     // setup new cards
     ReblogButton.activate(newCards.find(".card-reblog-button"));
+    LikeButton.activate(newCards.find(".card-like-button"));
     $(".card-post-now-button").click(function(e) {
       e.preventDefault();
       var $button = $(this);
