@@ -48,6 +48,8 @@ var LikeButton = new function() {
 
   this.updateStatus = function(els) {
     SetBlogWidget.getBlog(function(url) {
+      if (!url)
+        return;
       els.each(function() {
         var lb = $(this);
         var likeUrl = lb.data('like-url');
@@ -63,7 +65,7 @@ var LikeButton = new function() {
           crossDomain: true
         });
       });
-    });
+    }, /*checkOnly*/true);
   };
 
   this.handleClick = function(lb, userUrl, likeUrl, openNewTab) {
