@@ -57,7 +57,8 @@ app.locals.BLESSED_SCAMPY_DOMAINS = consts.BLESSED_SCAMPY_DOMAINS;
 app.locals.NUM_POSTS_PER_FETCH = consts.NUM_POSTS_PER_FETCH;
 
 const corsOptions = {
-  origin: '*',
+  origin: true,
+  credentials: true,
   optionsSuccessStatus: 200
 }
 app
