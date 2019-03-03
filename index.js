@@ -60,10 +60,10 @@ const corsWhitelist = [/\.com$/, /localhost/];
 const corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
-    if (corsWhitelist.indexOf(origin) !== -1 || !origin)
-      callback(null, true)
-    else
-      callback(new Error('Not allowed by CORS'))
+    //if (corsWhitelist.indexOf(origin) !== -1 || !origin)
+    callback(null, true);
+    //else
+    //  callback(new Error('Not allowed by CORS'));
   }
 };
 
