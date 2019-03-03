@@ -1,0 +1,73 @@
+var LikeButton = new function() { 
+  this.activate = function(els) {
+    this.updateStatus(els);
+
+    var obj = this;
+    els.each(function() {
+      var lb = $(this);
+
+      if (lb.data('like-action-bound'))
+        return;
+
+      lb.mouseup(function(e) {
+        var leftClick = e.which == 1;
+        var middleClick = e.which == 2;
+        if (!leftClick && !middleClick)
+          return;
+          
+        e.preventDefault();
+
+        var likeUrl = lb.data('like-url');
+        SetBlogWidget.getBlog(function(url) {
+          $.getJSON(url+"/is_connected", function(data) {
+            console.log("ANDBG is connected?");
+            console.log(data);
+            if (!data || !data.is_connected)
+            {
+              SetBlogWidget.open();
+              return;
+            }
+
+            obj.handleClick(lb, url, likeUrl, middleClick);
+          });
+        });
+
+        return false;
+      })
+      .data('like-action-bound', true);
+    });
+  };
+
+  this.updateStatus = function(els) {
+    SetBlogWidget.getBlog(function(url) {
+      els.each(function() {
+        var lb = $(this);
+        var likeUrl = lb.data('like-url');
+        var checkUrl = url
+            + "/like/check/"
+            + Utils.encodeScampyUriParam(likeUrl);
+        $.getJSON(checkUrl, function(data) {
+          if (data && data.is_liked)
+            lb.data('liked', true).addClass('liked'); 
+        });
+      });
+    });
+  };
+
+  this.handleClick = function(lb, userUrl, likeUrl, openNewTab) {
+    var actionPath = "/like";
+    if (lb.data('liked'))
+      actionPath = "/like/delete";
+
+    $.post(userUrl + actionPath, { 
+      url: likeUrl
+    },
+    function(data, status, xhr) {
+      if (lb.data('liked'))
+        lb.data('liked', null).removeClass('liked');
+      else
+        lb.data('liked', true).addClass('liked');
+    },
+    'json');
+  }
+};
