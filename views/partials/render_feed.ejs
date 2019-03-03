@@ -131,14 +131,16 @@ RenderFeed.prototype.initFeeds = function(uris) {
     $.ajax({
       url: uris[i],
       type: 'HEAD',
+      crossDomain: true,
       complete: function(xhr) {
         fr._numFeedsToInit--;
         
-        if (xhr.status != 200)
+        if (xhr.status != 200                // reject errors
+          || this.url.indexOf("http") == -1) // reject relative paths
+        {
+          console.log("[RenderFeed] skip bad feed: " + this.url);
           return;
-
-        if (this.url.indexOf("http") == -1)
-          return; // reject relative paths
+        }
 
         fr._feedMgr.add(this.url);
         fr.startDrawing();
