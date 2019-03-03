@@ -19,14 +19,24 @@ var LikeButton = new function() {
 
         var likeUrl = lb.data('like-url');
         SetBlogWidget.getBlog(function(url) {
-          $.getJSON(url+"/is_connected", function(data) {
-            if (!data || !data.is_connected)
-            {
-              SetBlogWidget.open();
-              return;
-            }
+          $.ajax(url+"/is_connected", {
+            dataType: "json",
+            success: function(data, status, xhr) {
+              if (!data || !data.is_connected)
+              {
+                SetBlogWidget.open();
+                return;
+              }
 
-            obj.handleClick(lb, url, likeUrl, middleClick);
+              obj.handleClick(lb, url, likeUrl, middleClick);
+            },
+            error: function(jqxhr, textStatus, errorThrown) {
+              console.error(errorThrown);
+            },
+            xhrFields: {
+              withCredentials: true
+            },
+            crossDomain: true
           });
         });
 
@@ -44,9 +54,16 @@ var LikeButton = new function() {
         var checkUrl = url
             + "/like/check/"
             + Utils.encodeScampyUriParam(likeUrl);
-        $.getJSON(checkUrl, function(data) {
-          if (data && data.is_liked)
-            lb.data('liked', true).addClass('liked'); 
+        $.ajax(checkUrl, {
+          dataType: "json",
+          success: function(data) {
+            if (data && data.is_liked)
+              lb.data('liked', true).addClass('liked'); 
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          crossDomain: true
         });
       });
     });
@@ -57,15 +74,20 @@ var LikeButton = new function() {
     if (lb.data('liked'))
       actionPath = "/like/delete";
 
-    $.post(userUrl + actionPath, { 
-      url: likeUrl
-    },
-    function(data, status, xhr) {
-      if (lb.data('liked'))
-        lb.data('liked', null).removeClass('liked');
-      else
-        lb.data('liked', true).addClass('liked');
-    },
-    'json');
+    $.ajax(userUrl + actionPath, { 
+      method: "POST",
+      data: { url: likeUrl },
+      dataType: "json",
+      success: function(data, status, xhr) {
+        if (lb.data('liked'))
+          lb.data('liked', null).removeClass('liked');
+        else
+          lb.data('liked', true).addClass('liked');
+      },
+      xhrFields: {
+        withCredentials: true
+      },
+      crossDomain: true
+    });
   }
 };
