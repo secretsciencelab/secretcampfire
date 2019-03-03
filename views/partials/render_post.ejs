@@ -11,68 +11,72 @@ function RenderPost(cfg) {
 RenderPost.prototype.init = function() {
   var pr = this;
 
-  $.getJSON(this.uri, function(data) {
-    var post = data.post;
-    $(pr.selector).show();
+  $.ajax(this.uri, {
+    dataType: "json",
+    crossDomain: true,
+    success: function(data) {
+      var post = data.post;
+      $(pr.selector).show();
 
-    if (post.re_url)
-    {
-      var urlObj = new URL(post.re_url);
-      var reblogRenderUrl = urlObj.protocol + "//" + urlObj.host 
-        + "/render/" + Utils.encodeScampyUriParam(post.re_url);
-      $(pr.selector+" .reblog-info").show();
-      $(pr.selector+" .reblog-author-post-link").attr('href', reblogRenderUrl);
-      $(pr.selector+" .reblog-author").html(urlObj.host);
-    }
-
-    $(pr.selector+" .date").html(post.date);
-
-    if (post.images && post.images.length && post.images[0])
-      $(pr.selector+" .img-top").attr('src', post.images[0]);
-    else if (post.thumbs && post.thumbs.length && post.thumbs[0])
-      $(pr.selector+" .img-top").attr('src', post.thumbs[0]);
-    else
-      $(pr.selector+" .img-top").hide();
-
-    $(pr.selector+" .title").html(post.title);
-    if (post.urls && post.urls.length && post.urls[0])
-    {
-      $(pr.selector+" .img-top-link").attr('href', post.urls[0]);
-      $(pr.selector+" .title-link").attr('href', post.urls[0]);
-    }
-
-    var markdown = pr._mdConverter.makeHtml(post.text);
-    $(pr.selector+" .text").html(markdown);
-
-    if (post.tags)
-    {
-      var urlObj = new URL(pr.uri);
-      var tagBaseUrl = urlObj.protocol + "//" + urlObj.host + "/tag";
-      for (var ti=0; ti < post.tags.length; ti++)
+      if (post.re_url)
       {
-        if (!post.tags[ti])
-          continue;
-
-        $(pr.selector+" .tags").append('<a class="text-secondary mr-1" '
-          + 'href="'
-          + tagBaseUrl + "/" + post.tags[ti]
-          + '">#' + post.tags[ti] + '</a> ');
+        var urlObj = new URL(post.re_url);
+        var reblogRenderUrl = urlObj.protocol + "//" + urlObj.host 
+          + "/render/" + Utils.encodeScampyUriParam(post.re_url);
+        $(pr.selector+" .reblog-info").show();
+        $(pr.selector+" .reblog-author-post-link").attr('href', reblogRenderUrl);
+        $(pr.selector+" .reblog-author").html(urlObj.host);
       }
+
+      $(pr.selector+" .date").html(post.date);
+
+      if (post.images && post.images.length && post.images[0])
+        $(pr.selector+" .img-top").attr('src', post.images[0]);
+      else if (post.thumbs && post.thumbs.length && post.thumbs[0])
+        $(pr.selector+" .img-top").attr('src', post.thumbs[0]);
+      else
+        $(pr.selector+" .img-top").hide();
+
+      $(pr.selector+" .title").html(post.title);
+      if (post.urls && post.urls.length && post.urls[0])
+      {
+        $(pr.selector+" .img-top-link").attr('href', post.urls[0]);
+        $(pr.selector+" .title-link").attr('href', post.urls[0]);
+      }
+
+      var markdown = pr._mdConverter.makeHtml(post.text);
+      $(pr.selector+" .text").html(markdown);
+
+      if (post.tags)
+      {
+        var urlObj = new URL(pr.uri);
+        var tagBaseUrl = urlObj.protocol + "//" + urlObj.host + "/tag";
+        for (var ti=0; ti < post.tags.length; ti++)
+        {
+          if (!post.tags[ti])
+            continue;
+
+          $(pr.selector+" .tags").append('<a class="text-secondary mr-1" '
+            + 'href="'
+            + tagBaseUrl + "/" + post.tags[ti]
+            + '">#' + post.tags[ti] + '</a> ');
+        }
+      }
+
+      var reblogButtonSelector = pr.selector+" .reblog-button";
+      $(reblogButtonSelector).data('reblog-url', pr.uri);
+      ReblogButton.activate($(reblogButtonSelector));
+
+      var likeButtonSelector = pr.selector+" .like-button";
+      $(likeButtonSelector).data('like-url', pr.uri);
+      LikeButton.activate($(likeButtonSelector));
+
+      Utils.makeEmbedsResponsive([
+        pr.selector + " iframe",
+        pr.selector + " embed",
+        pr.selector + " object",
+        pr.selector + " video"
+      ]);
     }
-
-    var reblogButtonSelector = pr.selector+" .reblog-button";
-    $(reblogButtonSelector).data('reblog-url', pr.uri);
-    ReblogButton.activate($(reblogButtonSelector));
-
-    var likeButtonSelector = pr.selector+" .like-button";
-    $(likeButtonSelector).data('like-url', pr.uri);
-    LikeButton.activate($(likeButtonSelector));
-
-    Utils.makeEmbedsResponsive([
-      pr.selector + " iframe",
-      pr.selector + " embed",
-      pr.selector + " object",
-      pr.selector + " video"
-    ]);
   });
 }
