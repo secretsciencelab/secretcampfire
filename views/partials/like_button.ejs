@@ -60,9 +60,6 @@ var LikeButton = new function() {
             if (data && data.is_liked)
               lb.data('liked', true).addClass('liked'); 
           },
-          xhrFields: {
-            withCredentials: true
-          },
           crossDomain: true
         });
       });
