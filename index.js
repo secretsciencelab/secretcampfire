@@ -56,9 +56,13 @@ app.locals.MASTER_NEWS = consts.MASTER_NEWS;
 app.locals.BLESSED_SCAMPY_DOMAINS = consts.BLESSED_SCAMPY_DOMAINS;
 app.locals.NUM_POSTS_PER_FETCH = consts.NUM_POSTS_PER_FETCH;
 
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200
+}
 app
-  .use(cors())
-  .options('*', cors())
+  .use(cors(corsOptions))
+  .options('*', cors(corsOptions))
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
