@@ -20,8 +20,6 @@ var LikeButton = new function() {
         var likeUrl = lb.data('like-url');
         SetBlogWidget.getBlog(function(url) {
           $.getJSON(url+"/is_connected", function(data) {
-            console.log("ANDBG is connected?");
-            console.log(data);
             if (!data || !data.is_connected)
             {
               SetBlogWidget.open();
