@@ -11,7 +11,7 @@ function RenderPost(cfg) {
 RenderPost.prototype.init = function() {
   var pr = this;
 
-  $.ajax(this.uri, {
+  $.ajax(Utils.timestampUrl(this.uri), {
     dataType: "json",
     crossDomain: true,
     success: function(data) {

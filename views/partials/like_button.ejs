@@ -1,3 +1,5 @@
+<% include ../partials/utils.ejs %>
+
 var LikeButton = new function() { 
   this.activate = function(els) {
     this.updateStatus(els);
@@ -19,7 +21,7 @@ var LikeButton = new function() {
 
         var likeUrl = lb.data('like-url');
         SetBlogWidget.getBlog(function(url) {
-          $.ajax(url+"/is_connected", {
+          $.ajax(Utils.timestampUrl(url+"/is_connected"), {
             dataType: "json",
             success: function(data, status, xhr) {
               if (!data || !data.is_connected)
@@ -56,7 +58,7 @@ var LikeButton = new function() {
         var checkUrl = url
             + "/like/check/"
             + Utils.encodeScampyUriParam(likeUrl);
-        $.ajax(checkUrl, {
+        $.ajax(Utils.timestampUrl(checkUrl), {
           dataType: "json",
           success: function(data) {
             if (data && data.is_liked)

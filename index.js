@@ -60,6 +60,8 @@ const corsOptions = {
   origin: true,
   credentials: true,
   optionsSuccessStatus: 200
+  // should we modify Vary: Origin to workaround Chrome caching Origin?
+  // https://bugs.chromium.org/p/chromium/issues/detail?id=260239
 }
 app
   .use(cors(corsOptions))
@@ -79,14 +81,6 @@ app
   }))
   .use(passport.initialize())
   .use(passport.session())
-
-// adjust headers
-app.get('/*',function(req, res, next) {
-  // https://bugs.chromium.org/p/chromium/issues/detail?id=260239
-  res.header('Vary' , 'Origin'); 
-
-  next();
-});
 
 // redirect to https if we know our environment supports it
 app.use((req, res, next) => {

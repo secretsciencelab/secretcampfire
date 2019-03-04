@@ -67,6 +67,15 @@ if (typeof Utils === 'undefined')
         trigger: 'hover'
       };
     }
+
+    this.timestampUrl = function(url) {
+      var ts = (Date.now)? Date.now() : new Date().getTime();
+
+      if (url.indexOf("?") != -1)
+        return url + "&ts=" + ts;
+
+      return url + "?ts=" + ts;
+    }
   };
 }
 

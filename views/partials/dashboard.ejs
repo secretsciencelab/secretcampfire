@@ -1,3 +1,5 @@
+<% include ../partials/utils.ejs %>
+
 var Dashboard = new function() {
   this.init = function(cfg) {
     this.postSelector = cfg.postSelector;
@@ -199,7 +201,7 @@ var Dashboard = new function() {
   this.doReblog = function(url) {
     var dash = this;
 
-    $.ajax(url, {
+    $.ajax(Utils.timestampUrl(url), {
       dataType: "json",
       crossDomain: true,
       success: function(data) {
@@ -232,7 +234,7 @@ var Dashboard = new function() {
   this.doEdit = function(id) {
     var dash = this;
     var uri = "/post/" + id;
-    $.ajax(uri, {
+    $.ajax(Utils.timestampUrl(uri), {
       dataType: "json",
       crossDomain: true,
       success: function(data) {

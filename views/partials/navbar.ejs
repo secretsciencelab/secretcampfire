@@ -270,7 +270,7 @@ var Navbar = new function() {
             + "/follow/check/"
             + Utils.encodeScampyUriParam(followButtonConfig.uri);
 
-        $.getJSON(checkUrl, function(data) {
+        $.getJSON(Utils.timestampUrl(checkUrl), function(data) {
           if (data.is_following)
           {
             $("#follow-button .oi").removeClass("oi-plus").addClass("oi-eye");

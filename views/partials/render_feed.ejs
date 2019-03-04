@@ -129,7 +129,7 @@ RenderFeed.prototype.initFeeds = function(uris) {
   fr._numFeedsToInit = uris.length;
   for (var i=0; i < uris.length; i++)
     $.ajax({
-      url: uris[i],
+      url: Utils.timestampUrl(uris[i]),
       type: 'HEAD',
       crossDomain: true,
       complete: function(xhr) {

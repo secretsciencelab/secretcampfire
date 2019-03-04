@@ -45,7 +45,7 @@ var Masthead = new function() {
       NsfwOverlay.open();
 
     var mh = this;
-    $.getJSON(this.uri, function(data) {
+    $.getJSON(Utils.timestampUrl(this.uri), function(data) {
       if (typeof NsfwOverlay !== 'undefined')
       {
         if (data.nsfw)
