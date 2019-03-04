@@ -232,28 +232,32 @@ var Dashboard = new function() {
   this.doEdit = function(id) {
     var dash = this;
     var uri = "/post/" + id;
-    $.getJSON(uri, function(data) {
-      console.log(data);
-      var $pform = $(dash.postSelector+"-form");
-      $(dash.postSelector+"-modal .modal-title .action").html("Edit");
+    $.ajax(uri, {
+      dataType: "json",
+      crossDomain: true,
+      success: function(data) {
+        console.log(data);
+        var $pform = $(dash.postSelector+"-form");
+        $(dash.postSelector+"-modal .modal-title .action").html("Edit");
 
-      if (data.post.title)
-        $pform.find('.form-post-title').val(data.post.title);
-      if (data.post.thumbs)
-        $pform.find('.form-post-thumb').val(data.post.thumbs[0]);
-      if (data.post.images)
-        $pform.find('.form-post-image').val(data.post.images[0]);
-      if (data.post.urls)
-        $pform.find('.form-post-url').val(data.post.urls[0]);
-      if (data.post.re_url)
-        $pform.find('.form-post-reblog-url').val(data.post.re_url);
-      if (data.post.text)
-        $pform.find('.form-post-text').val(data.post.text);
-      if (data.post.tags)
-        $pform.find('.form-post-tags').val(data.post.tags.join(','));
-      $pform.find('.form-post-update-id').val(data.post.id);
+        if (data.post.title)
+          $pform.find('.form-post-title').val(data.post.title);
+        if (data.post.thumbs)
+          $pform.find('.form-post-thumb').val(data.post.thumbs[0]);
+        if (data.post.images)
+          $pform.find('.form-post-image').val(data.post.images[0]);
+        if (data.post.urls)
+          $pform.find('.form-post-url').val(data.post.urls[0]);
+        if (data.post.re_url)
+          $pform.find('.form-post-reblog-url').val(data.post.re_url);
+        if (data.post.text)
+          $pform.find('.form-post-text').val(data.post.text);
+        if (data.post.tags)
+          $pform.find('.form-post-tags').val(data.post.tags.join(','));
+        $pform.find('.form-post-update-id').val(data.post.id);
 
-      $("#create-post-modal").modal('show');
+        $("#create-post-modal").modal('show');
+      }
     });
   }
 

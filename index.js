@@ -63,7 +63,6 @@ const corsOptions = {
 }
 app
   .use(cors(corsOptions))
-  .options('*', cors(corsOptions))
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
@@ -80,6 +79,14 @@ app
   }))
   .use(passport.initialize())
   .use(passport.session())
+
+// adjust headers
+app.get('/*',function(req, res, next) {
+  // https://bugs.chromium.org/p/chromium/issues/detail?id=260239
+  res.header('Vary' , 'Origin'); 
+
+  next();
+});
 
 // redirect to https if we know our environment supports it
 app.use((req, res, next) => {
