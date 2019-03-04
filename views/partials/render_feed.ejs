@@ -129,6 +129,7 @@ RenderFeed.prototype.initFeeds = function(uris) {
   fr._numFeedsToInit = uris.length;
   for (var i=0; i < uris.length; i++)
     $.ajax({
+      origUrl: uris[i],
       url: Utils.timestampUrl(uris[i]),
       type: 'HEAD',
       crossDomain: true,
@@ -136,13 +137,13 @@ RenderFeed.prototype.initFeeds = function(uris) {
         fr._numFeedsToInit--;
         
         if (xhr.status != 200                // reject errors
-          || this.url.indexOf("http") == -1) // reject relative paths
+          || this.origUrl.indexOf("http") == -1) // reject relative paths
         {
-          console.log("[RenderFeed] skip bad feed: " + this.url);
+          console.log("[RenderFeed] skip bad feed: " + this.origUrl);
           return;
         }
 
-        fr._feedMgr.add(this.url);
+        fr._feedMgr.add(this.origUrl);
         fr.startDrawing();
       }
     });
