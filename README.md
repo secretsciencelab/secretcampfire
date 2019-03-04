@@ -3,7 +3,7 @@
 # secret campfire 
 ![version](https://img.shields.io/badge/version-1.2.0-blue.svg?style=for-the-badge)
 
-`secret campfire` is a free tumblr replacement with a few twists:
+`secret campfire` is a free tumblr replacement made by/for tumblr refugees with a few twists:
 - Post anything you want
 - Your blogs belong 100% to you
 - Your blogs live forever and no one can shut you down 
