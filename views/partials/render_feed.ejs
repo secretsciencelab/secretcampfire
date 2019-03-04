@@ -319,7 +319,7 @@ RenderFeed.prototype.makeNewCardFromJson
   var nullCard = $("<div class='d-none' id='card-" + cardId + "'>"
       + "<img data-iscroll-id='" + cardId + "' src=''></div>");
 
-  if (!post)
+  if (!post || !post.post_url)
     return nullCard;
 
   // skip if duplicate

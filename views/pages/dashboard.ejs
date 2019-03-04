@@ -302,11 +302,12 @@
 
     var _isPostsPage = window.location.pathname.indexOf("posts") != -1;
     var _isQueuePage = window.location.pathname.indexOf("queue") != -1;
+    var _isLikesPage = window.location.pathname.indexOf("likes") != -1;
 
     /*
      * Dashboard top menu
      */
-    if (_isPostsPage || _isQueuePage)
+    if (_isPostsPage || _isQueuePage || _isLikesPage)
     {
       $("#back-to-dash-button").show();
       $("#dashboard-menu").hide();
@@ -331,6 +332,9 @@
           $("#no-posts-message").show();
         else if (_isQueuePage)
           $("#no-queued-message").show();          
+        else if (_isLikesPage)
+        {
+        }
         else
           $("#no-follows-message").show();          
       },
