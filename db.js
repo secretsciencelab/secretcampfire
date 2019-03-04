@@ -1,5 +1,6 @@
 (function() {
     const mongoose = require('mongoose');
+    const mongooseExtendSchema = require('mongoose-extend-schema');
     const normalizeUrl = require('normalize-url');
     const md5 = require('md5');
     const URL = require('url').URL;
@@ -34,6 +35,11 @@
       re_url: String,
       queued: { type: Boolean, default: false }
     });
+    const LikeSchema = new mongooseExtendSchema(PostSchema, {
+      url_key: { type: String, unique: true },
+      avatar_url: String,
+      blog_url: String
+    });
 
     const FollowSchema = new mongoose.Schema({
       id: String,
@@ -50,8 +56,8 @@
       date: { type: Date, default: Date.now },
       type: { type: String, enum: ['like', 'reblog'] },
       url_key: { type: String, unique: true },
-      url: { type: String }, // relative if local, full url if remote
-      visitor: { type: String, default: "" }
+      url: { type: String }, // relative pathname without host
+      visitor: { type: String }
     });
 
     const _schema = {
@@ -60,7 +66,7 @@
       'Follow': FollowSchema,
       'Follower': FollowSchema,
       'PostSource': FollowSchema,
-      'Like': NoteSchema,
+      'Like': LikeSchema,
       'Note': NoteSchema
     };
 
@@ -141,8 +147,7 @@
 
           source.save();
         });
-      }
-      catch(err) {
+      } catch(err) {
         console.error(err);
       }
     }
@@ -458,7 +463,7 @@
     }
 
     /*
-     * notes
+     * likes
      */
 
     module.exports.isLiked = function(url, cb) {
@@ -477,14 +482,24 @@
       }
     }
 
-    module.exports.addToLikes = function(url, cb) {
+    module.exports.addToLikes = function(url, data, cb) {
       try {
         var urlKey = _makeUrlKey(url);
 
+        // cache original post contents so we can display liked posts
+        // without having to fetch each one from the source
         like = new _Model('Like')({
-          type: 'like',
           url_key: urlKey,
-          url: url
+          avatar_url: data.avatar_url,
+          blog_url: data.blog_url,
+          title: data.post.title,
+          thumbs: data.post.thumbs,
+          images: data.post.images,
+          urls: data.post.urls,
+          text: data.post.text,
+          tags: data.post.tags,
+          post_url: data.post.post_url,
+          re_url: data.post.re_url
         });
         like.id = like._id;
 
@@ -512,6 +527,25 @@
         console.error(err);
         if (cb)
           cb(err);
+      }
+    }
+
+    module.exports.fetchLikes = function(options, cb) {
+      try {
+        const index = (options.index == 0)? undefined : options.index;
+        const limit = options.limit; 
+        const filter = options.filter;
+
+        _Model('Like').find(filter)
+          .skip(index)
+          .limit(limit)
+          .sort({'date': -1 })
+          .exec(cb);
+      }
+      catch(err) {
+        console.error(err);
+        if (cb)
+          cb(err, []);
       }
     }
 

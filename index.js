@@ -126,6 +126,10 @@ function _getFeedUrl(req) {
   // default to own feed
   return _getReqProtocol(req) + '://' + req.headers.host + '/feed';
 }
+function _getLikeFeedUrl(req) {
+  // default to own feed
+  return _getReqProtocol(req) + '://' + req.headers.host + '/dashboard/likefeed';
+}
 function _getQueueFeedUrl(req) {
   // default to own feed
   return _getReqProtocol(req) + '://' + req.headers.host + '/dashboard/qfeed';
@@ -482,6 +486,25 @@ app.get('/dashboard/posts/:index?', cel.ensureLoggedIn(), function (req, res) {
   });
 });
 
+app.get('/dashboard/likefeed/:index?', 
+  [_nocache, cel.ensureLoggedIn()], function (req, res) {
+  var index = req.params['index'];
+  index = (index)? parseInt(index) : 0;
+
+  // send a page from DB
+  var options = {
+    'index': index,
+    'limit': app.locals.NUM_POSTS_PER_FETCH,
+    'filter': {}
+  };
+  db.fetchLikes(options, function(err, posts) {
+    _assembleFeed(req, { 'posts' : posts }, function(feed) {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify(feed, null, 2));
+    });
+  });
+});
+
 app.get('/dashboard/qfeed/:index?', 
   [_nocache, cel.ensureLoggedIn()], function (req, res) {
   var index = req.params['index'];
@@ -498,6 +521,18 @@ app.get('/dashboard/qfeed/:index?',
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(feed, null, 2));
     });
+  });
+});
+
+app.get('/dashboard/likes/:index?', cel.ensureLoggedIn(), function (req, res) {
+	var index = req.params['index'];
+  index = (index)? parseInt(index) : 0;
+
+  res.render('pages/dashboard', {
+    'uri': _getLikeFeedUrl(req),
+    'render_uris': [
+      _getLikeFeedUrl(req) + "/" + index
+    ]
   });
 });
 
@@ -578,16 +613,37 @@ app.post('/settings', cel.ensureLoggedIn(), function(req, res) {
 });
 
 app.post('/like', cel.ensureLoggedIn(), function(req, res) {
-  var url = req.body.url;
-  if (url.indexOf('/post/') == -1)
-  {
-    res.status(500).send("{}");
-    return;
+  try {
+    var url = req.body.url;
+    if (!url || url.indexOf('/post/') == -1)
+    {
+      res.status(500).send("{}");
+      return;
+    }
+
+    http.get(url, function(httpResp) {
+      var body = '';
+
+      httpResp.on('data', function(chunk) {
+        body += chunk;
+      });
+
+      httpResp.on('end', function() {
+        var data = JSON.parse(body);
+        if (!data.post)
+          return;
+
+        db.addToLikes(url, data, function(err, newLike) {
+          res.status(200).json(newLike);
+        });
+      });
+    }).on('error', function(e) {
+      console.error("/like error: ", e);
+      res.status(500).send("{}");
+    });
+  } catch(err) {
+    console.error(err);
   }
-  
-  db.addToLikes(url, function(err, newLike) {
-    res.status(200).json(newLike);
-  });
 });
 
 app.post('/like/delete', cel.ensureLoggedIn(), function(req, res) {

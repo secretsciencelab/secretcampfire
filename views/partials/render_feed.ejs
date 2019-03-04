@@ -98,7 +98,7 @@ function RenderFeed(cfg) {
   this.postImagePref = cfg.postImagePref;
   this.numPostsPerFetch = cfg.numPostsPerFetch;
   this.skipOldPosts = cfg.skipOldPosts;
-  this.enforceMasonryOrder = cfg.enforceMasonryOrder;
+  this.enforceOrder = cfg.enforceOrder;
 
   if (!cfg.uris || cfg.uris.length == 0)
   {
@@ -163,7 +163,7 @@ RenderFeed.prototype.initMasonry = function() {
     itemSelector: '.grid-item',
     columnWidth: '.grid-sizer',
     percentPosition: true,
-    horizontalOrder: (this.enforceMasonryOrder)? true : false
+    horizontalOrder: (this.enforceOrder)? true : false
   });
 
   // get Masonry instance
@@ -243,83 +243,17 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       $(fr.selectorButton).fadeIn();
 
     var urlObj = new URL(rootPath);
-    var postUrlBase = urlObj.protocol + "//" + urlObj.host;
+    var feedUrlBase = urlObj.protocol + "//" + urlObj.host;
     if (data.blog_url)
-      postUrlBase = data.blog_url;
+      feedUrlBase = data.blog_url;
+    var feedAvatarUrl = data.avatar_url;
 
     var newCards = $();
     for (var i=0; i < data.posts.length; i++)
     {
       var post = data.posts[i];
-      var cardId = fr.infCardIdCounter++;
-
-      var newCard = $("<div class='d-none' id='card-" + cardId + "'>"
-        + "<img data-iscroll-id='" + cardId + "' src=''></div>");
-      if (post)
-      {
-        // skip if duplicate
-        if (fr._lastSeenPosts.indexOf(post.id) != -1)
-          continue;
-        fr._lastSeenPosts.unshift(post.id);
-        if (fr._lastSeenPosts.length > fr.numPostsPerFetch * 5)
-          fr._lastSeenPosts.pop();
-
-        newCard = $(fr.templateSelector + " > div").clone();
-
-        var postRenderUrl = postUrlBase + "/render/" 
-          + Utils.encodeScampyUriParam(postUrlBase + post.post_url);
-
-        newCard.attr('id', "card-"+cardId);
-        newCard.find("img").data('iscroll-id', newCard.attr('id'));
-        newCard.find(".card-img-fold-link").attr("href", postRenderUrl);
-        var primaryClickUrl = postRenderUrl;
-        if (post.urls && post.urls.length && post.urls[0])
-          primaryClickUrl = post.urls[0];
-        newCard.find(".card-img-top-link").attr("href", primaryClickUrl);
-        newCard.find(".card-title-link").attr("href", primaryClickUrl);
-        newCard.find(".card-img-top").hide();
-        for (var pi=0; pi < fr.postImagePref.length; pi++)
-        {
-          var imgField = fr.postImagePref[pi];
-          if (post[imgField] && post[imgField].length && post[imgField][0])
-          {
-            newCard.find(".card-img-top")
-              .attr('src', post[imgField][0]).show();
-            break;
-          }
-        }
-        newCard.find(".card-author-link").attr('href', postUrlBase);
-        if (data.avatar_url)
-          newCard.find(".card-author-avatar").css('background-image', 
-            'url(' + data.avatar_url + ')');
-        newCard.find(".card-author-post-link").attr('href', postRenderUrl);
-        newCard.find(".card-author").html(
-          Utils.prettifyBlessedHostUrlForDisplay(postUrlBase));
-
-        if (post.re_url)
-        {
-          var reUrlObj = new URL(post.re_url);
-          var reblogRenderUrl = reUrlObj.protocol + "//" + reUrlObj.host 
-            + "/render/" + Utils.encodeScampyUriParam(post.re_url);
-          newCard.find(".card-reblog-author-post-link")
-            .attr('href', reblogRenderUrl)
-            .prepend("<div class='oi oi-loop' aria-hidden='true'></div>");
-          newCard.find(".card-reblog-author").html(
-            Utils.prettifyBlessedHostUrlForDisplay(post.re_url));
-        }
-
-        newCard.find(".card-title").html(post.title);
-        var markdown = fr._mdConverter.makeHtml(post.text);
-        newCard.find(".card-text").html(markdown);
-        newCard.find(".card-like-button").data('like-url', 
-          postUrlBase + post.post_url);
-        newCard.find(".card-reblog-button").data('reblog-url', 
-          postUrlBase + post.post_url);
-        newCard.find(".card-post-now-button")
-          .data('post-id', post.id).data('card-id', cardId);
-      }
-
-      newCard.hide();
+      var newCard = fr.makeNewCardFromJson(feedUrlBase, feedAvatarUrl, post);
+      newCard.hide(); // hide until imagesloaded to prevent flickering
       newCards = newCards.add(newCard);
       fr.msnryContainer.append(newCard);
     }
@@ -354,7 +288,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       ".card-text object", ".card-text video"
     ]);
 
-    if (fr.enforceMasonryOrder)
+    if (fr.enforceOrder)
       newCards.imagesLoaded().always(function(instance) {
         newCards.each(function() {
           var id = $(this).find("img").data('iscroll-id');
@@ -374,6 +308,85 @@ RenderFeed.prototype.initInfiniteScroll = function() {
 
   // load initial page
   this.infScrollContainer.infiniteScroll('loadNextPage');
+}
+
+RenderFeed.prototype.makeNewCardFromJson 
+  = function(feedUrlBase, feedAvatarUrl, post) {
+  var fr = this;
+
+  var cardId = fr.infCardIdCounter++;
+
+  var nullCard = $("<div class='d-none' id='card-" + cardId + "'>"
+      + "<img data-iscroll-id='" + cardId + "' src=''></div>");
+
+  if (!post)
+    return nullCard;
+
+  // skip if duplicate
+  if (fr._lastSeenPosts.indexOf(post.id) != -1)
+    return nullCard;
+
+  fr._lastSeenPosts.unshift(post.id);
+  if (fr._lastSeenPosts.length > fr.numPostsPerFetch * 5)
+    fr._lastSeenPosts.pop();
+
+  newCard = $(fr.templateSelector + " > div").clone();
+
+  var postUrlBase = (post.blog_url)? post.blog_url : feedUrlBase;
+  var postRenderUrl = postUrlBase + "/render/" 
+    + Utils.encodeScampyUriParam(postUrlBase + post.post_url);
+
+  newCard.attr('id', "card-"+cardId);
+  newCard.find("img").data('iscroll-id', newCard.attr('id'));
+  newCard.find(".card-img-fold-link").attr("href", postRenderUrl);
+  var primaryClickUrl = postRenderUrl;
+  if (post.urls && post.urls.length && post.urls[0])
+    primaryClickUrl = post.urls[0];
+  newCard.find(".card-img-top-link").attr("href", primaryClickUrl);
+  newCard.find(".card-title-link").attr("href", primaryClickUrl);
+  newCard.find(".card-img-top").hide();
+  for (var pi=0; pi < fr.postImagePref.length; pi++)
+  {
+    var imgField = fr.postImagePref[pi];
+    if (post[imgField] && post[imgField].length && post[imgField][0])
+    {
+      newCard.find(".card-img-top")
+        .attr('src', post[imgField][0]).show();
+      break;
+    }
+  }
+  newCard.find(".card-author-link").attr('href', postUrlBase);
+  var postAvatarUrl = (post.avatar_url)? post.avatar_url : feedAvatarUrl;
+  if (postAvatarUrl)
+    newCard.find(".card-author-avatar").css('background-image', 
+      'url(' + postAvatarUrl + ')');
+  newCard.find(".card-author-post-link").attr('href', postRenderUrl);
+  newCard.find(".card-author").html(
+    Utils.prettifyBlessedHostUrlForDisplay(postUrlBase));
+
+  if (post.re_url)
+  {
+    var reUrlObj = new URL(post.re_url);
+    var reblogRenderUrl = reUrlObj.protocol + "//" + reUrlObj.host 
+      + "/render/" + Utils.encodeScampyUriParam(post.re_url);
+    newCard.find(".card-reblog-author-post-link")
+      .attr('href', reblogRenderUrl)
+      .prepend("<div class='oi oi-loop' aria-hidden='true'></div>");
+    newCard.find(".card-reblog-author").html(
+      Utils.prettifyBlessedHostUrlForDisplay(post.re_url));
+  }
+
+  newCard.find(".card-title").html(post.title);
+  var markdown = fr._mdConverter.makeHtml(post.text);
+  newCard.find(".card-text").html(markdown);
+  newCard.find(".card-like-button").data('like-url', 
+    postUrlBase + post.post_url);
+  newCard.find(".card-reblog-button").data('reblog-url', 
+    postUrlBase + post.post_url);
+  newCard.find(".card-post-now-button")
+    .data('post-id', post.id).data('card-id', cardId);
+
+  return newCard;
 }
 
 RenderFeed.prototype.feedsHaveMore = function() {
