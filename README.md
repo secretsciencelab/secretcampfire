@@ -6,7 +6,7 @@
 `secret campfire` is a free tumblr replacement made by/for tumblr refugees with a few twists:
 - Post anything you want
 - Your blogs belong 100% to you
-- Your blogs live forever and no one can shut you down 
+- Your blogs live forever and no one can censor, ban or delete you 
 
 ## How is *secret campfire* different?
 
