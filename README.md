@@ -16,7 +16,7 @@
 
 ## How to get an official *secret campfire* 
 
-For an official `secret campfire` on `secretcampfire.com`, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com). As a special introductory offer, we'll set up your new home and give you free lifetime hosting for a one-time fee of $5. Hurry before your favorite name gets taken by someone else.
+For an official `secret campfire` on `secretcampfire.com`, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com). We'll set up your new home and give you free lifetime hosting for a one-time fee of $5. Hurry before your favorite name gets taken by someone else.
 
 ## How to set up your own free *secret campfire* 
 
