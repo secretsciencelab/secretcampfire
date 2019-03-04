@@ -199,29 +199,33 @@ var Dashboard = new function() {
   this.doReblog = function(url) {
     var dash = this;
 
-    $.getJSON(url, function(data) {
-      console.log(data);
-      var $pform = $(dash.postSelector+"-form");
-      $(dash.postSelector+"-modal .modal-title .action").html("Reblog");
+    $.ajax(url, {
+      dataType: "json",
+      crossDomain: true,
+      success: function(data) {
+        console.log(data);
+        var $pform = $(dash.postSelector+"-form");
+        $(dash.postSelector+"-modal .modal-title .action").html("Reblog");
 
-      if (data.post.thumbs)
-        $pform.find('.form-post-thumb').val(data.post.thumbs[0]);
-      if (data.post.images)
-        $pform.find('.form-post-image').val(data.post.images[0]);
-      if (data.post.urls)
-        $pform.find('.form-post-url').val(data.post.urls[0]);
-      $pform.find('.form-post-reblog-url').val(url);
-      if (data.post.text)
-      {
-        var text = "";
-        // indent with markdown blockquote
-        if (data.post.title)
-          text += "> **" + data.post.title + "**\n\n";
-        text += data.post.text.replace(/^/gm, "> ");
-        $pform.find('.form-post-text').val(text);
+        if (data.post.thumbs)
+          $pform.find('.form-post-thumb').val(data.post.thumbs[0]);
+        if (data.post.images)
+          $pform.find('.form-post-image').val(data.post.images[0]);
+        if (data.post.urls)
+          $pform.find('.form-post-url').val(data.post.urls[0]);
+        $pform.find('.form-post-reblog-url').val(url);
+        if (data.post.text)
+        {
+          var text = "";
+          // indent with markdown blockquote
+          if (data.post.title)
+            text += "> **" + data.post.title + "**\n\n";
+          text += data.post.text.replace(/^/gm, "> ");
+          $pform.find('.form-post-text').val(text);
+        }
+
+        $("#create-post-modal").modal('show');
       }
-
-      $("#create-post-modal").modal('show');
     });
   }
 
