@@ -8,6 +8,12 @@
 - Your blogs belong 100% to you
 - Your blogs live forever and no one can shut you down 
 
+## How is *secret campfire* different?
+
+| <img src="docs/media/new-way.png" alt="secret campfire way"> | <img src="docs/media/old-way.png" alt="Evil way">  |
+| -------------------------------------------------- | ------------------------------------------------------------ |
+| **`secret campfire`** way: your site is 100% yours and you connect to other `secret campfires` directly in your secret network. You're free to express yourself, your sites live forever and no one can shut you down. | **Old way:** you make an account on *their* site... then they own your account and you're locked in. Which means they can shut you down and delete your account anytime they feel like it. | **Old way:** you make an account on their site... then they own your account and you're locked in. Which means they can shut you down and delete your account anytime they want to. |
+
 ## How to get an official *secret campfire* 
 
 For an official `secret campfire` on `secretcampfire.com`, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com). As a special introductory offer, we'll set up your new home and give you free lifetime hosting for a one-time fee of $5. Hurry before your favorite name gets taken by someone else.
@@ -51,13 +57,6 @@ That's why `secret campfire` was created on January 2019 to replace tumblr. Beca
 With `secret campfire`, you can finally set up your forever home online. It belongs to you and you alone. No one can tell you what you can or can't do with it. And no one can shut you down. 
 
 Enjoy the 'fire and share the love: http://secretcampfire.com
-
-## How is *secret campfire* different?
-
-
-| <img src="docs/media/new-way.png" alt="secret campfire way"> | <img src="docs/media/old-way.png" alt="Evil way">  |
-| -------------------------------------------------- | ------------------------------------------------------------ |
-| **`secret campfire`** way: your site is 100% yours and you connect to other `secret campfires` directly in your secret network. You're free to express yourself, your sites live forever and no one can shut you down. | **Old way:** you make an account on *their* site... then they own your account and you're locked in. Which means they can shut you down and delete your account anytime they feel like it. | **Old way:** you make an account on their site... then they own your account and you're locked in. Which means they can shut you down and delete your account anytime they want to. |
 
 ## Features
 
