@@ -12,7 +12,7 @@
 
 | <img src="docs/media/new-way.png" alt="secret campfire way"> | <img src="docs/media/old-way.png" alt="Evil way">  |
 | -------------------------------------------------- | ------------------------------------------------------------ |
-| **`secret campfire`** way: your site is 100% yours and you connect to other `secret campfires` directly in your secret network. It takes a few extra minutes to set up, but then you're free to express yourself, your sites live forever and no one can shut you down. | **Old way:** you make an account on *their* site... then they own your account and you become a slave to their site. They can shut you down and delete your account anytime they want to. If your tumblr was killed by their recent nsfw ban like us, you know this pain. It might be easier to set up, but you're always in danger of getting censored, banned & deleted when you use someone else's site. |
+| **`secret campfire`** way: your site is 100% yours and you connect to other `secret campfires` directly in your secret network. It takes a few extra minutes to set up, but then you're free to express yourself, your sites live forever and no one can shut you down. | **Old way:** you make an account on *their* site... then they own your account and you become a slave to their site. They can shut you down and delete your account anytime they want to. If your tumblr was killed by their recent nsfw ban like us, you know this pain. The old way might be easier to set up, but you're forever in danger of getting censored, banned & deleted when you use someone else's site. |
 
 ## How to get an official *secret campfire* 
 
