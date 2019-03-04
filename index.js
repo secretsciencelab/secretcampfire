@@ -3,14 +3,14 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const cel = require('connect-ensure-login')
 const express = require('express')
-const http = require('http')
-const md5 = require('md5');
+const md5 = require('md5')
 const path = require('path')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const request = require('request')
 const session = require('express-session')
-const MongoStore = require('connect-mongo')(session);
-const URL = require('url').URL;
+const MongoStore = require('connect-mongo')(session)
+const URL = require('url').URL
 const db = require('./db')
 const consts = require('./consts')
 const cron = require('./cron')
@@ -621,28 +621,21 @@ app.post('/like', cel.ensureLoggedIn(), function(req, res) {
       return;
     }
 
-    http.get(url, function(httpResp) {
-      var body = '';
+    request(url, { json: true }, function(e, r, data) {
+      if (e || !data || !data.post)
+      {
+        console.error("/like error: ", e);
+        res.status(500).send("{}");
+        return;
+      }
 
-      httpResp.on('data', function(chunk) {
-        body += chunk;
+      db.addToLikes(url, data, function(err, newLike) {
+        res.status(200).json(newLike);
       });
-
-      httpResp.on('end', function() {
-        var data = JSON.parse(body);
-        if (!data.post)
-          return;
-
-        db.addToLikes(url, data, function(err, newLike) {
-          res.status(200).json(newLike);
-        });
-      });
-    }).on('error', function(e) {
-      console.error("/like error: ", e);
-      res.status(500).send("{}");
     });
   } catch(err) {
     console.error(err);
+    res.status(500).send("{}");
   }
 });
 
