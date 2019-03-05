@@ -55,6 +55,7 @@ app.locals.MASTER_FEED = consts.MASTER_FEED;
 app.locals.MASTER_NEWS = consts.MASTER_NEWS;
 app.locals.BLESSED_SCAMPY_DOMAINS = consts.BLESSED_SCAMPY_DOMAINS;
 app.locals.NUM_POSTS_PER_FETCH = consts.NUM_POSTS_PER_FETCH;
+app.locals.DARK_MODE_CSS = consts.DARK_MODE_CSS;
 
 const corsOptions = {
   origin: true,
@@ -151,9 +152,12 @@ function _render(req, res, myuri) {
 
   uri = _decodeScampyUriParam(uri);
 
-  res.render('pages/render', {
-    'uri': uri,
-    'fullscreen': req.query['fullscreen']
+  _assembleFeed(req, {}, function(siteTemplate) {
+    res.render('pages/render', {
+      'uri': uri,
+      'fullscreen': req.query['fullscreen'],
+      'site_template': siteTemplate
+    });
   });
 }
 function _nocache(req, res, next) {
@@ -196,7 +200,8 @@ function _assembleFeed(req, contents, cb) {
       'style_url': _getReqProtocol(req) + '://' + host 
                       + '/stylesheets/feed.css',
       'blog_url': _getReqProtocol(req) + "://" + host,
-      'nsfw': false
+      'nsfw': false,
+      'dark_mode': false
     };
 
     if (settings)
@@ -205,9 +210,9 @@ function _assembleFeed(req, contents, cb) {
       feed.description = settings.description;
       feed.avatar_url = settings.avatar_url;
       feed.header_url = settings.header_url;
-      if (settings.nsfw)
-        feed.nsfw = true;
+      feed.nsfw = (settings.nsfw)? true : false;
       feed.custom_head = (settings.custom_head)? settings.custom_head : "";
+      feed.dark_mode = (settings.dark_mode)? true : false;
     }
 
     for (k in contents)
@@ -480,11 +485,14 @@ app.get('/dashboard/posts/:index?', cel.ensureLoggedIn(), function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
-  res.render('pages/dashboard', {
-    'uri': _getFeedUrl(req),
-    'render_uris': [
-      _getFeedUrl(req) + "/" + index
-    ]
+  _assembleFeed(req, {}, function(siteTemplate) {
+    res.render('pages/dashboard', {
+      'uri': _getFeedUrl(req),
+      'render_uris': [
+        _getFeedUrl(req) + "/" + index
+      ],
+      'site_template': siteTemplate
+    });
   });
 });
 
@@ -530,11 +538,14 @@ app.get('/dashboard/likes/:index?', cel.ensureLoggedIn(), function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
-  res.render('pages/dashboard', {
-    'uri': _getLikeFeedUrl(req),
-    'render_uris': [
-      _getLikeFeedUrl(req) + "/" + index
-    ]
+  _assembleFeed(req, {}, function(siteTemplate) {
+    res.render('pages/dashboard', {
+      'uri': _getLikeFeedUrl(req),
+      'render_uris': [
+        _getLikeFeedUrl(req) + "/" + index
+      ],
+      'site_template': siteTemplate
+    });
   });
 });
 
@@ -552,11 +563,14 @@ app.get('/dashboard/queue/:index?', cel.ensureLoggedIn(), function (req, res) {
 	var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
 
-  res.render('pages/dashboard', {
-    'uri': _getQueueFeedUrl(req),
-    'render_uris': [
-      _getQueueFeedUrl(req) + "/" + index
-    ]
+  _assembleFeed(req, {}, function(siteTemplate) {
+    res.render('pages/dashboard', {
+      'uri': _getQueueFeedUrl(req),
+      'render_uris': [
+        _getQueueFeedUrl(req) + "/" + index
+      ],
+      'site_template': siteTemplate
+    });
   });
 });
 
@@ -580,9 +594,12 @@ app.get('/dashboard/:start_offset?', cel.ensureLoggedIn(), function(req, res) {
       followUris.push(url);
     }
 
-    res.render('pages/dashboard', {
-      'uri': _getFeedUrl(req),
-      'render_uris': followUris
+    _assembleFeed(req, {}, function(siteTemplate) {
+      res.render('pages/dashboard', {
+        'uri': _getFeedUrl(req),
+        'render_uris': followUris,
+        'site_template': siteTemplate
+      });
     });
   });
 });
@@ -596,9 +613,12 @@ app.get('/settings', cel.ensureLoggedIn(), function (req, res) {
       return;
     }
 
-    res.render('pages/settings', {
-      'uri': _getFeedUrl(req),
-      'settings': settings
+    _assembleFeed(req, {}, function(siteTemplate) {
+      res.render('pages/settings', {
+        'uri': _getFeedUrl(req),
+        'settings': settings,
+        'site_template': siteTemplate
+      });
     });
   });
 });

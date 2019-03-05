@@ -72,7 +72,7 @@
   right: 0px;
   border-width: 0;
   border-style: solid;
-  background: #8af;
+  background-color: #8af;
   display: block;
   border-color: transparent #ddd transparent #ddd;
 
@@ -165,5 +165,4 @@ a.card-title-link {
 #post-container .action-bar .action-bar-button:hover {
   color: #ccc;
   background-color: #333;
-  border: 1px solid #ccc;
 }

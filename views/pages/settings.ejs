@@ -2,6 +2,9 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
+  <% if (typeof site_template !== 'undefined' && site_template.dark_mode) { %>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/dark.css" />
+  <% }  %>
 </head>
 
 <body>
@@ -64,6 +67,17 @@
           <input type="password" class="form-control form-control-sm form-password" 
             value="" placeholder="New password" />
           </div>
+
+          <div class="form-group"><div class="form-check">
+          <input class="form-check-input form-darkmode" type="checkbox" 
+            <%if (settings.dark_mode) { %>
+            checked
+            <% } %>
+            id="check-darkmode">
+          <label class="form-check-label" for="check-darkmode">
+            dark mode
+          </label>
+          </div></div>
 
           <div class="form-group"><div class="form-check">
           <input class="form-check-input form-nsfw" type="checkbox" 
@@ -135,6 +149,7 @@
       var avatar = form.find('.form-avatar').val();
       var header = form.find('.form-header').val();
       var password = form.find('.form-password').val();
+      var darkMode = form.find('.form-darkmode').is(":checked");
       var nsfw = form.find('.form-nsfw').is(":checked");
       var imgur = form.find('.form-imgur-key').val();
       var queueInterval = form.find('.form-queue-interval').val();
@@ -148,6 +163,7 @@
         avatar_url: avatar,
         header_url: header,
         password: password,
+        dark_mode: darkMode,
         nsfw: nsfw,
         imgur_key: imgur,
         queue_interval: queueInterval,

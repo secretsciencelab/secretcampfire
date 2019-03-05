@@ -19,6 +19,7 @@
       nsfw: Boolean,
       imgur_key: String,
       queue_interval: { type: Number, default: 0 },
+      dark_mode: { type: Boolean, default: false },
       custom_head: String
     });
 
@@ -592,6 +593,7 @@
         settings.description = newSettings.description;  
         settings.avatar_url = newSettings.avatar_url;  
         settings.header_url = newSettings.header_url;  
+        settings.dark_mode = newSettings.dark_mode;
         settings.nsfw = newSettings.nsfw;
         settings.imgur_key = newSettings.imgur_key;
         settings.queue_interval = newSettings.queue_interval;

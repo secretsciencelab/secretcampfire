@@ -13,7 +13,9 @@ To participate and play in the `secret campfire` network, your instance must imp
           "header_url": "",
           "blog_url": "http://instance",
           "style_url": "http://instance/stylesheets/feed.css",
+          "custom_head": "",
           "nsfw": false,
+          "dark_mode": false,
           "posts": [
             {
               "id": "5c5d40a0e96ba00004b9cde9",
@@ -29,9 +31,10 @@ To participate and play in the `secret campfire` network, your instance must imp
           ]
         }
       ```
-    - the `style_url` field in the feed provides custom CSS to render:
+    - the `style_url` field in the feed provides custom CSS file to render:
       - infinite-scroll viewer for entire feed
       - single-post page
+    - the `custom_head` field lets the owner insert custom code (e.g., Google Analytics)
   - `/post/<id>`
     - returns JSON of post from DB
     

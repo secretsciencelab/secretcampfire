@@ -118,6 +118,9 @@ var Masthead = new function() {
       if (data.style_url)
         Utils.addCss(data.style_url);
 
+      if (data.dark_mode)
+        Utils.addCss("<%= DARK_MODE_CSS %>");
+
       if (data.custom_head)
         $("head").append(data.custom_head);
     });

@@ -49,6 +49,7 @@
   cursor: pointer;
   padding: 5px;
   border-radius: 50%;
+  border: 1px solid transparent;
 }
 .card-action-bar .action-bar-button:hover {
   color: #ccc;

@@ -1,0 +1,43 @@
+body {
+  background-color: black;
+  color: #888;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+  border-color: #222;
+}
+
+#masthead a {
+  color: #9E9A96;
+}
+
+.card {
+  background-color: #111;
+}
+.card .fold {
+  border-color: transparent #111 transparent #111;
+  background-color: #46b;
+}
+.card-author-post-link, .card-reblog-author-post-link {
+  color: #888;
+}
+a.card-title-link,
+#post-container a.title-link {
+  color: #888;
+}
+.card-body,
+#post-container .text {
+  color: #888;
+}
+
+.card-text blockquote {
+  border-color: #333;
+}
+
+#feed-grid-top-right-menu {
+  color: #333;
+}
+
+footer a:hover {
+  color: #aaa;
+}

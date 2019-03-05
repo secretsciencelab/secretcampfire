@@ -16,6 +16,7 @@ CHANGELOG
 
 - 1.2
   - Like/Heart button to add to personal 'Likes' list
+  - 'dark' mode
 
 ### Future changes
 - suggest "related blogs"

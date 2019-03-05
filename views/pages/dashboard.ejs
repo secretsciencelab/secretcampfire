@@ -7,6 +7,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/3.0.5/infinite-scroll.pkgd.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/stylesheets/render.css" />
   <link rel="stylesheet" type="text/css" href="/stylesheets/dashboard.css" />
+
+  <% if (typeof site_template !== 'undefined' && site_template.dark_mode) { %>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/dark.css" />
+  <% }  %>
 </head>
 
 <body>
