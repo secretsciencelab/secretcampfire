@@ -7,6 +7,13 @@ body {
   border-color: #222;
 }
 
+#active-blog-display {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+#active-blog-display:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
 #masthead a {
   color: #9E9A96;
 }
