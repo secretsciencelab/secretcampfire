@@ -67,6 +67,10 @@ a.card-title-link,
   color: #333;
 }
 
+.sk-cube-grid .sk-cube {
+  background-color: #033;
+}
+
 .form-control {
   background: #aaa;
 }
