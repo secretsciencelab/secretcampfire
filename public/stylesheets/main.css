@@ -1,14 +1,20 @@
+a {
+  color: #16a;
+}
 #center-logo {
   height: 100px;
   opacity: 0.5;
 }
 
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
-  background-color: #111 !important;
-  border-color: #333;
+  background-color: #111;
+  border-color: transparent;
 }
 .btn-primary:hover {
-  background-color: #16c !important;
+  background-color: #17a;
+}
+.btn-secondary {
+  border-color: transparent;
 }
 
 /* navbar */
@@ -162,7 +168,7 @@ footer .logo {
 .sk-cube-grid .sk-cube {
   width: 33%;
   height: 33%;
-  background-color: #ddd;
+  background-color: #add;
   float: left;
   -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
           animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 

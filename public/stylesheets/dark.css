@@ -3,10 +3,23 @@ body {
   color: #888;
 }
 
+.modal-content {
+  background-color: #222;
+}
+
+.btn-primary {
+  background-color: #444;
+}
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
   border-color: #222;
 }
+.btn-secondary {
+  background-color: #222;
+}
 
+#active-blog:hover {
+  color: #dda;
+}
 #active-blog-display {
   background-color: rgba(0, 0, 0, 0.3);
 }
@@ -15,19 +28,24 @@ body {
 }
 
 #masthead a {
-  color: #9E9A96;
+  color: #aEaAa6;
 }
 
 .card {
   background-color: #111;
 }
 .card .fold {
-  border-color: transparent #111 transparent #111;
-  background-color: #46b;
+  border-color: transparent #222 transparent #222;
+  background-color: #248;
 }
 .card-author-post-link, .card-reblog-author-post-link {
-  color: #888;
+  color: #aaa;
 }
+
+#post-container .action-bar {
+  color: #444;
+}
+
 a.card-title-link,
 #post-container a.title-link {
   color: #888;
@@ -45,6 +63,10 @@ a.card-title-link,
   color: #333;
 }
 
+.form-control {
+  background: #aaa;
+}
+
 footer a:hover {
-  color: #aaa;
+  color: #dda;
 }
