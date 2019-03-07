@@ -276,29 +276,35 @@ var Dashboard = new function() {
     });
   }
 
-  this.activateImageUploader = function(key) {
-    if (!key)
+  this.activateImageUploader = function(extKey) {
+    if (extKey)
+    {
+      var dash = this;
+      $(dash.postSelector + "-form .form-post-image-uploader-wrapper").show();
+
+      this._imgUploader = new ImgurUploader({
+        key: extKey,
+        selector: dash.postSelector + "-form .form-img-file",
+        onUploadStart: function() {
+          $(dash.postSelector + "-form .form-img-file-progress")
+            .css('height', '3px');
+        },
+        onUploadDone: function(data) {
+          $(dash.postSelector + "-form .form-img-file-progress")
+            .css('height', '0px');
+          var imgUrl = data.link;
+          $(dash.postSelector + "-form .form-post-image").val(imgUrl);
+          var thumbUrl = imgUrl.replace(/(.+)\.([^/.]+)$/, "$1m.$2");
+          $(dash.postSelector + "-form .form-post-thumb").val(thumbUrl);
+        }
+      });
+
       return;
+    }
 
-    var dash = this;
-    $(dash.postSelector + "-form .form-post-image-uploader-wraper").show();
-
-    this._imgUploader = new ImgurUploader({
-      key: key,
-      selector: dash.postSelector + "-form .form-img-file",
-      onUploadStart: function() {
-        $(dash.postSelector + "-form .form-img-file-progress")
-          .css('height', '3px');
-      },
-      onUploadDone: function(data) {
-        $(dash.postSelector + "-form .form-img-file-progress")
-          .css('height', '0px');
-        var imgUrl = data.link;
-        $(dash.postSelector + "-form .form-post-image").val(imgUrl);
-        var thumbUrl = imgUrl.replace(/(.+)\.([^/.]+)$/, "$1m.$2");
-        $(dash.postSelector + "-form .form-post-thumb").val(thumbUrl);
-      }
-    });
+    if ("<%= HOME_UPLOAD_KEY %>") {
+      // TODO fallback to our own image uploader
+    }
   }
 
   this.activateQueuedPosting = function(interval) {

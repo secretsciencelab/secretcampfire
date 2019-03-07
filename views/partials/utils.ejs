@@ -4,9 +4,9 @@ if (typeof Utils === 'undefined')
     this.prettifyBlessedHostUrlForDisplay = function(url) {
       var urlObj = new URL(url);
       var displayUrl = urlObj.host; // strip away protocol
-      <% for (var bi = 0; bi < BLESSED_SCAMPY_DOMAINS.length; bi++) { %>
+      <% for (var bi = 0; bi < BLESSED_DOMAINS.length; bi++) { %>
         displayUrl = displayUrl.split("." 
-          + "<%= BLESSED_SCAMPY_DOMAINS[bi] %>")[0]; // papa bless
+          + "<%= BLESSED_DOMAINS[bi] %>")[0]; // papa bless
       <% } %>
       return displayUrl;
     }

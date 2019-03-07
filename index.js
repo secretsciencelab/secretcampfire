@@ -53,9 +53,10 @@ app.locals.MASTER_URL = consts.MASTER_URL;
 app.locals.MASTER_DOMAIN = consts.MASTER_DOMAIN;
 app.locals.MASTER_FEED = consts.MASTER_FEED;
 app.locals.MASTER_NEWS = consts.MASTER_NEWS;
-app.locals.BLESSED_SCAMPY_DOMAINS = consts.BLESSED_SCAMPY_DOMAINS;
+app.locals.BLESSED_DOMAINS = consts.BLESSED_DOMAINS;
 app.locals.NUM_POSTS_PER_FETCH = consts.NUM_POSTS_PER_FETCH;
 app.locals.DARK_MODE_CSS = consts.DARK_MODE_CSS;
+app.locals.HOME_UPLOAD_KEY = process.env.HOME_UPLOAD_KEY;
 
 const corsOptions = {
   origin: true,
