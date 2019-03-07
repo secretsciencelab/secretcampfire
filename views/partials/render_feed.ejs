@@ -77,7 +77,8 @@ FeedMgr.prototype.next = function(pageIndex) {
   }
   var offset = this._feeds[feedIdx].offset;
 
-  return root + "/" + offset + "?n=" + this.pageSize + "&" + params;
+  return Utils.timestampUrl(root + "/" + offset 
+    + "?n=" + this.pageSize + "&" + params);
 }
 FeedMgr.prototype.markDone = function(rootPath) {
   if (!(rootPath in this._uriRoot2FeedIdx))
