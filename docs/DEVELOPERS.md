@@ -85,6 +85,6 @@ To participate and play in the `secret campfire` network, your instance must imp
 ## Recommended tech
   - MVC: Node.js + Express + Bootstrap + MongoDB
   - hosting: Heroku, Google Cloud Platform
-  - media hosting: Gfycat, Imgur, ImageBam, YouTube, etc
+  - media hosting: Imgbox, ImageBam, Gfycat, Imgur, YouTube, etc
 
 The architecture ingredients above are recommendations. Feel free to use your favorite technology to meet the `handshake requirements` above.
