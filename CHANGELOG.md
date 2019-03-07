@@ -18,7 +18,14 @@ CHANGELOG
   - Like/Heart button to add to personal 'Likes' list
   - 'dark' mode
 
-### Future changes
-- suggest "related blogs"
+### Upcoming changes
+- 1.3 
+  - friends
+    - friend request 
+    - friend list as recommended blogs
+    - messaging between friends
+
+- suggest "related blogs" from following list
+- secretcampfire.com home uploader
 - keyboard shortcuts
 - more polish
