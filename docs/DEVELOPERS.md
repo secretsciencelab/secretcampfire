@@ -81,7 +81,7 @@ To participate and play in the `secret campfire` network, your instance must imp
 - Database only stores user's text data and links to external media.
 - For security, all user's actions must be redirected to execute on the user's own Dashboard (e.g., Post, Reblog, Follow, Unfollow). 
 - Don't reinvent the wheel. Use off-the-shelf components whenever possible.
-- "Two is one and one is none": allow > 2 free hosting options for each feature.
+- "Two is one and one is none": support >2 free hosting options for each feature.
 
 ## Recommended tech
   - MVC: Node.js + Express + Bootstrap + MongoDB
