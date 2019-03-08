@@ -54,7 +54,89 @@ ImgurUploader.prototype.init = function() {
       console.log(respj);
 
       if (iu.onUploadDone && respj.data)
-        iu.onUploadDone(respj.data);
+      {
+        var imgUrl = respj.data.link;
+        var thumbUrl = imgUrl.replace(/(.+)\.([^/.]+)$/, "$1m.$2");
+        iu.onUploadDone({
+          'thumb': thumbUrl,
+          'image': imgUrl
+        });
+      }
+      else 
+        iu.onUploadDone({});
+    }).fail(function(response) {
+        alert('Sorry, upload failed :(');
+        iu.onUploadDone({});
+    });
+  });
+}
+
+function ScampyUploader(cfg) {
+  this.selector = cfg.selector;
+  this.key = cfg.key;
+  this.onUploadStart = cfg.onUploadStart;
+  this.onUploadDone = cfg.onUploadDone;
+
+  this.init();
+}
+
+ScampyUploader.prototype.init = function() {
+  var iu = this;
+  $(this.selector).on("change", function() {
+    var $files = $(this).get(0).files;
+    if ($files.length == 0)
+      return;
+
+    // Reject big files
+    var maxSize = $(this).data("max-size"); // KB
+    var maxSizeMB = parseFloat(maxSize) / 1000.
+    if ($files[0].size > $(this).data("max-size") * 1024) {
+      alert("Sorry, can't upload images larger than " + maxSizeMB + "MB");
+      return false;
+    }
+
+    // Begin file upload
+    console.log("Uploading to scampy...");
+    if (iu.onUploadStart)
+      iu.onUploadStart();
+
+    var apiUrl = 'https://secretcampfire.com/upload/upload.php';
+    var apiKey = iu.key;
+
+    var settings = {
+      crossDomain: true,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      url: apiUrl,
+      headers: {
+        Accept: 'application/json'
+      },
+      mimeType: 'multipart/form-data'
+    };
+
+    var formData = new FormData();
+    formData.append("image", $files[0]);
+    formData.append("gallery", apiKey);
+    settings.data = formData;
+
+    // Response contains stringified JSON
+    // Image URL available at response.data.link
+    $.ajax(settings).done(function(response) {
+      var respj = $.parseJSON(response);
+      console.log(respj);
+
+      if (iu.onUploadDone && respj)
+        iu.onUploadDone({
+          'thumb': respj.thumb,
+          'image': respj.image,
+          'url': respj.url
+        });
+      else 
+        iu.onUploadDone({});
+    }).fail(function(response) {
+        alert('Sorry, upload failed :(');
+        iu.onUploadDone({});
     });
   });
 }

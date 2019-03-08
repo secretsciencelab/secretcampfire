@@ -277,33 +277,37 @@ var Dashboard = new function() {
   }
 
   this.activateImageUploader = function(extKey) {
+    var dash = this;
+    var cfg = {
+      selector: dash.postSelector + "-form .form-img-file",
+      onUploadStart: function() {
+        $(dash.postSelector + "-form .form-img-file-progress")
+          .css('height', '3px');
+      },
+      onUploadDone: function(data) {
+        $(dash.postSelector + "-form .form-img-file-progress")
+          .css('height', '0px');
+        if (data.thumb)
+          $(dash.postSelector + "-form .form-post-thumb").val(data.thumb);
+        if (data.image)
+          $(dash.postSelector + "-form .form-post-image").val(data.image);
+        if (data.url)
+          $(dash.postSelector + "-form .form-post-url").val(data.url);
+      }
+    };
+
     if (extKey)
     {
-      var dash = this;
       $(dash.postSelector + "-form .form-post-image-uploader-wrapper").show();
-
-      this._imgUploader = new ImgurUploader({
-        key: extKey,
-        selector: dash.postSelector + "-form .form-img-file",
-        onUploadStart: function() {
-          $(dash.postSelector + "-form .form-img-file-progress")
-            .css('height', '3px');
-        },
-        onUploadDone: function(data) {
-          $(dash.postSelector + "-form .form-img-file-progress")
-            .css('height', '0px');
-          var imgUrl = data.link;
-          $(dash.postSelector + "-form .form-post-image").val(imgUrl);
-          var thumbUrl = imgUrl.replace(/(.+)\.([^/.]+)$/, "$1m.$2");
-          $(dash.postSelector + "-form .form-post-thumb").val(thumbUrl);
-        }
-      });
-
-      return;
+      cfg.key = extKey;
+      dash._imgUploader = new ImgurUploader(cfg);
     }
-
-    if ("<%= HOME_UPLOAD_KEY %>") {
-      // TODO fallback to our own image uploader
+    else if ("<%= HOME_UPLOAD_KEY %>") 
+    {
+      $(dash.postSelector + "-form .form-post-image-uploader-wrapper").show();
+      // fallback to our own image uploader
+      cfg.key = "<%= HOME_UPLOAD_KEY %>";
+      dash._imgUploader = new ScampyUploader(cfg);
     }
   }
 
