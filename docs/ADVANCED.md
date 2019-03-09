@@ -55,7 +55,7 @@ You're all set! Only catch is without a credit card on Heroku, your free quota r
 
 --- 
 
-## How to upgrade your `secret campfire` blog to the latest official version
+## How to upgrade your `secret campfire` to the latest official version
 
 When you clicked Deploy, a `snapshot` of the official master code wooshed to your server and got installed. 
 
