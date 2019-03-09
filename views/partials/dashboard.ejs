@@ -46,9 +46,24 @@ var Dashboard = new function() {
     });
 
     var $pform = $(dash.postSelector+"-form");
+    $pform.find('.form-post-thumb').on('input', function(e) {
+      if (dash._updatePostPreviewTimer)
+        clearTimeout(dash._updatePostPreviewTimer);
+
+      dash._updatePostPreviewTimer = setTimeout(function() {
+        dash.updatePostPreview();
+      }, 2000);
+    });
+    $pform.find('.form-post-image').on('input', function(e) {
+      if (dash._updatePostPreviewTimer)
+        clearTimeout(dash._updatePostPreviewTimer);
+
+      dash._updatePostPreviewTimer = setTimeout(function() {
+        dash.updatePostPreview();
+      }, 2000);
+    });
     $(dash.postSelector+"-save-button").click(function(e) {
       e.preventDefault();
-
       var title = $pform.find('.form-post-title').val();
       var thumb = $pform.find('.form-post-thumb').val();
       var image = $pform.find('.form-post-image').val();
@@ -231,13 +246,7 @@ var Dashboard = new function() {
           $pform.find('.form-post-text').val(text);
         }
 
-        var previewUrl = null;
-        if (data.post.images) previewUrl = data.post.images[0];
-        if (data.post.thumbs) previewUrl = data.post.thumbs[0];
-        if (previewUrl) 
-          $(dash.postSelector + "-form .form-post-preview").html(
-            "<img style='width:100%' src='" + previewUrl + "'>");
-
+        dash.updatePostPreview();
         $("#create-post-modal").modal('show');
       }
     });
@@ -270,13 +279,7 @@ var Dashboard = new function() {
           $pform.find('.form-post-tags').val(data.post.tags.join(','));
         $pform.find('.form-post-update-id').val(data.post.id);
 
-        var previewUrl = null;
-        if (data.post.images) previewUrl = data.post.images[0];
-        if (data.post.thumbs) previewUrl = data.post.thumbs[0];
-        if (previewUrl) 
-          $(dash.postSelector + "-form .form-post-preview").html(
-            "<img style='width:100%' src='" + previewUrl + "'>");
-
+        dash.updatePostPreview();
         $("#create-post-modal").modal('show');
       }
     });
@@ -302,12 +305,24 @@ var Dashboard = new function() {
     });
   }
 
+  this.updatePostPreview = function() {
+    var dash = this;
+    var $pform = $(dash.postSelector+"-form");
+    var thumb = $pform.find('.form-post-thumb').val();
+    var image = $pform.find('.form-post-image').val();
+
+    var previewUrl = null;
+    if (image) previewUrl = image;
+    if (thumb) previewUrl = thumb;
+    if (previewUrl) 
+      $pform.find('.form-post-preview').html(
+        "<img style='width:100%' src='" + previewUrl + "'>");
+  }
+
   this.loadSettings = function() {
     var dash = this;
-
     dash._imgUploader = null;
     $.getJSON("/settings?json=1", function(data) {
-
       dash.activateImageUploader(data.imgur_key);
       dash.activateQueuedPosting(data.queue_interval);
       dash.drawModalAvatars(data.avatar_url);
@@ -333,12 +348,7 @@ var Dashboard = new function() {
         if (data.url)
           $(dash.postSelector + "-form .form-post-url").val(data.url);
 
-        var previewUrl = null;
-        if (data.image) previewUrl = data.image;
-        if (data.thumb) previewUrl = data.thumb;
-        if (previewUrl) 
-          $(dash.postSelector + "-form .form-post-preview").html(
-            "<img style='width:100%' src='" + previewUrl + "'>");
+        dash.updatePostPreview();
       }
     };
 
