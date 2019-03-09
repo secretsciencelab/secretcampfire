@@ -77,10 +77,6 @@ Enjoy the 'fire and share the love: http://secretcampfire.com
 
 See [FAQ](docs/FAQ.md)
 
-### How to upgrade your `secret campfire` + stay synced to the latest official version
-
-See [UPGRADING](docs/UPGRADING.md)
-
 ### Secret goodies + hidden features
 
 See [ADVANCED](docs/ADVANCED.md)
