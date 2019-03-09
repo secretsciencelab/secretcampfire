@@ -1,4 +1,4 @@
-## Why are there many extra things I have to manage on my `secret campfire` blog?
+## Why are there many things I have to manage on my `secret campfire` blog?
 
 Because you are now graduating from a *simple user of the Internet* to an __owner__. And just like with anything else, being an owner comes with responsibilities.
 
