@@ -1,14 +1,14 @@
-## Why are there many things I have to manage on my `secret campfire` blog?
+## Why are there many things I have to manage on my `secret campfire`?
 
 Because you are now graduating from a *simple user of the Internet* to an __owner__. And just like with anything else, being an owner comes with responsibilities.
 
-If you want things to be brain-dead simple, there are many other options available where someone else takes care of your blog for you. But as you know, the trade-off when someone runs your blog for you is that you don't really own anything. They own you.
+If you want things to be brain-dead simple, there are many other options available where someone else takes care of your site for you. But as you know, the trade-off when someone runs your site for you is that you don't really own anything. They own you.
 
 If you want the freedom of owning and keeping what you own, there will be a slight learning curve. But these are good things to know, because knowledge is power. For years, all these other sites have happily kept people ignorant, helpless and in the dark. Think about it -- they **don't want you to know** how to run your own site. They make **more money** if you don't know how to run your own site and are completely dependent on them. 
 
 In contrast, `secret campfire` will show you exactly how to run your own server so you can finally be independent and free. But of course, our goal is to make it as simple as possible -- it's only as hard as it needs to be but no harder. In fact, it's so easy... you don't even need a computer.
 
-However, if you're not the DIY type and prefer to have your blogs set up for you, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com) and we'll take care of you. In your email, tell us what blog name you want and we'll set you up for a one-time fee of $5. After they're set up, your blogs belong 100% to you and run free forever.
+However, if you're not the DIY type and prefer to have your `secret campfire` set up for you, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com) and we'll take care of you. In your email, tell us what  name you want and we'll set you up for a one-time fee of $5. Once set up, your site belongs 100% to you and runs free forever.
 
 --- 
 
@@ -38,13 +38,13 @@ Almost every cloud platform today gives you generous free quotas to run your web
 
 --- 
 
-## Why does my Heroku blog go to sleep after a while, and why does it take a long time to start back up again? 
+## Why does my Heroku instance go to sleep after a while, and why does it take a long time to start back up again? 
 
-When you deploy your `secret campfire` blog on Heroku for free, they set you up on their free `Dyno`. By default, that gives you 550 free hours per month. And if it receives no traffic for 30 minutes, your `Dyno` goes to sleep. If your blog gets visited while asleep, it will wake up again after a short delay. (https://devcenter.heroku.com/articles/free-dyno-hours).
+When you deploy your `secret campfire` on Heroku for free, they set you up on their free `Dyno`. By default, that gives you 550 free hours per month. And if it receives no traffic for 30 minutes, your `Dyno` goes to sleep. If your site gets visited while asleep, it will wake up again after a short delay. (https://devcenter.heroku.com/articles/free-dyno-hours).
 
-To prevent your blog from sleeping, you can set up a service like Pingdom or New Relic to periodically ping your site. But if you do that, your blog will run 24/7 and you'll blow through your free quota in 23 days. 
+To prevent your site from sleeping, you can set up a service like Pingdom or New Relic to periodically ping your site. But if you do that, your site will run 24/7 and you'll blow through your free quota in 23 days. 
 
-To keep your blog running 24/7 forever, you'll have to add your credit card to Heroku. That upgrades you to 1000 free hours per month. Your card will not be charged as long as you stay on the free tier.
+To keep your site running 24/7 forever, you'll have to add your credit card to Heroku. That upgrades you to 1000 free hours per month. Your card will not be charged as long as you stay on the free tier.
 
 --- 
 
@@ -61,11 +61,11 @@ If you are opposed to this, you can still use `secret campfire` without a credit
 
 --- 
 
-## How can I have multiple blogs?
+## How can I have multiple `secret campfire` sites?
 
-First, repeat the steps in the [README](../README.md) for each new blog you want to create. 
+First, repeat the steps in the [README](../README.md) for each new `secret campfire` you want to create. 
 
-Then, as you sign in to each of your blogs, `secret campfire` remembers all the blogs you own. All your connected blogs appear in a handy menu at the top right of the screen. Select the blog you want to browse as, and all your `secret campfire` actions will be performed for your selected blog. E.g., if you select your *first blog* from the menu and then click a `Reblog` button on a post, the post will be reblogged to your *first blog*. 
+Then, as you sign in to each of your sites, `secret campfire` remembers all the sites you own. All your connected sites appear in a handy menu at the top right of the screen. Select the `secret campfire` you want to browse as, and all your `secret campfire` actions will be performed for your selected site. E.g., if you select your *first site* from the menu and then click a `Reblog` button on a post, the post will be reblogged to your *first site*. 
 
 --- 
 
@@ -79,9 +79,9 @@ Finally, open up your Database. Open your `settings` collection. Replace the old
 
 ---
 
-## How do I upgrade my `secret campfire` blog to the latest official version?
+## How do I upgrade my `secret campfire` to the latest official version?
 
-[See here.](ADVANCED.md#how-to-upgrade-your-secret-campfire-blog-to-the-latest-official-version)
+[See here.](ADVANCED.md#how-to-upgrade-your-secret-campfire-to-the-latest-official-version)
 
 --- 
 
