@@ -452,12 +452,20 @@ function _cronActivatePostQueue(interval) {
     db.fetchQueuedPosts(options, function(err, posts) {
       if (!posts || posts.length == 0)
         return;
+
       var post = posts[0];
+
+      var now = Date.now();
+      var diffMs = now - post.date;
+      var diffMins = diffMs / 60000;
+      if (diffMins < interval)
+        return;
+
       post.queued = false;
       post.date = Date.now();
       post.save();
     });
-  });
+  }, /* runNow=*/true);
 }
 function _cronDeactivatePostQueue() {
   console.log("[cron] auto-post queue disabled");

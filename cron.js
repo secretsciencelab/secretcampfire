@@ -4,7 +4,7 @@
   var _taskFuncs = {};
 
   // 'interval' is in minutes
-  module.exports.addTask = function(taskName, interval, taskFunc) {
+  module.exports.addTask = function(taskName, interval, taskFunc, runNow) {
     if (interval <= 0)
       return; // can't do that
 
@@ -17,6 +17,9 @@
       'cron': new CronJob("0 */" + interval + " * * * *", taskFunc)
     };
     _taskFuncs[taskName].cron.start();
+
+    if (runNow)
+      taskFunc();
   }
 
   module.exports.delTask = function(taskName) {
