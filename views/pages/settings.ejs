@@ -42,7 +42,7 @@
           <label>Avatar image URL</label>
           <input type="text" class="form-control form-control-sm form-avatar" 
             value="<%= settings.avatar_url %>" placeholder="Avatar image URL" />
-          <% if (settings.imgur_key) {%>
+          <% if (settings.imgur_key || HOME_UPLOAD_KEY) {%>
           <div class="progress form-avatar-file-progress" style="height: 0px">
             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
@@ -54,7 +54,7 @@
           <label>Header image URL</label>
           <input type="text" class="form-control form-control-sm form-header" 
             value="<%= settings.header_url %>" placeholder="Header image URL" />
-          <% if (settings.imgur_key) {%>
+          <% if (settings.imgur_key || HOME_UPLOAD_KEY) {%>
           <div class="progress form-header-file-progress" style="height: 0px">
             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
@@ -184,29 +184,43 @@
       return false;
     });
 
-    var avatarUploader = new ImgurUploader({
-      selector: "#settings-form .form-avatar-file",
-      key: "<%= settings.imgur_key %>",
-      onUploadStart: function() {
-        $("#settings-form .form-avatar-file-progress").css('height', '3px');
-      },
-      onUploadDone: function(data) {
-        $("#settings-form .form-avatar-file-progress").css('height', '0px');
-        $("#settings-form .form-avatar").val(data.link);
-      }
-    });
+    <% if (settings.imgur_key || HOME_UPLOAD_KEY) { %>
+      var avatarUploaderCfg = {
+        selector: "#settings-form .form-avatar-file",
+        onUploadStart: function() {
+          $("#settings-form .form-avatar-file-progress").css('height', '3px');
+        },
+        onUploadDone: function(data) {
+          $("#settings-form .form-avatar-file-progress").css('height', '0px');
+          $("#settings-form .form-avatar").val(data.thumb);
+        }
+      };
 
-    var headerUploader = new ImgurUploader({
-      selector: "#settings-form .form-header-file",
-      key: "<%= settings.imgur_key %>",
-      onUploadStart: function() {
-        $("#settings-form .form-header-file-progress").css('height', '3px');
-      },
-      onUploadDone: function(data) {
-        $("#settings-form .form-header-file-progress").css('height', '0px');
-        $("#settings-form .form-header").val(data.link);
-      }
-    });
+      var headerUploaderCfg = {
+        selector: "#settings-form .form-header-file",
+        onUploadStart: function() {
+          $("#settings-form .form-header-file-progress").css('height', '3px');
+        },
+        onUploadDone: function(data) {
+          $("#settings-form .form-header-file-progress").css('height', '0px');
+          $("#settings-form .form-header").val(data.image);
+        }
+      };
+
+      var avatarUploader = null;
+      var headerUploader = null;
+      <% if (settings.imgur_key) { %>
+      avatarUploaderCfg.key = "<%= settings.imgur_key %>";
+      headerUploaderCfg.key = "<%= settings.imgur_key %>";
+      var avatarUploader = new ImgurUploader(avatarUploaderCfg);
+      var headerUploader = new ImgurUploader(headerUploaderCfg);
+      <% } else if (HOME_UPLOAD_KEY) { %>
+      avatarUploaderCfg.key = "<%= HOME_UPLOAD_KEY %>";
+      headerUploaderCfg.key = "<%= HOME_UPLOAD_KEY %>";
+      var avatarUploader = new ScampyUploader(avatarUploaderCfg);
+      var headerUploader = new ScampyUploader(headerUploaderCfg);
+      <% } %>
+    <% } %>
   </script>
 </body>
 </html>
