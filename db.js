@@ -38,8 +38,9 @@
     });
     const LikeSchema = new mongooseExtendSchema(PostSchema, {
       url_key: { type: String, unique: true },
+      source_url: String,
       avatar_url: String,
-      blog_url: String
+      blog_url: String,
     });
 
     const FollowSchema = new mongoose.Schema({
@@ -491,6 +492,7 @@
         // without having to fetch each one from the source
         like = new _Model('Like')({
           url_key: urlKey,
+          source_url: url,
           avatar_url: data.avatar_url,
           blog_url: data.blog_url,
           title: data.post.title,

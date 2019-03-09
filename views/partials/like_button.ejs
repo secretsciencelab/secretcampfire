@@ -21,25 +21,7 @@ var LikeButton = new function() {
 
         var likeUrl = lb.data('like-url');
         SetBlogWidget.getBlog(function(url) {
-          $.ajax(Utils.timestampUrl(url+"/is_connected"), {
-            dataType: "json",
-            success: function(data, status, xhr) {
-              if (!data || !data.is_connected)
-              {
-                SetBlogWidget.open();
-                return;
-              }
-
-              obj.handleClick(lb, url, likeUrl, middleClick);
-            },
-            error: function(jqxhr, textStatus, errorThrown) {
-              console.error(errorThrown);
-            },
-            xhrFields: {
-              withCredentials: true
-            },
-            crossDomain: true
-          });
+          obj.handleLike(lb, url, likeUrl, middleClick);
         });
 
         return false;
@@ -63,6 +45,8 @@ var LikeButton = new function() {
           success: function(data) {
             if (data && data.is_liked)
               lb.data('liked', true).addClass('liked'); 
+            else
+              lb.data('liked', null).removeClass('liked'); 
           },
           crossDomain: true
         });
@@ -70,25 +54,30 @@ var LikeButton = new function() {
     }, /*checkOnly*/true);
   };
 
-  this.handleClick = function(lb, userUrl, likeUrl, openNewTab) {
-    var actionPath = "/like";
-    if (lb.data('liked'))
-      actionPath = "/like/delete";
+  this.handleLike = function(lb, userUrl, likeUrl, openNewTab) {
+    var targetUrl = userUrl + "/dashboard?like=" 
+      + encodeURIComponent(likeUrl);
+    if (openNewTab)
+    {
+      var tab = window.open(targetUrl, '_blank');
+      tab.focus();
+      return;
+    }
 
-    $.ajax(userUrl + actionPath, { 
-      method: "POST",
-      data: { url: likeUrl },
-      dataType: "json",
-      success: function(data, status, xhr) {
-        if (lb.data('liked'))
-          lb.data('liked', null).removeClass('liked');
-        else
-          lb.data('liked', true).addClass('liked');
-      },
-      xhrFields: {
-        withCredentials: true
-      },
-      crossDomain: true
-    });
-  }
+    var urlObj = new URL(userUrl);
+    if (window.location.host == urlObj.host 
+      && window.location.pathname.indexOf("/dashboard") != -1
+      && typeof Dashboard !== 'undefined')
+    {
+      // already on Dashboard -- just invoke Dashboard directly
+      var obj = this;
+      var deleteLike = lb.data('liked')? true : false;
+      Dashboard.doLikeDislike(likeUrl, deleteLike, function() {
+        obj.updateStatus(lb);
+      });
+      return;
+    }
+
+    window.location.href = targetUrl;
+  };
 };

@@ -29,6 +29,8 @@ var Dashboard = new function() {
       $(dash.postSelector+"-save-button .oi")
         .removeClass('oi-clock').addClass('oi-pencil');
       $(dash.postSelector+"-save-button .label").text("Post");
+      $(dash.postSelector+"-form .form-post-preview").html(
+        "<label>Image</label>");
     });
     $(dash.followSelector+"-modal").on('shown.bs.modal', function() {
       $(this).find('input:text')[0].focus();
@@ -172,6 +174,7 @@ var Dashboard = new function() {
     var unfollow = url.searchParams.get("unfollow");
     var reblog = url.searchParams.get("reblog");
     var edit = url.searchParams.get("edit");
+    var like = url.searchParams.get("like");
 
     if (follow)
       this.doFollow(follow);
@@ -181,6 +184,8 @@ var Dashboard = new function() {
       this.doReblog(reblog);
     else if (edit)
       this.doEdit(edit);
+    else if (like)
+      this.doLikePreview(like);
   }
 
   this.doFollow = function(blog) {
@@ -226,6 +231,13 @@ var Dashboard = new function() {
           $pform.find('.form-post-text').val(text);
         }
 
+        var previewUrl = null;
+        if (data.post.images) previewUrl = data.post.images[0];
+        if (data.post.thumbs) previewUrl = data.post.thumbs[0];
+        if (previewUrl) 
+          $(dash.postSelector + "-form .form-post-preview").html(
+            "<img style='width:100%' src='" + previewUrl + "'>");
+
         $("#create-post-modal").modal('show');
       }
     });
@@ -258,7 +270,34 @@ var Dashboard = new function() {
           $pform.find('.form-post-tags').val(data.post.tags.join(','));
         $pform.find('.form-post-update-id').val(data.post.id);
 
+        var previewUrl = null;
+        if (data.post.images) previewUrl = data.post.images[0];
+        if (data.post.thumbs) previewUrl = data.post.thumbs[0];
+        if (previewUrl) 
+          $(dash.postSelector + "-form .form-post-preview").html(
+            "<img style='width:100%' src='" + previewUrl + "'>");
+
         $("#create-post-modal").modal('show');
+      }
+    });
+  }
+
+  this.doLikePreview = function(url) {
+
+  }
+
+  this.doLikeDislike = function(likeUrl, deleteLike, cb) {
+    var actionPath = "/like";
+    if (deleteLike)
+      actionPath = "/like/delete";
+
+    $.ajax(actionPath, { 
+      method: "POST",
+      data: { url: likeUrl },
+      dataType: "json",
+      success: function(data, status, xhr) {
+        if (cb)
+          cb();
       }
     });
   }
@@ -293,6 +332,13 @@ var Dashboard = new function() {
           $(dash.postSelector + "-form .form-post-image").val(data.image);
         if (data.url)
           $(dash.postSelector + "-form .form-post-url").val(data.url);
+
+        var previewUrl = null;
+        if (data.image) previewUrl = data.image;
+        if (data.thumb) previewUrl = data.thumb;
+        if (previewUrl) 
+          $(dash.postSelector + "-form .form-post-preview").html(
+            "<img style='width:100%' src='" + previewUrl + "'>");
       }
     };
 
