@@ -197,28 +197,34 @@ RenderFeed.prototype.initInfiniteScroll = function() {
   this.infScrollContainer.on('load.infiniteScroll', function(ev, resp, path) {
     var data = null;
     var rootPath = "";
+    var feedOffset = 0;
 
     if (path)
     {
-      rootPath = _getFeedUriParams(path)[0];
+      var feedParams = _getFeedUriParams(path);
+      rootPath = feedParams[0];
+      feedOffset = feedParams[1];
       data = JSON.parse(resp);
       if (data.posts)
         fr._numPostsFetched += data.posts.length;
     }
 
-    if (fr.skipOldPosts && data && data.posts && data.posts.length)
+    if ((fr.skipOldPosts || fr.skipStaleFeeds)
+      && data && data.posts && data.posts.length)
     {
-      // check if posts are stale
+      // check if /feed posts are stale
       var post = data.posts[0];
       var now = new Date();
       var postDate = new Date(post.date);
       var diffTime = now.getTime() - postDate.getTime();
       var oneDay = 24*60*60*1000;
       var diffDays = Math.round(Math.abs(diffTime/oneDay));
-      if (diffDays > 30)
+
+      if ((fr.skipOldPosts && diffDays > 30)
+        || (feedOffset == 0 && fr.skipStaleFeeds && diffDays > 1))
         data.posts = [];
     }
-
+    
     if (!data || !data.posts || !data.posts.length)
     {
       // nothing more for this feed

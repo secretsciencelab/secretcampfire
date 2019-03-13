@@ -353,7 +353,8 @@
       },
       "postImagePref": ["images", "thumbs"],
       "numPostsPerFetch": <%= NUM_POSTS_PER_FETCH %>,
-      "enforceOrder": (renderUris.length == 1)? true : false
+      "enforceOrder": (renderUris.length == 1)? true : false,
+      "skipStaleFeeds": (renderUris.length > 2)? true: false
     });
 
     // draw news panels
