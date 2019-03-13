@@ -17,6 +17,10 @@ a {
   border-color: transparent;
 }
 
+.btn[disabled] {
+  cursor: not-allowed;
+}
+
 /* navbar */
 
 .navbar {

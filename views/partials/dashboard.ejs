@@ -335,10 +335,12 @@ var Dashboard = new function() {
     var cfg = {
       selector: dash.postSelector + "-form .form-img-file",
       onUploadStart: function() {
+        $(dash.postSelector+"-save-button").attr("disabled", true);
         $(dash.postSelector + "-form .form-img-file-progress")
           .css('height', '3px');
       },
       onUploadDone: function(data) {
+        $(dash.postSelector+"-save-button").removeAttr("disabled");
         $(dash.postSelector + "-form .form-img-file-progress")
           .css('height', '0px');
         if (data.thumb)

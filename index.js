@@ -446,17 +446,18 @@ function _cronActivatePostQueue(interval) {
       if (!posts || posts.length == 0)
         return;
 
-      var post = posts[0];
+      db.getLastCronExecTime("post_from_queue", function(lastExecTime) {
+        var diffMs = Date.now() - lastExecTime;
+        var diffMins = diffMs / 60000;
+        if (diffMins < interval)
+          return;
 
-      var now = Date.now();
-      var diffMs = now - post.date;
-      var diffMins = diffMs / 60000;
-      if (diffMins < interval)
-        return;
-
-      post.queued = false;
-      post.date = Date.now();
-      post.save();
+        db.updateLastCronExecTime("post_from_queue");
+        var post = posts[0];
+        post.queued = false;
+        post.date = Date.now();
+        post.save();
+      });
     });
   }, /* runNow=*/true);
 }

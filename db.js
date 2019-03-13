@@ -62,6 +62,13 @@
       visitor: { type: String }
     });
 
+    const ThingSchema = new mongoose.Schema({
+      id: String,
+      date: { type: Date, default: Date.now },
+      key: String,
+      val: String
+    });
+
     const _schema = {
       'Settings': SettingsSchema,
       'Post': PostSchema,
@@ -69,7 +76,8 @@
       'Follower': FollowSchema,
       'PostSource': FollowSchema,
       'Like': LikeSchema,
-      'Note': NoteSchema
+      'Note': NoteSchema,
+      'Housekeeping': ThingSchema
     };
 
     /* 
@@ -649,6 +657,35 @@
 
         task.last_run = Date.now();
         task.save();
+      });
+    }
+
+    /*
+     * housekeeping
+     */
+    module.exports.getLastCronExecTime = function(taskname, cb) {
+      const key = "CRON_" + taskname;
+      _Model('Housekeeping').findOne({'key': key}, function(err, thing) {
+        if (!thing)
+        {
+          thing = new _Model('Housekeeping')({ key: key });
+          thing.date = Date.now();
+          thing.id = thing._id;
+          thing.save();
+        }
+        
+        if (cb)
+          cb(thing.date);
+      });
+    }
+    module.exports.updateLastCronExecTime = function(taskname) {
+      const key = "CRON_" + taskname;
+      _Model('Housekeeping').findOne({'key': key}, function(err, thing) {
+        if (!thing)
+          return;
+
+        thing.date = Date.now();
+        thing.save();
       });
     }
 }());
