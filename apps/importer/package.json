@@ -1,0 +1,21 @@
+{
+  "name": "secretcampfire_importer",
+  "version": "0.0.1",
+  "description": "secret campfire Tumblr importer / bulk uploader",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/secretsciencelab/secretcampfire",
+  "keywords": [
+    "Electron",
+    "secretcampfire",
+    "tumblr"
+  ],
+  "author": "SecretScienceLab",
+  "license": "GPL",
+  "devDependencies": {
+    "electron": "^4.0.7",
+    "request": "^2.88.0"
+  }
+}

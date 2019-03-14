@@ -188,9 +188,11 @@
       var avatarUploaderCfg = {
         selector: "#settings-form .form-avatar-file",
         onUploadStart: function() {
+          $("#settings-save-button").attr("disabled", true);
           $("#settings-form .form-avatar-file-progress").css('height', '3px');
         },
         onUploadDone: function(data) {
+          $("#settings-save-button").removeAttr("disabled");
           $("#settings-form .form-avatar-file-progress").css('height', '0px');
           $("#settings-form .form-avatar").val(data.thumb);
         }
@@ -199,9 +201,11 @@
       var headerUploaderCfg = {
         selector: "#settings-form .form-header-file",
         onUploadStart: function() {
+          $("#settings-save-button").attr("disabled", true);
           $("#settings-form .form-header-file-progress").css('height', '3px');
         },
         onUploadDone: function(data) {
+          $("#settings-save-button").removeAttr("disabled");
           $("#settings-form .form-header-file-progress").css('height', '0px');
           $("#settings-form .form-header").val(data.image);
         }

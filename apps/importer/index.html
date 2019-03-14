@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Secret Campfire importer</title>
+    <style>
+      body {
+        font-family: arial;
+        padding: 20px;
+        text-align: center;
+      }
+      body > div {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Secret Campfire importer</h1>
+
+    <div>
+      Secret Campfire URL:<br/>
+      <input type="text" id="url" />
+    </div>
+
+    <div>
+      Secret Campfire password:<br/>
+      <input type="text" id="password" />
+    </div>
+
+    <div>
+      Upload key:</br>
+      <input type="text" id="key" />
+    </div>
+
+    <div>
+    <button id="open-dir" class="">Post images</button>
+    <input id="import-dir" type="file" style="display: none" />
+    </div>
+
+    <div>
+      secretcampfire.com
+    </div>
+
+    <script>
+      require('./renderer.js');
+    </script>
+  </body>
+</html>
