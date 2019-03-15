@@ -12,7 +12,7 @@
     "secretcampfire",
     "tumblr"
   ],
-  "author": "SecretScienceLab",
+  "author": "secretsciencelab",
   "license": "GPL",
   "devDependencies": {
     "electron": "^4.0.7",

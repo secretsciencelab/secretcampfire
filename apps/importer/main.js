@@ -80,34 +80,79 @@ function uploadImage(key, filepath, cb) {
   });
 }
 
-function uploadImages(key, dir, images, idx, sender) {
+function uploadImages(sender, key, dir, images, idx, myRequest, scampyUrl) {
   if (idx >= images.length)
+  {
+    sender.send("postImagesDone");
     return;
+  }
 
   var path = images[idx];
   var ext = path.split('.').pop().toLowerCase();
   if (ext != "png" && ext != "gif" && ext != "jpg" && ext != "jpeg")
-    return uploadImages(key, dir, images, idx+1, sender);
+    return uploadImages(sender, key, dir, images, idx+1, myRequest, scampyUrl);
 
   console.log("uploading... " + path);
+  sender.send("postImageUploading", (idx+1)+"/"+images.length, path);
   uploadImage(key, dir + "/" + path, function(ret) {
-    console.log("success: " + path);
-    console.log(ret);
-    sender.send("postedImage", (idx+1)+"/"+images.length, path);
+    if (!ret || !ret.thumb) 
+    {
+      // upload failed, continue to next image
+      console.log("upload failed: " + path);
+      sender.send("postImageFailed", (idx+1)+"/"+images.length, path);
+      return uploadImages(sender, key, dir, images, idx+1, myRequest, scampyUrl);
+    }
 
-    //return uploadImages(key, dir, images, idx+1, sender);
+    // post to scampy
+    myRequest.post({
+      url: scampyUrl + "/post", 
+      form: {
+        'title': '',
+        'text': '',
+        'thumbs': ret.thumb,
+        'images': ret.image,
+        'urls': ret.url,
+        'queued': '1'
+      }
+    }, function(err, httpResponse, body) { 
+      console.log("post success: " + path);
+      sender.send("postImageSuccess", (idx+1)+"/"+images.length, path);
+      return uploadImages(sender, key, dir, images, idx+1, myRequest, scampyUrl);
+    });
   });
 }
 
 //hold the array of directory paths selected by user
 let imageUploadDir;
-ipcMain.on('postImages', (event, key) => {
-  imageUploadDir = dialog.showOpenDialog(mainWindow, {
-    properties: ['openDirectory']
-  });
+ipcMain.on('postImages', (event, scampyUrl, scampyPass, key) => {
+  const request = require('request');
+  const myRequest = request.defaults({jar: true});
 
-  console.log("postImages: " + imageUploadDir[0]);
-  fs.readdir(imageUploadDir[0], function(err, files) {
-    uploadImages(key, imageUploadDir[0], files, 0, event.sender);
+  myRequest.post({
+    url: scampyUrl + "/login", 
+    form: {
+      'username': 'admin',
+      'password': scampyPass
+    }
+  }, function(err, httpResponse, body) { 
+    console.log(err);
+    console.log(body);
+    if (err || body.indexOf("error") != -1)
+    {
+      event.sender.send("loginFailed", scampyUrl);
+      return;
+    }
+
+    // success! proceed with upload
+    
+    imageUploadDir = dialog.showOpenDialog(mainWindow, {
+      properties: ['openDirectory']
+    });
+
+    console.log("postImages: " + imageUploadDir[0]);
+    fs.readdir(imageUploadDir[0], function(err, files) {
+      uploadImages(event.sender, key, imageUploadDir[0], files, 0, 
+        myRequest, scampyUrl);
+    });
   });
 });

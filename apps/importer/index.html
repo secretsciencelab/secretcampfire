@@ -12,6 +12,11 @@
       body > div {
         margin-bottom: 20px;
       }
+      #post-image-status {
+        font-family: monospace;
+        max-height: 100px;
+        overflow-y: scroll;
+      }
     </style>
   </head>
   <body>
@@ -33,8 +38,9 @@
     </div>
 
     <div>
-    <button id="open-dir" class="">Post images</button>
+    <button id="open-dir" class="">Post image directory</button>
     <input id="import-dir" type="file" style="display: none" />
+    <div id="post-image-status"></div>
     </div>
 
     <div>
