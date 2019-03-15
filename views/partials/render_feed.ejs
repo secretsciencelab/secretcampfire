@@ -100,6 +100,7 @@ function RenderFeed(cfg) {
   this.numPostsPerFetch = cfg.numPostsPerFetch;
   this.skipOldPosts = cfg.skipOldPosts;
   this.enforceOrder = cfg.enforceOrder;
+  this.skipStaleFeeds = cfg.skipStaleFeeds;
 
   if (!cfg.uris || cfg.uris.length == 0)
   {
