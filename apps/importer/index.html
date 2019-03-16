@@ -2,25 +2,33 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Secret Campfire importer</title>
+    <title>Secret Campfire - post importer</title>
     <style>
       body {
         font-family: arial;
         padding: 20px;
         text-align: center;
       }
+      h1 {
+        margin-bottom: 30px;
+      }
       body > div {
-        margin-bottom: 20px;
+        margin: 10px 0px;
       }
       #post-image-status {
         font-family: monospace;
         max-height: 100px;
         overflow-y: scroll;
       }
+      #logo {
+        height: 80px;
+      }
     </style>
   </head>
   <body>
-    <h1>Secret Campfire importer</h1>
+    <img id="logo" src="assets/logoLight.png">
+
+    <h1>Secret Campfire<br/><small>post importer</small></h1>
 
     <div>
       Secret Campfire URL:<br/>
@@ -37,14 +45,18 @@
       <input type="text" id="key" />
     </div>
 
+    <div class="spacer">&nbsp;</div>
+
     <div>
     <button id="open-dir" class="">Post image directory</button>
     <input id="import-dir" type="file" style="display: none" />
     <div id="post-image-status"></div>
     </div>
 
+    <div class="spacer">&nbsp;</div>
+
     <div>
-      secretcampfire.com
+      <em>secretcampfire.com</em>
     </div>
 
     <script>
