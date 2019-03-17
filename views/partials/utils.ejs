@@ -15,6 +15,10 @@ if (typeof Utils === 'undefined')
       uri = uri.replace(/\//g, '|');
       return encodeURIComponent(uri);
     }
+    this.decodeScampyUriParam = function(uri) {
+      uri = decodeURIComponent(uri);
+      return uri.replace(/\|/g, '/');
+    }
 
     this.handleClick = function(e, url) {
       e.preventDefault();

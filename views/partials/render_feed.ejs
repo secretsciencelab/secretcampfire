@@ -5,8 +5,17 @@ function _syncProtocol(uri) {
   return window.location.protocol + "//" + urlObj.host + urlObj.pathname;
 }
 
+function _decodeProxyFeedUrl(uri) {
+  if (uri.indexOf('host=') == -1)
+    return uri;
+
+  var feedUrl = uri.split("host=")[1];
+  return Utils.decodeScampyUriParam(feedUrl);
+}
+
 // get feed's root, index and searchParams
 function _getFeedUriParams(uri) {
+  uri = _decodeProxyFeedUrl(uri);
   var root = uri;
   var idx = 0;
   var sparams = "";
@@ -231,7 +240,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       var diffDays = Math.abs(diffTime/oneDay);
 
       if ((fr.skipOldPosts && diffDays > 30)
-        || (feedOffset == 0 && fr.skipStaleFeeds && diffDays > 1))
+        || (feedOffset == 0 && fr.skipStaleFeeds && diffDays > 2))
         data.posts = [];
     }
     
