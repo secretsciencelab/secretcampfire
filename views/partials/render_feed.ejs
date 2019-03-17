@@ -34,6 +34,7 @@ function FeedMgr(cfg) {
   this.pageSize = cfg.pageSize;
   
   this._feeds = [];
+  this._currFeedIdx = -1;
   this._lastPageIdx = -1;
   this._uriRoot2FeedIdx = {};
 }
@@ -61,21 +62,29 @@ FeedMgr.prototype.feedsHaveMore = function() {
   return hasMore;
 }
 FeedMgr.prototype.next = function(pageIndex) {
-  var feedIdx = pageIndex % this._feeds.length;
-  var root = this._feeds[feedIdx].root;
-  var params = this._feeds[feedIdx].params;
-
   if (pageIndex > this._lastPageIdx) 
   {
+    // move cursor to next feed that has_more
+    for (var i=0; i < this._feeds.length; i++)
+    {
+      this._currFeedIdx = (this._currFeedIdx + 1) % this._feeds.length;
+      if (this._feeds[this._currFeedIdx].has_more)
+        break;
+    }
+
     // advance this feed
-    if (typeof this._feeds[feedIdx].offset === 'undefined')
-      this._feeds[feedIdx].offset = this._feeds[feedIdx].start_offset;
+    if (typeof this._feeds[this._currFeedIdx].offset === 'undefined')
+      this._feeds[this._currFeedIdx].offset 
+        = this._feeds[this._currFeedIdx].start_offset;
     else
-      this._feeds[feedIdx].offset += this.pageSize;
+      this._feeds[this._currFeedIdx].offset += this.pageSize;
 
     this._lastPageIdx = pageIndex;
   }
-  var offset = this._feeds[feedIdx].offset;
+
+  var root = this._feeds[this._currFeedIdx].root;
+  var params = this._feeds[this._currFeedIdx].params;
+  var offset = this._feeds[this._currFeedIdx].offset;
 
   return Utils.timestampUrl(root + "/" + offset 
     + "?n=" + this.pageSize + "&" + params);
@@ -219,7 +228,7 @@ RenderFeed.prototype.initInfiniteScroll = function() {
       var postDate = new Date(post.date);
       var diffTime = now.getTime() - postDate.getTime();
       var oneDay = 24*60*60*1000;
-      var diffDays = Math.round(Math.abs(diffTime/oneDay));
+      var diffDays = Math.abs(diffTime/oneDay);
 
       if ((fr.skipOldPosts && diffDays > 30)
         || (feedOffset == 0 && fr.skipStaleFeeds && diffDays > 1))
