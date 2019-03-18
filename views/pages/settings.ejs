@@ -90,6 +90,13 @@
           </label>
           </div></div>
 
+          <% if (HOME_UPLOAD_KEY) { %>
+          <div class="form-group"><div class="">
+              To import images from your laptop/PC, download our <a href="http://secretcampfire.com/importer">importer</a>.<br/>
+              Your Upload Key is <span class="text-monospace"><%= HOME_UPLOAD_KEY %></span>
+          </div></div>
+          <% } %>
+
           <a class="" data-toggle="collapse" href="#advanced-settings" role="button" aria-expanded="false" aria-controls="advanced-settings">
             advanced settings
           </a>
