@@ -85,6 +85,12 @@ a {
 #masthead a {
   color: #212529;
 }
+#masthead .tags .tag a {
+  color: #818589;
+}
+#masthead .tags .tag a:hover {
+  color: #212529;
+}
 #masthead a:hover {
   text-decoration: none;
 }

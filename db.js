@@ -18,7 +18,7 @@
       password: String,
       nsfw: Boolean,
       imgur_key: String,
-      queue_interval: { type: Number, default: 0 },
+      queue_interval: { type: Number, default: 60 },
       dark_mode: { type: Boolean, default: false },
       custom_head: String
     });
@@ -279,6 +279,20 @@
           cb(err, count);
       });
     }
+
+    module.exports.getHotTags = function(cb) {
+      _Model('Post').aggregate([
+        { "$unwind": "$tags" },
+        { "$group": { "_id": "$tags", "count": {"$sum":1} } },
+        { "$match": { "_id": { "$ne": "" } } },
+        { "$sort": {"count": -1} },
+        { "$limit": 10 }
+      ],
+      function(err, results) {
+        if (cb)
+          cb(err, results);
+      });
+    };
 
     /* 
      * feed

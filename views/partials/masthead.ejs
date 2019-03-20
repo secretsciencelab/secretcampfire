@@ -12,6 +12,7 @@
     </div>
   </div>
   <p class="lead collapse"></p>
+  <p class="tags collapse"></p>
 </div>
 
 <script>
@@ -124,6 +125,25 @@ var Masthead = new function() {
       if (data.custom_head)
         $("head").append(data.custom_head);
     });
+
+    if (this.uri.indexOf("/feed") != -1)
+    {
+      var tagsUri = this.uri.replace("/feed", "/tags");
+      $.getJSON(Utils.timestampUrl(tagsUri), function(data) {
+        if (!data || data.length == 0)
+          return;
+
+        $("#masthead .tags").html("");
+        for (var ti=0; ti < data.length; ti++)
+        {
+          var tag = data[ti]._id;
+          $("#masthead .tags").append(
+            "<div class='d-inline-block tag small px-1'>"
+              + "<a href='/tag/" + tag + "'>#" + tag + "</a></div>");
+        }
+        $("#masthead .tags").show();
+      });
+    }
   }
 
   this.setTitleBar = function(data) {

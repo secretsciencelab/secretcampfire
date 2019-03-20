@@ -38,6 +38,12 @@ body {
 #masthead a {
   color: #aEaAa6;
 }
+#masthead .tags .tag a {
+  color: #414549;
+}
+#masthead .tags .tag a:hover {
+  color: #a1a5a9;
+}
 
 .card {
   background-color: #111;
@@ -87,4 +93,8 @@ footer a {
 }
 footer a:hover {
   color: #dda;
+}
+
+#kalona img {
+  filter: invert(25%);
 }

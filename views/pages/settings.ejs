@@ -102,18 +102,10 @@
           </a>
           <div id="advanced-settings" class="collapse mt-2">
             <div class="form-group">
-            <label>Imgur client ID 
-              (<a href="https://github.com/secretsciencelab/secretcampfire/blob/master/docs/ADVANCED.md#how-to-unlock-image-file-uploads">info</a>)
-            </label>
-            <input type="text" class="form-control form-control-sm form-imgur-key" 
-             value="<%= settings.imgur_key %>" placeholder="Imgur client ID (to use Imgur for image file uploads)" />
-            </div>
-
-            <div class="form-group">
-              <label>Auto-publish queued posts
+              <label>Auto-publish queued posts every X minutes
                 (<a href="https://github.com/secretsciencelab/secretcampfire/blob/master/docs/ADVANCED.md#how-to-unlock-queued-posting">info</a>)
                 <br/>
-                <div class="small">warning: using queued posts may prevent your blog from sleeping</div></label>
+                <!--<div class="small">warning: using queued posts may prevent your blog from sleeping</div>--></label>
             <input type="text" class="form-control form-control-sm form-queue-interval" 
              <% if (settings.queue_interval) { %>
               value="<%= settings.queue_interval %>"
@@ -121,6 +113,14 @@
               value="" 
              <% } %>
              placeholder="E.g., enter '60' for 'every 60 minutes'" />
+            </div>
+
+            <div class="form-group">
+            <label>Imgur client ID 
+              (<a href="https://github.com/secretsciencelab/secretcampfire/blob/master/docs/ADVANCED.md#how-to-unlock-image-file-uploads">info</a>)
+            </label>
+            <input type="text" class="form-control form-control-sm form-imgur-key" 
+             value="<%= settings.imgur_key %>" placeholder="Imgur client ID (to use Imgur for image file uploads)" />
             </div>
 
             <div class="form-group">

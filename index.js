@@ -405,6 +405,13 @@ app.get('/render/:uri?', function (req, res) {
   _render(req, res, req.params['uri']);
 });
 
+app.get('/tags', function (req, res) {
+  db.getHotTags(function(err, tags) {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(tags, null, 2));
+  });
+});
+
 app.get('/tag/:tag/:index?', function (req, res) {
   var index = req.params['index'];
   index = (index)? parseInt(index) : 0;
