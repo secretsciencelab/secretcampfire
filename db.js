@@ -117,7 +117,10 @@
      */
 
     function _makeArray(x) {
-      return Array.isArray(x)? x : [x];
+      if (Array.isArray(x))
+          return x;
+
+      return x.split(",");
     }
 
     function _makeUrlKey(url) {
