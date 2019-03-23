@@ -285,6 +285,7 @@
 
     module.exports.getHotTags = function(cb) {
       _Model('Post').aggregate([
+        { "$match": { "queue": { "$ne": true } } },
         { "$unwind": "$tags" },
         { "$group": { "_id": "$tags", "count": {"$sum":1} } },
         { "$match": { "_id": { "$ne": "" } } },
