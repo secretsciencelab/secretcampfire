@@ -287,7 +287,7 @@
       _Model('Post').aggregate([
         { "$match": { "queued": { "$ne": true } } },
         { "$unwind": "$tags" },
-        { "$group": { "_id": "$tags", "count": {"$sum":1} } },
+        { "$group": { "_id": { "$toLower": "$tags" }, "count": {"$sum":1} } },
         { "$match": { "_id": { "$ne": "" } } },
         { "$sort": {"count": -1} },
         { "$limit": 10 }
