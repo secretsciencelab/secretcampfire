@@ -1,7 +1,7 @@
 {
-  "name": "secretcampfire_importer",
+  "name": "secretcampfire_uploader",
   "version": "0.0.1",
-  "description": "secret campfire Tumblr importer / bulk uploader",
+  "description": "secret campfire image uploader",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
