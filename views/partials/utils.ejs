@@ -54,9 +54,14 @@ if (typeof Utils === 'undefined')
           if ($(this).data('make-embeds-responsive-done'))
             return;
 
+          var aspectRatio = 0.5625;
+          if ($(this).attr('width') && $(this).attr('height'))
+            aspectRatio = $(this).attr('height') / $(this).attr('width');
+
           $(this)
-            .wrap('<div class="embed-responsive'
-                + ' embed-responsive-16by9"></div>')
+            .wrap('<div class="embed-responsive"'
+                + ' style="padding-bottom: ' + (aspectRatio*100) + '%"'
+                + '></div>')
             .addClass('embed-responsive-item')
             .data('make-embeds-responsive-done', true);
         });
