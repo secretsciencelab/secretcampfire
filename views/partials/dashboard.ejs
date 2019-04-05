@@ -97,6 +97,13 @@ var Dashboard = new function() {
             $(dash.postSelector+"-modal").modal('hide');
           });
 
+        if (updateId)
+        {
+          // we successfully edited a post -- redirect back to post
+          window.location.href = "/render/" 
+            + Utils.encodeScampyUriParam("/post/" + updateId);
+        }
+
         // remove params from url
         window.history.replaceState(null, null, window.location.pathname);
       })

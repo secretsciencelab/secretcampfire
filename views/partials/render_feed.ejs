@@ -321,6 +321,10 @@ RenderFeed.prototype.initInfiniteScroll = function() {
           var id = $(this).find("img").data('iscroll-id');
           var $card = $("#"+id);
           $card.show();
+
+          // reload embedded iframes because some iframes suck (e.g. imgur)
+          $card.find('iframe').attr('src', function (i, val) { return val; });
+
           fr.msnryContainer.masonry('appended', $card);
         });
       });
@@ -329,6 +333,10 @@ RenderFeed.prototype.initInfiniteScroll = function() {
         var id = $(image.img).data('iscroll-id');
         var $card = $("#"+id);
         $card.show();
+
+        // reload embedded iframes because some iframes suck (e.g. imgur)
+        $card.find('iframe').attr('src', function (i, val) { return val; });
+
         fr.msnryContainer.masonry('appended', $card);
       });
   });

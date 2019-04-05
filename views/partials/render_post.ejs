@@ -2,6 +2,9 @@
 
 function RenderPost(cfg) {
   this.uri = cfg.uri;
+  if (this.uri.indexOf("http") == -1)
+    this.uri = window.location.protocol + "//" 
+      + window.location.host + this.uri;
   this.selector = cfg.selector;
 
   this._mdConverter = new showdown.Converter();
