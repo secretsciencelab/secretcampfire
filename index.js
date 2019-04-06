@@ -145,6 +145,11 @@ function _render(req, res, myuri) {
   }
 
   uri = _decodeScampyUriParam(uri);
+  if (uri.indexOf("http") == -1)
+  {
+    // convert relative paths to absolute paths
+    uri = _getReqProtocol(req) + '://' + req.headers.host + uri
+  }
 
   _assembleFeed(req, {}, function(siteTemplate) {
     res.render('pages/render', {
