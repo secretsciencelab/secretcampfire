@@ -175,15 +175,26 @@ var Navbar = new function() {
   };
 
   this.activateLoginButton = function() {
-    SetBlogWidget.isOwner(function(isOwner) {
-      if (isOwner)
-        return;
+    var thisUrl = window.location.host;
+    SetBlogWidget.getBlogs(function(urls) {
+      var thisUrlIsInBlogList = false;
+      for (var ui=0; urls && urls.length && ui < urls.length; ui++)
+        if (urls[ui].indexOf(thisUrl) != -1)
+        {
+          thisUrlIsInBlogList = true;
+          break;
+        }
 
-      $("#navbar-login-button").mouseup(function(e) {
-        Utils.handleClick(e, "/dashboard");
-      })
-      .popover(Utils.makeBsTooltipCfg('Sign in | ' + window.location.host))
-      .show();
+      SetBlogWidget.isOwner(function(isOwner) {
+        if (isOwner && thisUrlIsInBlogList)
+          return;
+
+        $("#navbar-login-button").mouseup(function(e) {
+          Utils.handleClick(e, "/dashboard");
+        })
+        .popover(Utils.makeBsTooltipCfg('Sign in | ' + window.location.host))
+        .show();
+      });
     });
   };
 
