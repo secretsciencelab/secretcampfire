@@ -35,7 +35,7 @@ app.locals.MONGODB_URIS = {};
 // ingest multi-site keys into app.locals
 const keys2ingest = ["HOME_UPLOAD_KEY", "MONGODB_URI"];
 for (var e in process.env) {
-  for (var ki in keys2ingest.length)
+  for (var ki=0; ki < keys2ingest.length; ki++)
   {
     var key = keys2ingest[ki];
     if (e.indexOf(key) == -1)
