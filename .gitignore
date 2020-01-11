@@ -13,3 +13,4 @@ docker-compose.yml
 
 # vim
 *.swp
+*.swo
