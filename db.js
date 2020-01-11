@@ -165,7 +165,7 @@
       }
     }
 
-    module.exports.post = function(postData, cb) {
+    module.exports.post = function(postData, cb, dbName) {
       try {
         // sanitize inputs
         if (postData.thumbs)
@@ -189,7 +189,7 @@
           if (postData.re_url)
             delete postData.re_url; // don't allow this to change
 
-          _Model('Post').findById(id, function(err, post) {
+          _Model('Post', dbName).findById(id, function(err, post) {
             if (!post)
             {
               if (err)
@@ -213,7 +213,7 @@
         else
         {
           // new post
-          var newPost = new _Model('Post')(postData);
+          var newPost = new _Model('Post', dbName)(postData);
           newPost.id = newPost._id;
           newPost.post_url = "/post/" + newPost.id
           newPost.save(function(err) {
@@ -234,19 +234,19 @@
       }
     }
 
-    module.exports.getPost = function(id, cb) {
-      _Model('Post').findById(id, cb);
+    module.exports.getPost = function(id, cb, dbName) {
+      _Model('Post', dbName).findById(id, cb);
     }
 
-    module.exports.delPost = function(id, cb) {
-      _Model('Post').deleteOne({'id': id}, function(err) {
+    module.exports.delPost = function(id, cb, dbName) {
+      _Model('Post', dbName).deleteOne({'id': id}, function(err) {
         if (cb)
           cb(err);
       });
     }
 
-    module.exports.postNow = function(id, cb) {
-      _Model('Post').findById(id, function(err, post) {
+    module.exports.postNow = function(id, cb, dbName) {
+      _Model('Post', dbName).findById(id, function(err, post) {
         if (!post)
         {
           if (cb)
@@ -270,21 +270,21 @@
       });
     }
 
-    module.exports.getPostCount = function(cb) {
-      _Model('Post').count({ 'queued': { "$ne": true } }, function(err, count) {
+    module.exports.getPostCount = function(cb, dbName) {
+      _Model('Post', dbName).count({ 'queued': { "$ne": true } }, function(err, count) {
         if (cb)
           cb(err, count);
       });
     }
-    module.exports.getQueuedCount = function(cb) {
-      _Model('Post').count({ 'queued': true }, function(err, count) {
+    module.exports.getQueuedCount = function(cb, dbName) {
+      _Model('Post', dbName).count({ 'queued': true }, function(err, count) {
         if (cb)
           cb(err, count);
       });
     }
 
-    module.exports.getHotTags = function(cb) {
-      _Model('Post').aggregate([
+    module.exports.getHotTags = function(cb, dbName) {
+      _Model('Post', dbName).aggregate([
         { "$match": { "queued": { "$ne": true } } },
         { "$unwind": "$tags" },
         { "$group": { "_id": { "$toLower": "$tags" }, "count": {"$sum":1} } },
@@ -328,20 +328,20 @@
       options.order = -1;
       _fetchPosts(options, cb, dbName);
     }
-    module.exports.fetchQueuedPosts = function(options, cb) {
+    module.exports.fetchQueuedPosts = function(options, cb, dbName) {
       var _filter = { 'queued': true };
       options.filter = Object.assign(options.filter, _filter);
       options.order = 1;
-      _fetchPosts(options, cb);
+      _fetchPosts(options, cb, dbName);
     }
 
     /*
      * networking
      */
 
-    module.exports.follow = function(url, cb) {
+    module.exports.follow = function(url, cb, dbName) {
       try {
-        var newFollow = new _Model('Follow')({
+        var newFollow = new _Model('Follow', dbName)({
           url_key: _makeUrlKey(url),
           url: url
         });
@@ -359,9 +359,9 @@
       }
     }
 
-    module.exports.unfollow = function(url, cb) {
+    module.exports.unfollow = function(url, cb, dbName) {
       try {
-        _Model('Follow').deleteMany({
+        _Model('Follow', dbName).deleteMany({
           'url_key': _makeUrlKey(url)
         }, function(err) {
           if (cb)
@@ -375,9 +375,9 @@
       }
     }
 
-    module.exports.isFollowing = function(url, cb) {
+    module.exports.isFollowing = function(url, cb, dbName) {
       try {
-        _Model('Follow').findOne({
+        _Model('Follow', dbName).findOne({
           'url_key': _makeUrlKey(url)
         }, function(err, doc) {
           if (cb)
@@ -391,25 +391,25 @@
       }
     }
 
-    module.exports.getFollowing = function(index, limit, cb) {
+    module.exports.getFollowing = function(index, limit, cb, dbName) {
         if (index == 0)
           index = undefined;
-        _Model('Follow').find()
+        _Model('Follow', dbName).find()
           .skip(index)
           .limit(limit)
           .sort({'date': -1})
           .exec(cb);
     }
 
-    module.exports.getFollowingCount = function(cb) {
-      _Model('Follow').count({}, function(err, count) {
+    module.exports.getFollowingCount = function(cb, dbName) {
+      _Model('Follow', dbName).count({}, function(err, count) {
         if (cb)
           cb(err, count);
       });
     }
 
-    module.exports.getRandomFollowing = function(cb) {
-      _Model('Follow').aggregate([{
+    module.exports.getRandomFollowing = function(cb, dbName) {
+      _Model('Follow', dbName).aggregate([{
         $sample: { size: 100 }
       }], 
       function(err, follows) {
@@ -456,35 +456,35 @@
       }
     }
 
-    module.exports.getFollowers = function(index, limit, cb) {
+    module.exports.getFollowers = function(index, limit, cb, dbName) {
         if (index == 0)
           index = undefined;
-        _Model('Follower').find()
+        _Model('Follower', dbName).find()
           .skip(index)
           .limit(limit)
           .sort({'date': -1})
           .exec(cb);
     }
 
-    module.exports.getFollowersCount = function(cb) {
-      _Model('Follower').count({}, function(err, count) {
+    module.exports.getFollowersCount = function(cb, dbName) {
+      _Model('Follower', dbName).count({}, function(err, count) {
         if (cb)
           cb(err, count);
       });
     }
 
-    module.exports.getPostSources = function(index, limit, cb) {
+    module.exports.getPostSources = function(index, limit, cb, dbName) {
         if (index == 0)
           index = undefined;
-        _Model('PostSource').find()
+        _Model('PostSource', dbName).find()
           .skip(index)
           .limit(limit)
           .sort({'date': -1})
           .exec(cb);
     }
 
-    module.exports.getPostSourcesCount = function(cb) {
-      _Model('PostSource').count({}, function(err, count) {
+    module.exports.getPostSourcesCount = function(cb, dbName) {
+      _Model('PostSource', dbName).count({}, function(err, count) {
         if (cb)
           cb(err, count);
       });
@@ -494,9 +494,9 @@
      * likes
      */
 
-    module.exports.isLiked = function(url, cb) {
+    module.exports.isLiked = function(url, cb, dbName) {
       try {
-        _Model('Like').findOne({
+        _Model('Like', dbName).findOne({
           'url_key': _makeUrlKey(url)
         }, function(err, doc) {
           if (cb)
@@ -510,13 +510,13 @@
       }
     }
 
-    module.exports.addToLikes = function(url, data, cb) {
+    module.exports.addToLikes = function(url, data, cb, dbName) {
       try {
         var urlKey = _makeUrlKey(url);
 
         // cache original post contents so we can display liked posts
         // without having to fetch each one from the source
-        like = new _Model('Like')({
+        like = new _Model('Like', dbName)({
           url_key: urlKey,
           source_url: url,
           avatar_url: data.avatar_url,
@@ -544,10 +544,10 @@
       }
     }
 
-    module.exports.delFromLikes = function(url, cb) {
+    module.exports.delFromLikes = function(url, cb, dbName) {
       try {
         var urlKey = _makeUrlKey(url);
-        _Model('Like').deleteOne({'url_key': urlKey}, function(err) {
+        _Model('Like', dbName).deleteOne({'url_key': urlKey}, function(err) {
           if (cb)
             cb(err);
         });
@@ -559,13 +559,13 @@
       }
     }
 
-    module.exports.fetchLikes = function(options, cb) {
+    module.exports.fetchLikes = function(options, cb, dbName) {
       try {
         const index = (options.index == 0)? undefined : options.index;
         const limit = options.limit; 
         const filter = options.filter;
 
-        _Model('Like').find(filter)
+        _Model('Like', dbName).find(filter)
           .skip(index)
           .limit(limit)
           .sort({'date': -1 })
@@ -605,7 +605,7 @@
             });
 
             // follow "staff" blog to start
-            module.exports.follow(consts.MASTER_FEED, null);
+            module.exports.follow(consts.MASTER_FEED, null, dbName);
           });
       } 
       catch(err) {
@@ -615,7 +615,7 @@
       }
     }
 
-    module.exports.saveSettings = function(newSettings, cb) {
+    module.exports.saveSettings = function(newSettings, cb, dbName) {
       module.exports.getSettings(function(err, settings) {
         settings.name = newSettings.name;  
         settings.description = newSettings.description;  
@@ -633,15 +633,15 @@
           if (cb)
             cb(err, settings);
         });
-      });
+      }, dbName);
     }
 
     /*
      * housekeeping
      */
-    module.exports.getLastCronExecTime = function(taskname, cb) {
+    module.exports.getLastCronExecTime = function(taskname, cb, dbName) {
       const key = "CRON_" + taskname;
-      _Model('Housekeeping').findOne({'key': key}, function(err, thing) {
+      _Model('Housekeeping', dbName).findOne({'key': key}, function(err, thing) {
         if (!thing)
         {
           thing = new _Model('Housekeeping')({ key: key });
@@ -654,9 +654,9 @@
           cb(thing.date);
       });
     }
-    module.exports.updateLastCronExecTime = function(taskname) {
+    module.exports.updateLastCronExecTime = function(taskname, dbName) {
       const key = "CRON_" + taskname;
-      _Model('Housekeeping').findOne({'key': key}, function(err, thing) {
+      _Model('Housekeeping', dbName).findOne({'key': key}, function(err, thing) {
         if (!thing)
           return;
 

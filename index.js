@@ -17,34 +17,6 @@ const cron = require('./cron')
 
 const PORT = process.env.PORT || 5000
 
-/* 
- * setup passport for authentication
- */
-
-passport.use(new LocalStrategy(function(username, password, cb) {
-  db.getSettings(function(err, settings) {
-    if (err) { return cb(err); }
-    if (!settings) { return cb(null, false); }
-    if (settings.password != md5(password)) { return cb(null, false); }
-    return cb(null, settings);
-  });
-}));
-
-passport.serializeUser(function(user, cb) {
-  cb(null, user.id);
-});
-
-passport.deserializeUser(function(id, cb) {
-  db.getSettings(function(err, user) {
-    if (err) { return cb(err); }
-    cb(null, user);
-  });
-});
-
-/*
- * setup app
- */
-
 var app = express();
 
 app.locals.SITE_NAME = consts.SITE_NAME;
@@ -69,8 +41,8 @@ for (var e in process.env) {
     if (e.indexOf(key) == -1)
       continue;
 
-    var pos = -1;
-    if ((pos = e.indexOf(key + "_")) == -1)
+    var pfx = key + "_";
+    if (e.indexOf(pfx) == -1)
     {
       // default site value
       app.locals[key+"S"][""] = process.env[e];
@@ -78,10 +50,65 @@ for (var e in process.env) {
     else
     {
       // multi-site value
-      var name = e.substring(pos+key.length+1); // +1 for underscore
+      var name = e.substring(pfx.length); // +1 for underscore
       app.locals[key+"S"][name] = process.env[e];
     }
+  }
 }
+
+function _getReqProtocol(req) {
+  return req.headers['x-forwarded-proto'] || req.protocol;
+}
+
+function _getDbNameFromHostUrl(host) {
+  if (!host)
+    return "";
+
+  var urlObj = new URL(host);
+  var name = urlObj.host.split('.')[0];
+  name = name.toLowerCase();
+  name = name.replace(/-/g, '_');
+
+  return name;
+}
+
+function _getDbNameFromRequest(req) {
+  var dbName = _getDbNameFromHostUrl(
+    _getReqProtocol(req) + '://' + req.headers.host);
+  if (dbName in app.locals.MONGODB_URIS)
+    return dbName;
+
+  // fallback to default (standalone mode)
+  return "";
+}
+
+/* 
+ * setup passport for authentication
+ */
+
+passport.use(new LocalStrategy({
+    passReqToCallback: true
+  }, 
+  function(req, username, password, cb) {
+    db.getSettings(function(err, settings) {
+      if (err) { return cb(err); }
+      if (!settings) { return cb(null, false); }
+      if (settings.password != md5(password)) { return cb(null, false); }
+      return cb(null, settings);
+    }, _getDbNameFromRequest(req));
+  }
+));
+
+passport.serializeUser(function(req, user, cb) {
+  cb(null, user.id);
+});
+
+passport.deserializeUser(function(req, id, cb) {
+  db.getSettings(function(err, user) {
+    if (err) { return cb(err); }
+    cb(null, user);
+  }, _getDbNameFromRequest(req));
+});
 
 app
   .use(cors())
@@ -129,21 +156,6 @@ function _decodeScampyUriParam(uri) {
   return uri.replace(/\|/g, '/');
 }
 
-function _getDbNameFromHostUrl(host) {
-  if (!host)
-    return "";
-
-  var urlObj = new URL(host);
-  var name = urlObj.host.split('.')[0];
-  name = name.toLowerCase();
-  name = name.replace(/-/g, '_');
-
-  return name;
-}
-
-function _getReqProtocol(req) {
-  return req.headers['x-forwarded-proto'] || req.protocol;
-}
 function _getFeedUrl(req) {
   // default to own feed
   return _getReqProtocol(req) + '://' + req.headers.host + '/feed';
@@ -200,11 +212,11 @@ app.get('/', function(req, res) {
     }
 
     _render(req, res);
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 function _assembleFeed(req, contents, cb) {
-  var dbName = "";
+  var dbName = _getDbNameFromRequest(req);
   var host = req.headers.host;
 
   if (req.query['host'])
@@ -258,6 +270,7 @@ app.get('/feed/:index?', function (req, res) {
   if (req.query['tag'])
     filter['tags'] = { '$regex': req.query['tag'], '$options': 'i' };
 
+  var dbName = _getDbNameFromRequest(req);
   /*
    * 'host' param can be optionally passed to ask this server to
    * return the feed of the specified host. This server will connect
@@ -265,7 +278,8 @@ app.get('/feed/:index?', function (req, res) {
    * For use in a multi-tenant scenario, e.g. if this server is functioning 
    * as a proxy server for various hosts.
    */
-  const dbName = _getDbNameFromHostUrl(req.query['host']);
+  if (req.query['host'])
+    dbName = _getDbNameFromHostUrl(req.query['host']);
 
   // send a page from DB
   var options = {
@@ -294,7 +308,7 @@ app.get('/follow/check/:uri?', function (req, res) {
     }
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(ret, null, 2));
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/followers/count', function (req, res) {
@@ -304,7 +318,7 @@ app.get('/followers/count', function (req, res) {
     }
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(ret, null, 2));
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/followers/:index?', function (req, res) {
@@ -317,7 +331,7 @@ app.get('/followers/:index?', function (req, res) {
       'followers': followers
     }
     res.send(JSON.stringify(ret, null, 2));
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/following/count', function (req, res) {
@@ -327,7 +341,7 @@ app.get('/following/count', function (req, res) {
     }
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(ret, null, 2));
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/following/:index?', function (req, res) {
@@ -340,7 +354,7 @@ app.get('/following/:index?', function (req, res) {
       'following': follows
     }
     res.send(JSON.stringify(ret, null, 2));
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get(['/is_connected', '/is_owner'], function (req, res) {
@@ -364,7 +378,7 @@ app.get('/like/check/:uri?', function (req, res) {
     }
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(ret, null, 2));
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/login', function(req, res) {
@@ -390,7 +404,7 @@ app.get('/post/sources/count', function (req, res) {
     }
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(ret, null, 2));
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/post/sources/:index?', function (req, res) {
@@ -403,7 +417,7 @@ app.get('/post/sources/:index?', function (req, res) {
       'sources': sources
     }
     res.send(JSON.stringify(ret, null, 2));
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/post/count', function (req, res) {
@@ -413,7 +427,7 @@ app.get('/post/count', function (req, res) {
     }
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(ret, null, 2));
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/post/:id', function (req, res) {
@@ -428,7 +442,7 @@ app.get('/post/:id', function (req, res) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(feed, null, 2));
     });
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/render/:uri?', function (req, res) {
@@ -439,7 +453,7 @@ app.get('/tags', function (req, res) {
   db.getHotTags(function(err, tags) {
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(tags, null, 2));
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/tag/:tag/:index?', function (req, res) {
@@ -467,6 +481,12 @@ app.get('*', function (req, res, next) {
 
 /*
  * protected routes below
+ * XXX FIXME TODO XXX FIXME STOPPED HERE
+ * XXX FIXME TODO XXX FIXME STOPPED HERE
+ * XXX FIXME TODO XXX FIXME STOPPED HERE
+ * XXX FIXME TODO XXX FIXME STOPPED HERE
+ * XXX FIXME TODO XXX FIXME STOPPED HERE
+ * need to loop over all hosted dbnames in MONGODB_URIS
  */
 
 function _cronActivatePostQueue(interval) {
@@ -506,19 +526,19 @@ function _cronDeactivatePostQueue() {
 app.post('/post', cel.ensureLoggedIn(), function(req, res) {
   db.post(req.body, function(err, newPost) {
     res.status(200).json(newPost);
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.post('/post/delete', cel.ensureLoggedIn(), function (req, res) {
   db.delPost(req.body.id, function(err) {
     res.status(200).json({'status': err});
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.post('/post/now', cel.ensureLoggedIn(), function (req, res) {
   db.postNow(req.body.id, function(err, post) {
     res.status(200).json(post);
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/dashboard/posts/:index?', cel.ensureLoggedIn(), function (req, res) {
@@ -552,7 +572,7 @@ app.get('/dashboard/likefeed/:index?',
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(feed, null, 2));
     });
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/dashboard/qfeed/:index?', 
@@ -571,7 +591,7 @@ app.get('/dashboard/qfeed/:index?',
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(feed, null, 2));
     });
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/dashboard/likes/:index?', cel.ensureLoggedIn(), function (req, res) {
@@ -596,7 +616,7 @@ app.get('/dashboard/queue/count', cel.ensureLoggedIn(), function (req, res) {
     }
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(ret, null, 2));
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/dashboard/queue/:index?', cel.ensureLoggedIn(), function (req, res) {
@@ -641,7 +661,7 @@ app.get('/dashboard/:start_offset?', cel.ensureLoggedIn(), function(req, res) {
         'site_template': siteTemplate
       });
     });
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.get('/settings', cel.ensureLoggedIn(), function (req, res) {
@@ -660,7 +680,7 @@ app.get('/settings', cel.ensureLoggedIn(), function (req, res) {
         'site_template': siteTemplate
       });
     });
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.post('/settings', cel.ensureLoggedIn(), function(req, res) {
@@ -675,7 +695,7 @@ app.post('/settings', cel.ensureLoggedIn(), function(req, res) {
     }
 
     res.status(200).json(settings);
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.post('/like', cel.ensureLoggedIn(), function(req, res) {
@@ -697,7 +717,7 @@ app.post('/like', cel.ensureLoggedIn(), function(req, res) {
 
       db.addToLikes(url, data, function(err, newLike) {
         res.status(200).json(newLike);
-      });
+      }, _getDbNameFromRequest(req));
     });
   } catch(err) {
     console.error(err);
@@ -715,7 +735,7 @@ app.post('/like/delete', cel.ensureLoggedIn(), function(req, res) {
   
   db.delFromLikes(url, function(err) {
     res.status(200).json({});
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.post('/follow', cel.ensureLoggedIn(), function(req, res) {
@@ -723,7 +743,7 @@ app.post('/follow', cel.ensureLoggedIn(), function(req, res) {
   
   db.follow(req.body.url, function(err, newFollow) {
     res.status(200).json(newFollow);
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 app.post('/unfollow', cel.ensureLoggedIn(), function(req, res) {
@@ -731,7 +751,7 @@ app.post('/unfollow', cel.ensureLoggedIn(), function(req, res) {
 
   db.unfollow(url, function(err) {
     res.status(200).json({ });
-  });
+  }, _getDbNameFromRequest(req));
 });
 
 /*
