@@ -57,6 +57,31 @@ app.locals.BLESSED_DOMAINS = consts.BLESSED_DOMAINS;
 app.locals.NUM_POSTS_PER_FETCH = consts.NUM_POSTS_PER_FETCH;
 app.locals.DARK_MODE_CSS = consts.DARK_MODE_CSS;
 app.locals.HOME_UPLOAD_KEY = process.env.HOME_UPLOAD_KEY;
+app.locals.HOME_UPLOAD_KEYS = {};
+app.locals.MONGODB_URIS = {};
+
+// ingest multi-site keys into app.locals
+const keys2ingest = ["HOME_UPLOAD_KEY", "MONGODB_URI"];
+for (var e in process.env) {
+  for (var ki in keys2ingest.length)
+  {
+    var key = keys2ingest[ki];
+    if (e.indexOf(key) == -1)
+      continue;
+
+    var pos = -1;
+    if ((pos = e.indexOf(key + "_")) == -1)
+    {
+      // default site value
+      app.locals[key+"S"][""] = process.env[e];
+    }
+    else
+    {
+      // multi-site value
+      var name = e.substring(pos+key.length+1); // +1 for underscore
+      app.locals[key+"S"][name] = process.env[e];
+    }
+}
 
 app
   .use(cors())
@@ -640,10 +665,14 @@ app.get('/settings', cel.ensureLoggedIn(), function (req, res) {
 
 app.post('/settings', cel.ensureLoggedIn(), function(req, res) {
   db.saveSettings(req.body, function(err, settings) {
-    if (settings && settings.queue_interval)
-      _cronActivatePostQueue(settings.queue_interval);
-    else
-      _cronDeactivatePostQueue();
+    if (app.locals.MONGODB_URIS.length == 1)
+    {
+      // toggle cron on/off only if this is a standalone site
+      if (settings && settings.queue_interval)
+        _cronActivatePostQueue(settings.queue_interval);
+      else
+        _cronDeactivatePostQueue();
+    }
 
     res.status(200).json(settings);
   });

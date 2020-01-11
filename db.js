@@ -637,48 +637,6 @@
     }
 
     /*
-     * cron
-     */
-    module.exports.addCronTask = function(name, cb) {
-      try {
-        var newTask = new CronTask({
-          name: name
-        });
-        newTask.id = newTask._id;
-        newTask.save(function(err, task) {
-          if (cb)
-            cb(err, task);
-        });
-      }
-      catch(err) {
-        console.info(err);
-        if (cb)
-          cb(err, {});
-      }
-    }
-    module.exports.delCronTask = function(name, cb) {
-      CronTask.deleteOne({'name': name}, function(err) {
-        if (cb)
-          cb(err);
-      });
-    }
-    module.exports.getCronTask = function(name, cb) {
-      CronTask.findOne({ 'name': name }, function(err, task) {
-        if (cb)
-          cb(err, task);
-      });
-    }
-    module.exports.updateCronTaskLastRunTime = function(name) {
-      CronTask.findOne({ 'name': name }, function(err, task) {
-        if (!task)
-          return;
-
-        task.last_run = Date.now();
-        task.save();
-      });
-    }
-
-    /*
      * housekeeping
      */
     module.exports.getLastCronExecTime = function(taskname, cb) {
