@@ -131,7 +131,7 @@
       });
     }
 
-    function _addPostSource(url) {
+    function _addPostSource(url, dbName) {
       if (!url || url.indexOf('http') == -1)
         return;
 
@@ -140,7 +140,7 @@
         var hostUrl = urlObj.protocol + "//" + urlObj.host;
         var hostUrlKey = _makeUrlKey(hostUrl);
 
-        _Model('PostSource')
+        _Model('PostSource', dbName)
           .findOne({ 'url_key': hostUrlKey }, function(err, source) {
           if (source)
           {
@@ -150,7 +150,7 @@
           }
           else
           {
-            source = new _Model('PostSource')({
+            source = new _Model('PostSource', dbName)({
               url_key: hostUrlKey,
               url: hostUrl,
               notes: url
@@ -224,7 +224,7 @@
           });
 
           if (newPost.re_url && /\S/.test(newPost.re_url)) 
-            _addPostSource(newPost.re_url); 
+            _addPostSource(newPost.re_url, dbName); 
         }
       }
       catch(err) {
@@ -438,7 +438,7 @@
           }
           else
           {
-            follower = new _Model('Follower')({
+            follower = new _Model('Follower', dbName)({
               url_key: hostUrlKey,
               url: hostUrl,
               notes: url
@@ -595,7 +595,7 @@
 
             // welcome new user! 
             // make new Settings entry
-            settings = new _Model('Settings')();
+            settings = new _Model('Settings', dbName)();
             settings.id = settings._id;
             settings.password = md5("password");
 
@@ -644,7 +644,7 @@
       _Model('Housekeeping', dbName).findOne({'key': key}, function(err, thing) {
         if (!thing)
         {
-          thing = new _Model('Housekeeping')({ key: key });
+          thing = new _Model('Housekeeping', dbName)({ key: key });
           thing.date = Date.now();
           thing.id = thing._id;
           thing.save();
