@@ -485,42 +485,45 @@ app.get('*', function (req, res, next) {
  * protected routes below
  */
 
-function _cronActivatePostQueue(interval) {
-  console.log("[cron] auto-posting from queue every " 
-    + interval + " minute(s)");
-
-  cron.addTask("post_from_queue", interval, function() {
+function _cronRun(dbName) {
+  try {
     var options = {
       'index': 0,
       'limit': 1,
       'filter': {}
     };
+    db.getSettings(function(err, settings) {
+      db.fetchQueuedPosts(options, function(err, posts) {
+        if (!posts || posts.length == 0)
+          return;
 
-    for (var dbName in app.locals.MONGODB_URIS) {
-      try {
-        db.getSettings(function(err, settings) {
-          db.fetchQueuedPosts(options, function(err, posts) {
-            if (!posts || posts.length == 0)
-              return;
+        db.getLastCronExecTime("post_from_queue", function(lastExecTime) {
+          var diffMs = Date.now() - lastExecTime;
+          var diffMins = diffMs / 60000;
+          if (diffMins < settings.queue_interval)
+            return;
 
-            db.getLastCronExecTime("post_from_queue", function(lastExecTime) {
-              var diffMs = Date.now() - lastExecTime;
-              var diffMins = diffMs / 60000;
-              if (diffMins < settings.queue_interval)
-                return;
-
-              db.updateLastCronExecTime("post_from_queue", dbName);
-              var post = posts[0];
-              post.queued = false;
-              post.date = Date.now();
-              post.save();
-            }, dbName);
-          }, dbName);
+          db.updateLastCronExecTime("post_from_queue", dbName);
+          var post = posts[0];
+          post.queued = false;
+          post.date = Date.now();
+          post.save();
         }, dbName);
-      }
-      catch(err) {
-        console.error(err);
-      }
+      }, dbName);
+    }, dbName);
+  }
+  catch(err) {
+    console.error(err);
+  }
+}
+
+function _cronActivatePostQueue(interval) {
+  console.log("[cron] auto-posting from queue every " 
+    + interval + " minute(s)");
+
+  cron.addTask("post_from_queue", interval, function() {
+    for (var dbName in app.locals.MONGODB_URIS) {
+      _cronRun(dbName);
     }
   }, /* runNow=*/true);
 }
@@ -650,12 +653,12 @@ app.get('/dashboard/:start_offset?', cel.ensureLoggedIn(), function(req, res) {
     {
       var url = follows[i].url + "/" + startOffset;
 
-      if (url.indexOf(consts.MASTER_DOMAIN) != -1)
-      {
-        // reroute official blogs to proxy feed server for performance
-        url = consts.MASTER_FEED_PROXY + "/feed/" + startOffset
-          + "?host=" + encodeURIComponent(url);
-      }
+      //if (url.indexOf(consts.MASTER_DOMAIN) != -1)
+      //{
+      //  // reroute official blogs to proxy feed server for performance
+      //  url = consts.MASTER_FEED_PROXY + "/feed/" + startOffset
+      //    + "?host=" + encodeURIComponent(url);
+      //}
 
       followUris.push(url);
     }
