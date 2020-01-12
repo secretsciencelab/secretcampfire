@@ -14,6 +14,7 @@ const URL = require('url').URL
 const db = require('./db')
 const consts = require('./consts')
 const cron = require('./cron')
+const favicon = require('serve-favicon');
 
 const PORT = process.env.PORT || 5000
 
@@ -111,6 +112,7 @@ passport.deserializeUser(function(req, id, cb) {
 });
 
 app
+  .use(favicon(__dirname + '/public/favicon.ico'))
   .use(cors())
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
@@ -495,23 +497,30 @@ function _cronActivatePostQueue(interval) {
     };
 
     for (var dbName in app.locals.MONGODB_URIS) {
-      db.fetchQueuedPosts(options, function(err, posts) {
-        if (!posts || posts.length == 0)
-          return;
+      try {
+        db.getSettings(function(err, settings) {
+          db.fetchQueuedPosts(options, function(err, posts) {
+            if (!posts || posts.length == 0)
+              return;
 
-        db.getLastCronExecTime("post_from_queue", function(lastExecTime) {
-          var diffMs = Date.now() - lastExecTime;
-          var diffMins = diffMs / 60000;
-          if (diffMins < interval)
-            return;
+            db.getLastCronExecTime("post_from_queue", function(lastExecTime) {
+              var diffMs = Date.now() - lastExecTime;
+              var diffMins = diffMs / 60000;
+              if (diffMins < settings.queue_interval)
+                return;
 
-          db.updateLastCronExecTime("post_from_queue", dbName);
-          var post = posts[0];
-          post.queued = false;
-          post.date = Date.now();
-          post.save();
+              db.updateLastCronExecTime("post_from_queue", dbName);
+              var post = posts[0];
+              post.queued = false;
+              post.date = Date.now();
+              post.save();
+            }, dbName);
+          }, dbName);
         }, dbName);
-      }, dbName);
+      }
+      catch(err) {
+        console.error(err);
+      }
     }
   }, /* runNow=*/true);
 }
