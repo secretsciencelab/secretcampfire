@@ -481,12 +481,6 @@ app.get('*', function (req, res, next) {
 
 /*
  * protected routes below
- * XXX FIXME TODO XXX FIXME STOPPED HERE
- * XXX FIXME TODO XXX FIXME STOPPED HERE
- * XXX FIXME TODO XXX FIXME STOPPED HERE
- * XXX FIXME TODO XXX FIXME STOPPED HERE
- * XXX FIXME TODO XXX FIXME STOPPED HERE
- * need to loop over all hosted dbnames in MONGODB_URIS
  */
 
 function _cronActivatePostQueue(interval) {
@@ -499,23 +493,26 @@ function _cronActivatePostQueue(interval) {
       'limit': 1,
       'filter': {}
     };
-    db.fetchQueuedPosts(options, function(err, posts) {
-      if (!posts || posts.length == 0)
-        return;
 
-      db.getLastCronExecTime("post_from_queue", function(lastExecTime) {
-        var diffMs = Date.now() - lastExecTime;
-        var diffMins = diffMs / 60000;
-        if (diffMins < interval)
+    for (var dbName in app.locals.MONGODB_URIS) {
+      db.fetchQueuedPosts(options, function(err, posts) {
+        if (!posts || posts.length == 0)
           return;
 
-        db.updateLastCronExecTime("post_from_queue");
-        var post = posts[0];
-        post.queued = false;
-        post.date = Date.now();
-        post.save();
-      });
-    });
+        db.getLastCronExecTime("post_from_queue", function(lastExecTime) {
+          var diffMs = Date.now() - lastExecTime;
+          var diffMins = diffMs / 60000;
+          if (diffMins < interval)
+            return;
+
+          db.updateLastCronExecTime("post_from_queue", dbName);
+          var post = posts[0];
+          post.queued = false;
+          post.date = Date.now();
+          post.save();
+        }, dbName);
+      }, dbName);
+    }
   }, /* runNow=*/true);
 }
 function _cronDeactivatePostQueue() {
