@@ -1,7 +1,7 @@
 <img src="public/media/logoLight.png" height="60">
 
 # secret campfire 
-![version](https://img.shields.io/badge/version-1.2.0-blue.svg?style=for-the-badge)
+![version](https://img.shields.io/badge/version-1.3.0-blue.svg?style=for-the-badge)
 
 `secret campfire` is a free tumblr replacement made by/for tumblr refugees with a few twists:
 - Post anything you want

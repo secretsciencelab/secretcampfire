@@ -18,8 +18,11 @@ CHANGELOG
   - Like/Heart button to add to personal 'Likes' list
   - 'dark' mode
 
-### Upcoming changes
 - 1.3 
+  - support for serving multiple subdomain sites from one host (e.g. *.secretcampfire.com)
+
+### Upcoming changes
+- 1.4 
   - friends
     - friend request 
     - friend list as recommended blogs
