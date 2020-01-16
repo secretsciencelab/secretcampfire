@@ -367,11 +367,11 @@ var Dashboard = new function() {
       cfg.key = extKey;
       dash._imgUploader = new ImgurUploader(cfg);
     }
-    else if ("<%= HOME_UPLOAD_KEY %>") 
+    else if ("<%= locals.home_upload_key %>") 
     {
       $(dash.postSelector + "-form .form-post-image-uploader-wrapper").show();
       // fallback to our own image uploader
-      cfg.key = "<%= HOME_UPLOAD_KEY %>";
+      cfg.key = "<%= locals.home_upload_key %>";
       dash._imgUploader = new ScampyUploader(cfg);
     }
   }

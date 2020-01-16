@@ -42,7 +42,7 @@
           <label>Avatar image URL</label>
           <input type="text" class="form-control form-control-sm form-avatar" 
             value="<%= settings.avatar_url %>" placeholder="Avatar image URL" />
-          <% if (settings.imgur_key || HOME_UPLOAD_KEY) {%>
+          <% if (settings.imgur_key || home_upload_key) {%>
           <div class="progress form-avatar-file-progress" style="height: 0px">
             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
@@ -54,7 +54,7 @@
           <label>Header image URL</label>
           <input type="text" class="form-control form-control-sm form-header" 
             value="<%= settings.header_url %>" placeholder="Header image URL" />
-          <% if (settings.imgur_key || HOME_UPLOAD_KEY) {%>
+          <% if (settings.imgur_key || home_upload_key) {%>
           <div class="progress form-header-file-progress" style="height: 0px">
             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
@@ -122,10 +122,10 @@
               placeholder="Custom code to inject into <head>" rows=1><%= settings.custom_head %></textarea>
             </div>
 
-            <% if (HOME_UPLOAD_KEY) { %>
+            <% if (home_upload_key) { %>
             <div class="form-group"><div class="">
               To upload a folder of images from your laptop/PC, download our <a href="http://secretcampfire.com/uploader">Image Uploader</a>.
-              Your Upload Key is <span class="text-monospace"><%= HOME_UPLOAD_KEY %></span>
+              Your Upload Key is <span class="text-monospace"><%= home_upload_key %></span>
             </div></div>
             <% } %>
 
@@ -191,7 +191,7 @@
       return false;
     });
 
-    <% if (settings.imgur_key || HOME_UPLOAD_KEY) { %>
+    <% if (settings.imgur_key || home_upload_key) { %>
       var avatarUploaderCfg = {
         selector: "#settings-form .form-avatar-file",
         onUploadStart: function() {
@@ -225,9 +225,9 @@
       headerUploaderCfg.key = "<%= settings.imgur_key %>";
       var avatarUploader = new ImgurUploader(avatarUploaderCfg);
       var headerUploader = new ImgurUploader(headerUploaderCfg);
-      <% } else if (HOME_UPLOAD_KEY) { %>
-      avatarUploaderCfg.key = "<%= HOME_UPLOAD_KEY %>";
-      headerUploaderCfg.key = "<%= HOME_UPLOAD_KEY %>";
+      <% } else if (home_upload_key) { %>
+      avatarUploaderCfg.key = "<%= home_upload_key %>";
+      headerUploaderCfg.key = "<%= home_upload_key %>";
       var avatarUploader = new ScampyUploader(avatarUploaderCfg);
       var headerUploader = new ScampyUploader(headerUploaderCfg);
       <% } %>

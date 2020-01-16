@@ -296,7 +296,7 @@
   <% include ../partials/kalona.ejs %>
 
   <script>
-    <% include ../partials/dashboard.ejs %>
+    <%- include('../partials/dashboard.ejs', { home_upload_key: locals.home_upload_key }) %>
     <% include ../partials/reblog_button.ejs %>
     <% include ../partials/like_button.ejs %>
     <% include ../partials/render_feed.ejs %>
