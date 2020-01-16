@@ -29,7 +29,6 @@ app.locals.MASTER_NEWS = consts.MASTER_NEWS;
 app.locals.BLESSED_DOMAINS = consts.BLESSED_DOMAINS;
 app.locals.NUM_POSTS_PER_FETCH = consts.NUM_POSTS_PER_FETCH;
 app.locals.DARK_MODE_CSS = consts.DARK_MODE_CSS;
-app.locals.HOME_UPLOAD_KEY = process.env.HOME_UPLOAD_KEY;
 app.locals.HOME_UPLOAD_KEYS = {};
 app.locals.MONGODB_URIS = {};
 
@@ -51,7 +50,7 @@ for (var e in process.env) {
     else
     {
       // multi-site value
-      var name = e.substring(pfx.length); // +1 for underscore
+      var name = e.substring(pfx.length);
       app.locals[key+"S"][name] = process.env[e];
     }
   }
@@ -81,6 +80,16 @@ function _getDbNameFromRequest(req) {
 
   // fallback to default (standalone mode)
   return "";
+}
+
+function _getUploadKeyFromRequest(req) {
+  var name = _getDbNameFromHostUrl(
+    _getReqProtocol(req) + '://' + req.headers.host);
+
+  if (name in app.locals.HOME_UPLOAD_KEYS)
+    return app.locals.HOME_UPLOAD_KEYS[name];
+
+  return process.env.HOME_UPLOAD_KEY;
 }
 
 /* 
@@ -560,6 +569,7 @@ app.get('/dashboard/posts/:index?', cel.ensureLoggedIn(), function (req, res) {
       'render_uris': [
         _getFeedUrl(req) + "/" + index
       ],
+      'home_upload_key': _getUploadKeyFromRequest(req),
       'site_template': siteTemplate
     });
   });
@@ -613,6 +623,7 @@ app.get('/dashboard/likes/:index?', cel.ensureLoggedIn(), function (req, res) {
       'render_uris': [
         _getLikeFeedUrl(req) + "/" + index
       ],
+      'home_upload_key': _getUploadKeyFromRequest(req),
       'site_template': siteTemplate
     });
   });
@@ -638,6 +649,7 @@ app.get('/dashboard/queue/:index?', cel.ensureLoggedIn(), function (req, res) {
       'render_uris': [
         _getQueueFeedUrl(req) + "/" + index
       ],
+      'home_upload_key': _getUploadKeyFromRequest(req),
       'site_template': siteTemplate
     });
   });
@@ -667,6 +679,7 @@ app.get('/dashboard/:start_offset?', cel.ensureLoggedIn(), function(req, res) {
       res.render('pages/dashboard', {
         'uri': _getFeedUrl(req),
         'render_uris': followUris,
+        'home_upload_key': _getUploadKeyFromRequest(req),
         'site_template': siteTemplate
       });
     });
@@ -686,6 +699,7 @@ app.get('/settings', cel.ensureLoggedIn(), function (req, res) {
       res.render('pages/settings', {
         'uri': _getFeedUrl(req),
         'settings': settings,
+        'home_upload_key': _getUploadKeyFromRequest(req),
         'site_template': siteTemplate
       });
     });
