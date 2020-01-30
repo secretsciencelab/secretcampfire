@@ -29,30 +29,25 @@ app.locals.MASTER_NEWS = consts.MASTER_NEWS;
 app.locals.BLESSED_DOMAINS = consts.BLESSED_DOMAINS;
 app.locals.NUM_POSTS_PER_FETCH = consts.NUM_POSTS_PER_FETCH;
 app.locals.DARK_MODE_CSS = consts.DARK_MODE_CSS;
-app.locals.HOME_UPLOAD_KEYS = {};
-app.locals.MONGODB_URIS = {};
+app.locals.MONGODB_NAMES = [];
 
-// ingest multi-site keys into app.locals
-const keys2ingest = ["HOME_UPLOAD_KEY", "MONGODB_URI"];
+// collect db names
 for (var e in process.env) {
-  for (var ki=0; ki < keys2ingest.length; ki++)
-  {
-    var key = keys2ingest[ki];
-    if (e.indexOf(key) == -1)
-      continue;
+  var key = "MONGODB_URI";
+  if (e.indexOf(key) == -1)
+    continue;
 
-    var pfx = key + "_";
-    if (e.indexOf(pfx) == -1)
-    {
-      // default site value
-      app.locals[key+"S"][""] = process.env[e];
-    }
-    else
-    {
-      // multi-site value
-      var name = e.substring(pfx.length);
-      app.locals[key+"S"][name] = process.env[e];
-    }
+  var pfx = key + "_";
+  if (e.indexOf(pfx) == -1)
+  {
+    // default site value
+    app.locals.MONGODB_NAMES.push("");
+  }
+  else
+  {
+    // multi-site value
+    var name = e.substring(pfx.length);
+    app.locals.MONGODB_NAMES.push(name);
   }
 }
 
@@ -75,7 +70,7 @@ function _getDbNameFromHostUrl(host) {
 function _getDbNameFromRequest(req) {
   var dbName = _getDbNameFromHostUrl(
     _getReqProtocol(req) + '://' + req.headers.host);
-  if (dbName in app.locals.MONGODB_URIS)
+  if (app.locals.MONGODB_NAMES.indexOf(dbName) != -1)
     return dbName;
 
   // fallback to default (standalone mode)
@@ -86,8 +81,9 @@ function _getUploadKeyFromRequest(req) {
   var name = _getDbNameFromHostUrl(
     _getReqProtocol(req) + '://' + req.headers.host);
 
-  if (name in app.locals.HOME_UPLOAD_KEYS)
-    return app.locals.HOME_UPLOAD_KEYS[name];
+  const k = "HOME_UPLOAD_KEY_" + name;
+  if (k in process.env)
+    return process.env[k];
 
   return process.env.HOME_UPLOAD_KEY;
 }
@@ -531,9 +527,9 @@ function _cronActivatePostQueue(interval) {
     + interval + " minute(s)");
 
   cron.addTask("post_from_queue", interval, function() {
-    for (var dbName in app.locals.MONGODB_URIS) {
+    app.locals.MONGODB_NAMES.forEach(function(dbName) {
       _cronRun(dbName);
-    }
+    });
   }, /* runNow=*/true);
 }
 function _cronDeactivatePostQueue() {
@@ -708,7 +704,7 @@ app.get('/settings', cel.ensureLoggedIn(), function (req, res) {
 
 app.post('/settings', cel.ensureLoggedIn(), function(req, res) {
   db.saveSettings(req.body, function(err, settings) {
-    if (app.locals.MONGODB_URIS.length == 1)
+    if (app.locals.MONGODB_NAMES.length == 1)
     {
       // toggle cron on/off only if this is a standalone site
       if (settings && settings.queue_interval)
