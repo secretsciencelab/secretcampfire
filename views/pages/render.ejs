@@ -10,6 +10,10 @@
   <% if (typeof site_template !== 'undefined' && site_template.dark_mode) { %>
   <link rel="stylesheet" type="text/css" href="/stylesheets/dark.css" />
   <% }  %>
+
+  <% if (typeof site_template !== 'undefined' && site_template.custom_head) { %>
+   <%- site_template.custom_head %>
+  <% }  %>
 </head>
 
 <body>

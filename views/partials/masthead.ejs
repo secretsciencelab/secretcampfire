@@ -121,9 +121,6 @@ var Masthead = new function() {
 
       if (data.dark_mode)
         Utils.addCss("<%= DARK_MODE_CSS %>");
-
-      if (data.custom_head)
-        $("head").append(data.custom_head);
     });
 
     if (this.uri.indexOf("/feed") != -1)
