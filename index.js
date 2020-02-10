@@ -530,7 +530,7 @@ function _cronActivatePostQueue(interval) {
     app.locals.MONGODB_NAMES.forEach(function(dbName) {
       _cronRun(dbName);
     });
-  }, /* runNow=*/true);
+  }, /*runNow=*/true);
 }
 function _cronDeactivatePostQueue() {
   console.log("[cron] auto-post queue disabled");
