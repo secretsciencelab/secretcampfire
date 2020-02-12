@@ -120,10 +120,15 @@
     module.exports.getEnvs = function(qry, cb) {
       _Model('Env', "", function(model) {
         model.find({'key': {$regex: ".*" + qry + ".*"}}, function(err, things) {
-          var envs = [];
-          for (var i=0; i < things.length; i++)
-            envs.push(things.val);
-          cb(envs);
+          cb(things);
+        });
+      });
+    }
+
+    module.exports.getEnvsCount = function(qry, cb) {
+      _Model('Env', "", function(model) {
+        model.countDocuments({'key': {$regex: ".*" + qry + ".*"}}, function(err, count) {
+          cb(count);
         });
       });
     }
