@@ -375,7 +375,7 @@
 
     module.exports.getPostCount = function(cb, dbName) {
       _Model('Post', dbName, function(model) {
-        model.count({ 'queued': { "$ne": true } }, function(err, count) {
+        model.countDocuments({ 'queued': { "$ne": true } }, function(err, count) {
           if (cb)
             cb(err, count);
         });
@@ -383,7 +383,7 @@
     }
     module.exports.getQueuedCount = function(cb, dbName) {
       _Model('Post', dbName, function(model) {
-        model.count({ 'queued': true }, function(err, count) {
+        model.countDocuments({ 'queued': true }, function(err, count) {
           if (cb)
             cb(err, count);
         });
@@ -519,7 +519,7 @@
 
     module.exports.getFollowingCount = function(cb, dbName) {
       _Model('Follow', dbName, function(model) {
-        model.count({}, function(err, count) {
+        model.countDocuments({}, function(err, count) {
           if (cb)
             cb(err, count);
         });
@@ -589,7 +589,7 @@
 
     module.exports.getFollowersCount = function(cb, dbName) {
       _Model('Follower', dbName, function(model) {
-        model.count({}, function(err, count) {
+        model.countDocuments({}, function(err, count) {
           if (cb)
             cb(err, count);
         });
@@ -610,7 +610,7 @@
 
     module.exports.getPostSourcesCount = function(cb, dbName) {
       _Model('PostSource', dbName, function(model) {
-        model.count({}, function(err, count) {
+        model.countDocuments({}, function(err, count) {
           if (cb)
             cb(err, count);
         });
