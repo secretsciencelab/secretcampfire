@@ -544,6 +544,10 @@ function _cronActivatePostQueue(interval) {
     + interval + " minute(s)");
 
   cron.addTask("post_from_queue", interval, function() {
+    // run cron for the default DB
+    _cronRun("");
+
+    // run cron for aux DBs
     db.getEnvs("MONGODB_URI_", function(envs) {
       for (var i=0; i < envs.length; i++) {
         const pfx = "MONGODB_URI_";
