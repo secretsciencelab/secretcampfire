@@ -766,7 +766,8 @@
             });
 
             // follow "staff" blog to start
-            module.exports.follow(consts.MASTER_FEED, null, dbName);
+            for (var fi=0; fi < consts.STARTER_FEEDS.length; fi++)
+              module.exports.follow(consts.STARTER_FEEDS[fi], null, dbName);
           });
       });
     }
