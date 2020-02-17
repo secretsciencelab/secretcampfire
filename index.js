@@ -190,6 +190,7 @@ function _render(req, res, myuri) {
     res.render('pages/render', {
       'uri': uri,
       'fullscreen': req.query['fullscreen'],
+      'random': req.query['random'],
       'site_template': siteTemplate
     });
   });
@@ -288,6 +289,8 @@ app.get('/feed/:index?', function (req, res) {
       'limit': numToFetch,
       'filter': filter
     };
+    if (req.query['random'])
+      options['random'] = true;
 
     db.fetchPosts(options, function(err, posts) {
       _assembleFeed(req, { 'posts': posts }, function(feed) {

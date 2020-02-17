@@ -144,6 +144,11 @@
               * 5
             <% } else { %>
               * 3
+            <% } %>,
+          "random": <% if (random) { %>
+              true
+            <% } else { %>
+              false
             <% } %>
         };
         renderer = new RenderFeed(cfg);

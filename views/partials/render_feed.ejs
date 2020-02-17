@@ -41,6 +41,7 @@ function _getFeedUriParams(uri) {
 
 function FeedMgr(cfg) {
   this.pageSize = cfg.pageSize;
+  this.random = cfg.random;
   
   this._feeds = [];
   this._currFeedIdx = -1;
@@ -95,8 +96,12 @@ FeedMgr.prototype.next = function(pageIndex) {
   var params = this._feeds[this._currFeedIdx].params;
   var offset = this._feeds[this._currFeedIdx].offset;
 
-  return Utils.timestampUrl(root + "/" + offset 
-    + "?n=" + this.pageSize + "&" + params);
+  var url = root + "/" + offset 
+    + "?n=" + this.pageSize + "&" + params;
+  if (this.random) 
+    url += "&random=1";
+
+  return Utils.timestampUrl(url);
 }
 FeedMgr.prototype.markDone = function(rootPath) {
   if (!(rootPath in this._uriRoot2FeedIdx))
@@ -116,6 +121,7 @@ function RenderFeed(cfg) {
   this.onNoPosts = cfg.onNoPosts;
   this.postImagePref = cfg.postImagePref;
   this.numPostsPerFetch = cfg.numPostsPerFetch;
+  this.random = cfg.random;
   this.skipOldPosts = cfg.skipOldPosts;
   this.enforceOrder = cfg.enforceOrder;
   this.skipStaleFeeds = cfg.skipStaleFeeds;
@@ -142,7 +148,8 @@ RenderFeed.prototype.initFeeds = function(uris) {
   uris = [...new Set(uris)];
 
   this._feedMgr = new FeedMgr({
-    pageSize: this.numPostsPerFetch
+    pageSize: this.numPostsPerFetch,
+    random: this.random
   });
 
   var fr = this;

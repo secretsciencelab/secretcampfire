@@ -426,7 +426,29 @@
                .exec(cb);
 
         } catch(err) {
-          console.error(err);
+          //console.error(err);
+          if (cb)
+            cb(err, []);
+        }
+      });
+    }
+
+    function _fetchRandomPosts(options, cb, dbName) {
+      const limit = options.limit; 
+      const filter = options.filter;
+
+      _Model('Post', dbName, function(model) {
+        try {
+          model.aggregate([
+            { "$match": filter },
+            { "$sample": {size: limit} }
+          ],
+          function(err, results) {
+            if (cb)
+              cb(err, results);
+          });
+        } catch(err) {
+          //console.error(err);
           if (cb)
             cb(err, []);
         }
@@ -434,6 +456,11 @@
     }
 
     module.exports.fetchPosts = function(options, cb, dbName) {
+      if (options.random) {
+        _fetchRandomPosts(options, cb, dbName);
+        return;
+      }
+      
       var _filter = { 'queued': { "$ne": true } };
       options.filter = Object.assign(options.filter, _filter);
       options.order = -1;
