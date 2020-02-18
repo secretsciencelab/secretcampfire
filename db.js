@@ -765,7 +765,7 @@
                 cb(err, settings)
             });
 
-            // follow "staff" blog to start
+            // start by following our recommended blogs
             for (var fi=0; fi < consts.STARTER_FEEDS.length; fi++)
               module.exports.follow(consts.STARTER_FEEDS[fi], null, dbName);
           });
@@ -774,6 +774,13 @@
 
     module.exports.saveSettings = function(newSettings, cb, dbName) {
       module.exports.getSettings(function(err, settings) {
+        if (!settings.nsfw && newSettings.nsfw) 
+          module.exports.follow(
+            "https://nsfw.secretcampfire.com/feed", null, dbName);
+        else if (settings.nsfw && !newSettings.nsfw) 
+          module.exports.unfollow(
+            "https://nsfw.secretcampfire.com/feed", null, dbName);
+
         settings.name = newSettings.name;  
         settings.description = newSettings.description;  
         settings.avatar_url = newSettings.avatar_url;  
