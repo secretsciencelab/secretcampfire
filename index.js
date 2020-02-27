@@ -703,17 +703,10 @@ app.get('/dashboard/:start_offset?', cel.ensureLoggedIn(), function(req, res) {
   _getDbNameFromRequest(req, function(dbName) {
     db.getRandomFollowing(function(err, follows) {
       followUris = []
-      for (var i=0; i < follows.length; i++)
-      {
-        var url = follows[i].url + "/" + startOffset;
-
-        //if (url.indexOf(consts.MASTER_DOMAIN) != -1)
-        //{
-        //  // reroute official blogs to proxy feed server for performance
-        //  url = consts.MASTER_FEED_PROXY + "/feed/" + startOffset
-        //    + "?host=" + encodeURIComponent(url);
-        //}
-
+      for (var i=0; i < follows.length; i++) {
+        var uobj = new URL(follows[i].url);
+        var url = uobj.protocol + "//" + uobj.host + uobj.pathname
+          + "/" + startOffset + uobj.search;
         followUris.push(url);
       }
 
