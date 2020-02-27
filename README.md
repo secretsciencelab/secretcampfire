@@ -16,7 +16,7 @@
 
 ## How to get an official *secret campfire* 
 
-For an official `secret campfire` on `secretcampfire.com`, email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com). We'll set up your new home, import your old Tumblr blog *and* give you free lifetime hosting for a one-time fee of $5. Hurry before your favorite name gets taken by someone else.
+For an official `secret campfire`, visit https://secretcampfire.com or email [getscampy@secretcampfire.com](mailto:getscampy@secretcampfire.com). Hurry before your favorite name gets taken by someone else.
 
 ## How to set up your own free *secret campfire* 
 
