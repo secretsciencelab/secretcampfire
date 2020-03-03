@@ -774,12 +774,12 @@
 
     module.exports.saveSettings = function(newSettings, cb, dbName) {
       module.exports.getSettings(function(err, settings) {
-        if (!settings.nsfw && newSettings.nsfw == "true") {
-          module.exports.follow(
-            "https://firehose.secretcampfire.com/feed", null, dbName);
-        } else if (settings.nsfw && newSettings.nsfw == "false") {
-          module.exports.unfollow(
-            "https://firehose.secretcampfire.com/feed", null, dbName);
+        if ('NSFW_FEED' in process.env) {
+          const feed = process.env['NSFW_FEED'];
+          if (!settings.nsfw && newSettings.nsfw == "true")
+            module.exports.follow(feed, null, dbName);
+          else if (settings.nsfw && newSettings.nsfw == "false")
+            module.exports.unfollow(feed, null, dbName);
         }
 
         settings.name = newSettings.name;  
