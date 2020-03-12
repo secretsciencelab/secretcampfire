@@ -99,7 +99,8 @@ var Navbar = new function() {
       }
       var displayUrl = Utils.prettifyBlessedHostUrlForDisplay(activeUrl);
       $("#active-blog-display").html(
-        "<span class='oi oi-fire' id='active-blog-visit-button'"
+        //"<span class='oi oi-fire' id='active-blog-visit-button'"
+        "<span id='active-blog-visit-button'"
         + " style='cursor: pointer' aria-hidden='true'"
         + " data-url='" + activeUrl + "'></span> "
         + "<span id='active-blog'"
@@ -107,16 +108,17 @@ var Navbar = new function() {
         + displayUrl
         + "</span> "
         + dropdownHtml).show()
-      $("#active-blog").click(function() {
+      $("#active-blog").click(function(e) {
+        Utils.handleClick(e, $("#active-blog-visit-button").data('url'));
         //SetBlogWidget.open();  
-      }).popover(Utils.makeBsTooltipCfg('Connected | ' + displayUrl));
+      }).popover(Utils.makeBsTooltipCfg('Visit | ' + displayUrl));
       $("#active-blog-display .dropdown-item").click(function(e) {
         var url = $(this).data('url');
         SetBlogWidget.setBlog(url);
         var displayUrl = Utils.prettifyBlessedHostUrlForDisplay(url);
         $("#active-blog").html(displayUrl);
         $("#active-blog").data('bs.popover')
-          .config.content = 'Connected | ' + displayUrl;
+          .config.content = 'Visit | ' + displayUrl;
         $("#active-blog-visit-button").data('url', url);
         $("#active-blog-visit-button").data('bs.popover')
           .config.content = 'Visit | ' + displayUrl;
