@@ -407,6 +407,24 @@
       });
     };
 
+    module.exports.getRecentTags = function(cb, dbName) {
+      _Model('Post', dbName, function(model) {
+        model.aggregate([
+          { "$match": { "queued": { "$ne": true } } },
+          { "$match": { "date": { "$gte": new Date(new Date().setDate(new Date().getDate()-1)) } } },
+          { "$unwind": "$tags" },
+          { "$group": { "_id": { "$toLower": "$tags" }, "count": {"$sum":1} } },
+          { "$match": { "_id": { "$ne": "" } } },
+          { "$sort": {"count": -1} },
+          { "$limit": 10 }
+        ],
+        function(err, results) {
+          if (cb)
+            cb(err, results);
+        });
+      });
+    };
+
     /* 
      * feed
      */

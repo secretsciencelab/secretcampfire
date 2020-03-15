@@ -475,9 +475,20 @@ app.get('/render/:uri?', function (req, res) {
 
 app.get('/tags', function (req, res) {
   _getDbNameFromRequest(req, function(dbName) {
-    db.getHotTags(function(err, tags) {
-      res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify(tags, null, 2));
+    db.getHotTags(function(err, hotTags) {
+      db.getRecentTags(function(err, recentTags) {
+        const allTags = hotTags.concat(recentTags);
+        var seenTags = {};
+        var tags = [];
+        for (var i=0; i < allTags.length; i++) {
+          if (allTags[i]._id in seenTags)
+            continue;
+          seenTags[allTags[i]._id] = true;
+          tags.push(allTags[i]);
+        }
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(tags, null, 2));
+      }, dbName);
     }, dbName);
   });
 });
