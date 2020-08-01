@@ -11,30 +11,29 @@
     "test": "node test.js"
   },
   "dependencies": {
+    "agenda": "^3.1.0",
     "body-parser": "^1.18.3",
     "connect-ensure-login": "^0.1.1",
     "connect-mongo": "^3.2.0",
     "cors": "^2.8.5",
-    "cron": "^1.6.0",
     "dotenv": "^6.2.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-basic-auth": "^1.1.6",
-    "express-session": "^1.15.6",
+    "express-session": "^1.17.1",
     "http": "0.0.0",
     "md5": "^2.2.1",
-    "mongoose": "^5.4.0",
+    "mongoose": "^5.9.25",
     "mongoose-extend-schema": "^1.0.0",
     "nodemon": "^1.18.9",
     "normalize-url": "^4.1.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "request": "^2.88.0",
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
-    "request": "^2.88.0",
-    "tape": "^4.7.0"
+    "request": "^2.88.2",
+    "tape": "^4.13.3"
   },
   "repository": {
     "type": "git",

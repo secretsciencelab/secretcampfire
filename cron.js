@@ -1,31 +1,25 @@
-(function() {
-  const CronJob = require('cron').CronJob;
+const Agenda = require('agenda');
+const agenda = new Agenda({db: {address: process.env.MONGODB_URI}});
 
-  var _taskFuncs = {};
+(async function() {
+  await agenda.start();
 
   // 'interval' is in minutes
   module.exports.addTask = function(taskName, interval, taskFunc, runNow) {
     if (interval <= 0)
       return; // can't do that
 
-    if (taskName in _taskFuncs) 
-      _taskFuncs[taskName].cron.stop();
+    agenda.define(taskName, job => {
+      taskFunc();
+    });
 
-    _taskFuncs[taskName] = {
-      'func': taskFunc,
-      'interval': interval,
-      'cron': new CronJob("0 */" + interval + " * * * *", taskFunc)
-    };
-    _taskFuncs[taskName].cron.start();
+    agenda.every("0 */" + interval + " * * * *", taskName);
 
     if (runNow)
       taskFunc();
   }
 
   module.exports.delTask = function(taskName) {
-    if (taskName in _taskFuncs) 
-      _taskFuncs[taskName].cron.stop();
-
-    delete _taskFuncs[taskName];
+    agenda.cancel({name: taskName});
   }
-}());
+})();
