@@ -15,7 +15,7 @@
   "author": "secretsciencelab",
   "license": "GPL",
   "devDependencies": {
-    "electron": "^4.0.7",
+    "electron": "^9.1.0",
     "request": "^2.88.0"
   },
   "dependencies": {
