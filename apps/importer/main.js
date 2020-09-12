@@ -62,7 +62,7 @@ const request = require('request');
 const fs = require('fs');
 
 function uploadImage(key, filepath, cb) {
-  const url = "https://secretcampfire.com/upload/upload.php";
+  const url = "https://vps.secretcampfire.com/upload/upload.php";
   request.post({
     url: url,
     formData: {

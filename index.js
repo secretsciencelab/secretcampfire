@@ -202,6 +202,12 @@ function _nocache(req, res, next) {
 }
 
 app.get('/', function(req, res) {
+  if (req.headers.host == consts.MASTER_DOMAIN
+    || req.headers.host.split('.')[0] == 'www') {
+    res.sendFile("landing.html", { root: path.join(__dirname, 'public') });
+    return;
+  }
+
   _getDbNameFromRequest(req, function(dbName) {
     db.getSettings(function(err, settings) {
       if (settings.password == md5("password"))
